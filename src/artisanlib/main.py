@@ -13347,33 +13347,68 @@ class ApplicationWindow(
         if self.qmc.tpChangeBool:
             for i in range(5, 11):
                 _log.info(f"jieduanInfo_first_Value:{current_temp}--分割线--{first_Value[i]}--分割线--{first_Value[i-1]}--分割线--{first_Value[i - 1][0]}")
-                if i < len(first_Value) and i + 1 < len(first_Value):
-                    if i == 10 and current_temp > first_Value[i - 1][0]:
-                        new_phase = i - 4
-                        _log.info(f"new_phase:{new_phase}--分割线--{self.current_phase}")
-                        if new_phase > self.current_phase:
-                            self.current_phase = new_phase
-                            self.jieduanNum.setText(str(self.current_phase))
-                            self.mbwdNum.setText(str(first_Value[i][0]))
-                            self.hlNumR.setText(str(first_Value[i][1]))
-                            self.fmNumR.setText(str(first_Value[i][2]))
-                            self.zsNumR.setText(str(first_Value[i][3]))
-                            _log.info(f"阶段 {self.current_phase}")
-                            self.updateSliders(first_Value[i])
-                            break
-                    elif current_temp >= first_Value[i][0] and current_temp < first_Value[i + 1][0]:
-                        new_phase = i - 4
-                        _log.info(f"elsenew_phase:{new_phase}--分割线--{self.current_phase}")
-                        if new_phase > self.current_phase:
-                            self.current_phase = new_phase
-                            self.jieduanNum.setText(str(self.current_phase + 1))
-                            self.mbwdNum.setText(str(first_Value[i + 1][0]))
-                            self.hlNumR.setText(str(first_Value[i + 1][1]))
-                            self.fmNumR.setText(str(first_Value[i + 1][2]))
-                            self.zsNumR.setText(str(first_Value[i + 1][3]))
-                            _log.info(f"阶段 {self.current_phase}")
-                            self.updateSliders(first_Value[i + 1])
-                            break
+                # if i == 10 and current_temp > first_Value[i - 1][0]:
+                #     new_phase = i - 4
+                #     _log.info(f"new_phase:{new_phase}--分割线--{self.current_phase}")
+                #     if new_phase > self.current_phase:
+                #         self.current_phase = new_phase
+                #         self.jieduanNum.setText(str(self.current_phase))
+                #         self.mbwdNum.setText(str(first_Value[i][0]))
+                #         self.hlNumR.setText(str(first_Value[i][1]))
+                #         self.fmNumR.setText(str(first_Value[i][2]))
+                #         self.zsNumR.setText(str(first_Value[i][3]))
+                #         _log.info(f"阶段 {self.current_phase}")
+                #         self.updateSliders(first_Value[i])
+                #         break
+                # elif current_temp >= first_Value[i][0] and current_temp < first_Value[i + 1][0]:
+                #     new_phase = i - 4
+                #     _log.info(f"elsenew_phase:{new_phase}--分割线--{self.current_phase}")
+                #     if new_phase > self.current_phase:
+                #         self.current_phase = new_phase
+                #         self.jieduanNum.setText(str(self.current_phase + 1))
+                #         self.mbwdNum.setText(str(first_Value[i + 1][0]))
+                #         self.hlNumR.setText(str(first_Value[i + 1][1]))
+                #         self.fmNumR.setText(str(first_Value[i + 1][2]))
+                #         self.zsNumR.setText(str(first_Value[i + 1][3]))
+                #         _log.info(f"阶段 {self.current_phase}")
+                #         self.updateSliders(first_Value[i + 1])
+                #         break
+                if 0<len(first_Value[i]):
+                    _log.info(f"0<len(first_Value[i])::{len(first_Value[i])}--分割线--{first_Value[i][0]}")
+                    if first_Value[i][0]>0:
+                        if i == 10:
+                            _log.info(f"if current_temp > first_Value[i - 1][0]::{current_temp}--分割线--{first_Value[i - 1][0]}")
+                            if current_temp > first_Value[i - 1][0]:
+                                new_phase = i - 4
+                                _log.info(f"new_phase:{new_phase}--分割线--{self.current_phase}")
+                                if new_phase > self.current_phase:
+                                    self.current_phase = new_phase
+                                    self.jieduanNum.setText(str(self.current_phase))
+                                    self.mbwdNum.setText(str(first_Value[i][0]))
+                                    self.hlNumR.setText(str(first_Value[i][1]))
+                                    self.fmNumR.setText(str(first_Value[i][2]))
+                                    self.zsNumR.setText(str(first_Value[i][3]))
+                                    _log.info(f"阶段 {self.current_phase}")
+                                    self.updateSliders(first_Value[i])
+                                    break
+
+                        elif current_temp >= first_Value[i][0]:
+                            _log.info(
+                                f"elif current_temp >= first_Value[i][0] :{current_temp}--分割线--{first_Value[i][0]}======={first_Value[i]}")
+                            if 0<len(first_Value[i+0]) and first_Value[i][0]>0 and current_temp < first_Value[i + 1][0]:
+                                new_phase = i - 4
+                                _log.info(f"elsenew_phase:{new_phase}--分割线--{self.current_phase}")
+                                if new_phase > self.current_phase:
+                                    self.current_phase = new_phase
+                                    self.jieduanNum.setText(str(self.current_phase + 1))
+                                    self.mbwdNum.setText(str(first_Value[i + 1][0]))
+                                    self.hlNumR.setText(str(first_Value[i + 1][1]))
+                                    self.fmNumR.setText(str(first_Value[i + 1][2]))
+                                    self.zsNumR.setText(str(first_Value[i + 1][3]))
+                                    _log.info(f"阶段 {self.current_phase}")
+                                    self.updateSliders(first_Value[i + 1])
+                                    break
+
         else:
             if self.current_phase != 0:
                 self.current_phase = 0
