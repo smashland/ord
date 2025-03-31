@@ -2263,7 +2263,7 @@ class tgraphcanvas(FigureCanvas):
         self.fileDirtySignal.connect(self.fileDirty)
         self.fileCleanSignal.connect(self.fileClean)
         self.markChargeDelaySignal.connect(self.markChargeDelay)
-        self.markChargeSignal.connect(self.markCharge, type=Qt.ConnectionType.QueuedConnection) # type: ignore
+        # self.markChargeSignal.connect(self.markCharge, type=Qt.ConnectionType.QueuedConnection) # type: ignore
         self.markTPSignal.connect(self.markTPTrigger, type=Qt.ConnectionType.QueuedConnection) # type: ignore
         self.markDRYSignal.connect(self.markDryEnd, type=Qt.ConnectionType.QueuedConnection) # type: ignore
         self.markFCsSignal.connect(self.mark1Cstart, type=Qt.ConnectionType.QueuedConnection) # type: ignore
@@ -3964,7 +3964,7 @@ class tgraphcanvas(FigureCanvas):
                             if b > 0:
                                 # we found a BT break at the current index minus b
                                 self.autoChargeIdx = length_of_qmc_timex - b
-                                self.markChargeSignal.emit(False) # this queues an event which forces a realignment/redraw by resetting the cache ax_background and fires the CHARGE action
+                                # self.markChargeSignal.emit(False) # this queues an event which forces a realignment/redraw by resetting the cache ax_background and fires the CHARGE action
 
                         # check for TP event if already CHARGEed and not yet recognized (earliest in the next call to sample())
                         elif self.TPalarmtimeindex is None and self.timeindex[0] > -1 and not self.timeindex[1] and self.timeindex[0]+8 < len(sample_temp2) and self.checkTPalarmtime():
@@ -5134,7 +5134,7 @@ class tgraphcanvas(FigureCanvas):
                 elif action == 16:
                     # CHARGE
                     self.autoChargeIdx = len(self.timex)
-                    self.markChargeSignal.emit(False) # this queues an event which forces a realignment/redraw by resetting the cache ax_background and fires the CHARGE action
+                    # self.markChargeSignal.emit(False) # this queues an event which forces a realignment/redraw by resetting the cache ax_background and fires the CHARGE action
                 elif action == 17 and self.Controlbuttonflag:
                     # RampSoak ON
                     if self.device == 0 and self.aw.fujipid: # FUJI PID
@@ -12374,7 +12374,7 @@ class tgraphcanvas(FigureCanvas):
         finally:
             if self.profileDataSemaphore.available() < 1:
                 self.profileDataSemaphore.release(1)
-        self.markChargeSignal.emit(False) # this queues an event which forces a realignment/redraw by resetting the cache ax_background and fires the CHARGE action
+        # self.markChargeSignal.emit(False) # this queues an event which forces a realignment/redraw by resetting the cache ax_background and fires the CHARGE action
 
 
     def OnRecorder(self) -> None:
@@ -12579,9 +12579,11 @@ class tgraphcanvas(FigureCanvas):
     @pyqtSlot(int)
     def markChargeDelay(self, delay:int) -> None:
         if delay == 0:
-            self.markCharge()
+            # self.markCharge()
+            _log.exception("Error: 执行了self.markCharge()")
         else:
-            QTimer.singleShot(delay,self.markChargeTrigger)
+            # QTimer.singleShot(delay,self.markChargeTrigger)
+            _log.exception("Error: 执行了self.markChargeTrigger()")
 
     @pyqtSlot()
     def markChargeTrigger(self) -> None:

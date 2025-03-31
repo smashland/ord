@@ -79,6 +79,7 @@ from pathlib import Path
 from bidi.algorithm import get_display  # type:ignore
 from artisanlib.rili import Calendar, global_calendar
 import datetime
+import time
 # import pickle
 import serial.tools.list_ports
 
@@ -2734,7 +2735,7 @@ class ApplicationWindow(
         self.gjxyLabel = QLabel(self.gjxy)
         self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.gjxyLabel.setText('| 15：00')
-        self.gjxyLabel.setGeometry(226*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
+        self.gjxyLabel.setGeometry(223*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
         self.gjxyLabel.setStyleSheet("color: #8A929C;")
         self.gjxyLabel.setFont(yrqkfont2)
 
@@ -3663,7 +3664,7 @@ class ApplicationWindow(
 
         self.processInfo1WD = QLabel(self.processInfo1)
         self.processInfo1WD.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
-        self.processInfo1WD.setText('0.0')
+        self.processInfo1WD.setText('0')
         self.processInfo1WD.setGeometry(117*self.width_scale, 75*self.height_scale, 66*self.width_scale, 18*self.height_scale)
         self.processInfo1WD.setStyleSheet("color: #616265;background-color: transparent;")
         ssdfont = QFont(self.font_family4, 12*self.width_scale)
@@ -4541,7 +4542,7 @@ class ApplicationWindow(
         lqfont = QFont(self.font_family2, 12*self.width_scale)
         self.lqBtn.setFont(lqfont)
         # self.lqBtn.setEnabled(False)
-        # self.lqBtn.clicked.connect(self.showAgtron)
+        self.lqBtn.clicked.connect(self.showAgtron)
 
         self.jbBtn = QLabel(self.rightBottom)
         self.jbBtn.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
@@ -5332,7 +5333,7 @@ class ApplicationWindow(
         self.addOrderWidget = QWidget(self)
         self.addOrderWidget.setStyleSheet(f'border-radius: {25*self.height_scale}px;background-color: #ffffff; border: none; ')
         self.addOrderWidget.setGeometry(650 * self.width_scale, 178 * self.height_scale, 620 * self.width_scale,
-                                        724 * self.height_scale)
+                                        744 * self.height_scale)
         self.addOrderWidget.setVisible(False)
         shadow_effect_order = QGraphicsDropShadowEffect(self.addOrderWidget)
         shadow_effect_order.setColor(QColor(0, 0, 0, 160))  # 设置阴影颜色为半透明黑色
@@ -5692,7 +5693,7 @@ class ApplicationWindow(
         self.shengdouTitle.setStyleSheet(
             f"color: #333333;background-color:transparent; border:none; border-radius:{10 * self.width_scale}px"
         )
-        self.shengdouTitle.setText("含水量(KG)")
+        self.shengdouTitle.setText("含水量(%)")
         self.shengdouTitle.setFont(shengdouTitlefont)
 
         # self.shuruBack1 = QLabel(self.addOrderWidget)
@@ -5735,7 +5736,7 @@ class ApplicationWindow(
 
         self.addsdSetBtn = QPushButton(self.addOrderWidget)
         self.addsdSetBtn.setText('+新增设置')
-        self.addsdSetBtn.setGeometry(38 * self.width_scale, 325 * self.height_scale, 90 * self.width_scale,
+        self.addsdSetBtn.setGeometry(38 * self.width_scale, 389 * self.height_scale, 90 * self.width_scale,
                                      32 * self.height_scale)
         self.addsdSetBtn.setStyleSheet(
             f"QPushButton{{color: #2FA7FB;background-color: transparent;border: none;}}"
@@ -5747,7 +5748,7 @@ class ApplicationWindow(
         self.jdszTxt = QLabel(self.addOrderWidget)
         self.jdszTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
         self.jdszTxt.setText('阶段设置')
-        self.jdszTxt.setGeometry(38 * self.width_scale, 358 * self.height_scale, 64 * self.width_scale,
+        self.jdszTxt.setGeometry(38 * self.width_scale, 425 * self.height_scale, 64 * self.width_scale,
                                    32 * self.height_scale)
         self.jdszTxt.setStyleSheet(
             "color: #333333;background-color:transparent; border: none"
@@ -5757,7 +5758,7 @@ class ApplicationWindow(
         self.scale_factor2 = 546 / 417
         self.stageBack = QLabel(self.addOrderWidget)
         self.stageBack.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.stageBack.setGeometry(38 * self.width_scale, 390 * self.height_scale, 417 * self.width_scale *self.scale_factor2,
+        self.stageBack.setGeometry(38 * self.width_scale, 455 * self.height_scale, 417 * self.width_scale *self.scale_factor2,
                                    216 * self.height_scale)
         self.stageBack.setStyleSheet(
             f"color: #333333;background-color:#D9E4F4; border: none; border-radius:{10 * self.width_scale}px"
@@ -5938,6 +5939,7 @@ class ApplicationWindow(
 
         for i in range(3):  # Loop for 6 lines
             self.backLine = QLabel(self.stageBack)
+            x = (148 * self.width_scale + (79 * self.height_scale) * i) * self.scale_factor2
             self.backLine.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
             self.backLine.setGeometry((148 * self.width_scale+(89 * self.height_scale) * i)*self.scale_factor2, 0,
                                       2 * self.width_scale,
@@ -5945,6 +5947,7 @@ class ApplicationWindow(
             self.backLine.setStyleSheet(
                 f"color: #333333;background-color:#DEEEFE; border: none; "
             )
+            print(f"Line {i} x position: {x}")
 
 
 
@@ -6056,7 +6059,7 @@ class ApplicationWindow(
 
         self.addOrderBtn = QPushButton(self.addOrderWidget)
         self.addOrderBtn.setText('确定')
-        self.addOrderBtn.setGeometry(270 * self.width_scale, 630 * self.height_scale, 74 * self.width_scale,
+        self.addOrderBtn.setGeometry(270 * self.width_scale, 687 * self.height_scale, 74 * self.width_scale,
                                      34 * self.height_scale)
         self.addOrderBtn.setStyleSheet(
             f"QPushButton{{color: #ffffff;background-color: #393939;border-radius: {16*self.height_scale}px;border: none;}}"
@@ -11319,7 +11322,7 @@ class ApplicationWindow(
         self.buttonCHARGE: AnimatedMajorEventPushButton = AnimatedMajorEventPushButton(
             QApplication.translate('Button', 'CHARGE'))
         self.buttonCHARGE.setToolTip(QApplication.translate('Tooltip', 'Charge'))
-        self.buttonCHARGE.clicked.connect(self.qmc.markCharge)
+        # self.buttonCHARGE.clicked.connect(self.qmc.markCharge)
 
         # create DROP button 出库
         self.buttonDROP: MajorEventPushButton = MajorEventPushButton(QApplication.translate('Button', 'DROP'))
@@ -16215,7 +16218,7 @@ class ApplicationWindow(
         # 创建 QScrollArea
         self.scrollArea_ADD = QScrollArea(self.addOrderWidget)
         self.scrollArea_ADD.setGeometry(38 * self.width_scale, 290 * self.height_scale,
-                                    550 * self.width_scale, 33 * self.height_scale)  # 滚动区域尺寸
+                                    550 * self.width_scale, 105 * self.height_scale)  # 滚动区域尺寸
         self.scrollArea_ADD.setWidgetResizable(True)  # 允许内部 widget 变化
         self.scrollArea_ADD.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # 隐藏横向滚动条
         self.scrollArea_ADD.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # 隐藏纵向滚动条
@@ -17558,8 +17561,15 @@ class ApplicationWindow(
 
             task_name = data_json.get("taskName", "未知任务")
             baking_batch = data_json.get("bakingBatch", "未知批次")
-            number = data_json.get("number", 0)
-            number_of_beans = data_json.get("numberOfBeans", 0)
+            beanTypes = data_json.get("beanTypes", 0)
+            total_number = 0
+            total_numberOfBeans = 0.0
+            # 遍历 beanTypes 计算总数
+            for key, value in beanTypes.items():
+                number = int(value.get("number", 0))  # 转换为整数
+                numberOfBeans = float(value.get("numberOfBeans", 0.0))  # 转换为浮点数
+                total_number += number
+                total_numberOfBeans += number * numberOfBeans  # 计算每种类型的数量乘以豆子数量
             dehydration_rate = data_json.get("dehydrationRate", "未知")
             defect_rate = data_json.get("defectRate", "未知")
             description = data_json.get("description", "")
@@ -17643,16 +17653,20 @@ class ApplicationWindow(
                 f"转黄点: {maillard}℃ / {int(maillard_time) // 60}:{int(maillard_time) % 60} ")
             self.dtrTxt.setText(f"DTR: {dtr}%")
             self.yibao.setText(f"一爆: {fCs_BT}℃ / {int(fCs_time) // 60}:{int(fCs_time) % 60} ")
-            self.fazhanshichang.setText(f"发展时长: {int(finishphasetime) // 60}:{int(finishphasetime) % 60} / {int(finishphasetime)/int(total_time)*100:.2f}%")
+            if int(finishphasetime) != 0:
+                self.fazhanshichang.setText(
+                    f"发展时长: {int(finishphasetime) // 60}:{int(finishphasetime) % 60} / {int(finishphasetime) / int(total_time) * 100:.2f}%")
+            else:
+                self.fazhanshichang.setText("-")
             self.dtrTxt.setText('DTR：' + str(dtr) + '%')
 
             self.pfTitle.setText('-')
-            self.sdzl.setText(f"{number}g")
-            self.hslTxt.setText(f"{number_of_beans}g")
+            self.sdzl.setText(f"{int(total_number)*1000}g")
+            self.hslTxt.setText(f"{int(total_numberOfBeans)*10}g")
 
             self.agtronzhiNum.setText(f"#{agtron_value}")
             self.qkfkContent.setText(f"{description}")
-            self.shoudouNum.setText(f"{numberOfRipe}g")
+            self.shoudouNum.setText(f"{int(numberOfRipe)*1000}g")
             self.hbsslNum.setText(f"{dehydration_rate}%")
             self.hbrqNum.setText(f"{bakingFinishTime}")
 
