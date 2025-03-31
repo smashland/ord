@@ -17577,7 +17577,12 @@ class ApplicationWindow(
             numberOfRipe = data_json.get("numberOfRipe", "未知")
             bakingFinishTime = data_json.get("bakingFinishTime", "未知")
 
+            _log.info(f"历史详情:{data_json}--分割线--{total_number}--分割线--{total_numberOfBeans}")
+
             self.historyDetail_sheibei.setText(task_name)
+            self.pfTitle.setText('-')
+            self.sdzl.setText(f"{int(total_number) * 1000}g")
+            self.hslTxt.setText(f"{int(total_numberOfBeans) * 10}g")
 
             # 提取 jsonMessage 数据
             json_message = data_json.get("jsonMessage", {})
@@ -17601,6 +17606,8 @@ class ApplicationWindow(
             data33 = obj.get("timeindex", "未知任务")
 
             obj2 = obj.get("computed", "0")
+
+            _log.info(f"历史详情2:{data_json}--分割线--{json_message}--分割线--{obj}")
 
             # charge_idx = 0
             # if data33[0] > -1:
@@ -17660,9 +17667,9 @@ class ApplicationWindow(
                 self.fazhanshichang.setText("-")
             self.dtrTxt.setText('DTR：' + str(dtr) + '%')
 
-            self.pfTitle.setText('-')
-            self.sdzl.setText(f"{int(total_number)*1000}g")
-            self.hslTxt.setText(f"{int(total_numberOfBeans)*10}g")
+            # self.pfTitle.setText('-')
+            # self.sdzl.setText(f"{int(total_number)*1000}g")
+            # self.hslTxt.setText(f"{int(total_numberOfBeans)*10}g")
 
             self.agtronzhiNum.setText(f"#{agtron_value}")
             self.qkfkContent.setText(f"{description}")
