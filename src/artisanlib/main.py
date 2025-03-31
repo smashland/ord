@@ -13320,35 +13320,37 @@ class ApplicationWindow(
     def jieduanInfo(self, first_Value):
         """阶段信息处理函数"""
         if first_Value is None:
-            print("Error: first_Value 为空，无法执行 jieduanInfo()")
+            _log.exception("Error: first_Value 为空，无法执行 jieduanInfo()")
             return
 
         if len(first_Value) < 11:
-            print("Error: first_Value 长度不足 11，无法访问所需索引")
+            _log.exception("Error: first_Value 长度不足 11，无法访问所需索引")
             return
 
         for i in range(5, 11):
             if first_Value[i] is None or not isinstance(first_Value[i], list) or len(first_Value[i]) < 4:
-                print(f"Error: first_Value[{i}] 无效，可能为 None 或不是长度为 4 的列表")
+                _log.exception(f"Error: first_Value[{i}] 无效，可能为 None 或不是长度为 4 的列表")
                 return
 
         # 获取当前的温度值
         temp_text = self.processInfoLabel.text()
         if temp_text is None:
-            print("Error: processInfoLabel.text() 返回 None")
+            _log.exception("Error: processInfoLabel.text() 返回 None")
             return
 
         try:
             current_temp = float(temp_text)
         except ValueError:
-            print(f"Error: 无效的温度值：{temp_text}")
+            _log.exception(f"Error: 无效的温度值：{temp_text}")
             return
-
+        _log.info(f"self.qmc.tpChangeBool:{self.qmc.tpChangeBool}")
         if self.qmc.tpChangeBool:
             for i in range(5, 11):
+                _log.info(f"jieduanInfo_first_Value:{current_temp}--分割线--{first_Value[i]}--分割线--{first_Value[i-1]}--分割线--{first_Value[i - 1][0]}")
                 if i < len(first_Value) and i + 1 < len(first_Value):
                     if i == 10 and current_temp > first_Value[i - 1][0]:
                         new_phase = i - 4
+                        _log.info(f"new_phase:{new_phase}--分割线--{self.current_phase}")
                         if new_phase > self.current_phase:
                             self.current_phase = new_phase
                             self.jieduanNum.setText(str(self.current_phase))
@@ -13356,11 +13358,12 @@ class ApplicationWindow(
                             self.hlNumR.setText(str(first_Value[i][1]))
                             self.fmNumR.setText(str(first_Value[i][2]))
                             self.zsNumR.setText(str(first_Value[i][3]))
-                            print(f"阶段 {self.current_phase}")
+                            _log.info(f"阶段 {self.current_phase}")
                             self.updateSliders(first_Value[i])
                             break
                     elif current_temp >= first_Value[i][0] and current_temp < first_Value[i + 1][0]:
                         new_phase = i - 4
+                        _log.info(f"elsenew_phase:{new_phase}--分割线--{self.current_phase}")
                         if new_phase > self.current_phase:
                             self.current_phase = new_phase
                             self.jieduanNum.setText(str(self.current_phase + 1))
@@ -13368,7 +13371,7 @@ class ApplicationWindow(
                             self.hlNumR.setText(str(first_Value[i + 1][1]))
                             self.fmNumR.setText(str(first_Value[i + 1][2]))
                             self.zsNumR.setText(str(first_Value[i + 1][3]))
-                            print(f"阶段 {self.current_phase}")
+                            _log.info(f"阶段 {self.current_phase}")
                             self.updateSliders(first_Value[i + 1])
                             break
         else:
@@ -13380,6 +13383,7 @@ class ApplicationWindow(
                 self.fmNumR.setText(str(first_Value[5][2]))
                 self.zsNumR.setText(str(first_Value[5][3]))
                 print("tpChangeBool 为 False，保持在第一阶段")
+                _log.info(f"tpChangeBool 为 False，保持在第一阶段")
                 self.updateSliders(first_Value[5])
 
     def updateSliders(self, phase_data):
