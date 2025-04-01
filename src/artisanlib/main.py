@@ -2753,6 +2753,7 @@ class ApplicationWindow(
         self.jdtGJXYStep = 0
 
         self.gjxytimer = QTimer(self)
+        self.gjxytimer.setInterval(1000)
         self.gjxytimer.timeout.connect(self.gjxy_update_time)  # 定时器超时时更新时间
 
 
@@ -12884,6 +12885,11 @@ class ApplicationWindow(
         # 确保文字在停止时显示为黑色
         self.shebeiLabel.setStyleSheet("color: #000000;")
 
+    def stop_time(self):
+        self.intoTime.setHMS(0,0,0)
+        self.intoTime2.setHMS(0,0,0)
+        self.intoTime3.setHMS(0,0,0)
+
     def update_time(self):
         # 每次更新时间增加 1 秒
         self.intoTime = self.intoTime.addSecs(1)
@@ -17008,10 +17014,13 @@ class ApplicationWindow(
 
 
     def submitCCJL(self):
+
+        self.stop_time()
+        # 开启锅间协议，停止订单进度
+        self.gjxytimer.start()
         self.zhezhaoWidget.setVisible(False)
         self.ccjlWidget.setVisible(False)
         self.computedData = self.getProfile()
-
         self.yrqk.setVisible(False)
         self.jdqk.setVisible(False)
         self.gjxy.setVisible(True)
@@ -17029,7 +17038,7 @@ class ApplicationWindow(
 
         self.resetProgressBar()
 
-        self.gjxytimer.start(1000)  # 每隔 1 秒触发一次
+        self.gjxytimer.start()  # 每隔 1 秒触发一次
 
         if self.jdtGJXYTimer.isActive():
             self.jdtGJXYTimer.stop()

@@ -12599,6 +12599,10 @@ class tgraphcanvas(FigureCanvas):
         self.timex=[]
         self.temp1 = []
         self.temp2 = []
+        self.aw.stop_time()
+        self.aw.gjxytimer.stop()#关闭锅间协议
+        self.aw.ksyrtimer.stop()
+        self.aw.fourTimer.start()
         self.aw.markChargeClick()
         if len(self.aw.getTPMark) > 0:
             self.aw.jieduanInfo(self.aw.getTPMark)
@@ -13376,6 +13380,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.markDropClick()
         self.tpChangeBool = False
         self.changeBool = False
+        self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         if len(self.timex) > 1:
             removed = False
