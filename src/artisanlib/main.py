@@ -1775,8 +1775,8 @@ class CustomPlotWidget(QWidget):
         ax.axvspan(fc_time, drop_time, color=cmap(0.5), alpha=0.5, zorder=2)
 
         # 在矩形上方添加文本“发展期”
-        ax.text((fc_time + drop_time) / 2, 250, "发展期", color="#7D7A79",
-                fontsize=12, ha='center', weight='bold', va='bottom', fontproperties=self.font_prop)
+        # ax.text((fc_time + drop_time) / 2, 250, "发展期", color="#7D7A79",
+        #         fontsize=12, ha='center', weight='bold', va='bottom', fontproperties=self.font_prop)
 
         # 设置网格
         ax.grid(axis='y', color='#7D7A79', linestyle='--', linewidth=1, alpha=0.7)
@@ -17138,6 +17138,9 @@ class ApplicationWindow(
             QMessageBox.warning(self, "警告", "JSON 文件不存在")
         except Exception as e:
             QMessageBox.warning(self, "错误", f"处理订单时发生错误: {e}")
+        self.qmc.timex = []
+        self.qmc.temp1 = []
+        self.qmc.temp2 = []
 
     def historyList_Json(self):
         self.list_widget.clear()

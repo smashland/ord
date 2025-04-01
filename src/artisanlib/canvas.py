@@ -12596,6 +12596,9 @@ class tgraphcanvas(FigureCanvas):
         removed = False
         self.changeBool = True
         self.aw.diologRect.setVisible(False)
+        self.timex=[]
+        self.temp1 = []
+        self.temp2 = []
         self.aw.markChargeClick()
         if len(self.aw.getTPMark) > 0:
             self.aw.jieduanInfo(self.aw.getTPMark)
