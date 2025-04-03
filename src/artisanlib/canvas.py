@@ -12596,14 +12596,21 @@ class tgraphcanvas(FigureCanvas):
         removed = False
         self.changeBool = True
         self.aw.diologRect.setVisible(False)
-        self.timex=[]
-        self.temp1 = []
-        self.temp2 = []
+
+        self.aw.buttonSTARTSTOP.click()
+
         self.aw.stop_time()
         self.aw.gjxytimer.stop()#关闭锅间协议
+
         self.aw.ksyrtimer.stop()
         self.aw.fourTimer.start()
+
         self.aw.markChargeClick()
+        self.aw.buttonSTARTSTOP.click()
+
+        # self.aw.buttonSTARTSTOP.click()
+        # self.aw.buttonSTARTSTOP.click()
+
         if len(self.aw.getTPMark) > 0:
             self.aw.jieduanInfo(self.aw.getTPMark)
         try:
@@ -12751,6 +12758,7 @@ class tgraphcanvas(FigureCanvas):
                 if self.roastpropertiesAutoOpenFlag:
                     self.aw.openPropertiesSignal.emit()
             self.aw.onMarkMoveToNext(self.aw.buttonCHARGE)
+            self.resetButtonAction()
 
     # called via markTPSignal (queued), triggered by external device
     # does directly call markTP()
@@ -13377,7 +13385,12 @@ class tgraphcanvas(FigureCanvas):
     def markDrop(self, noaction:bool = False) -> None:
         if not self.changeBool:
             return
+        # self.markDropTimeIndex = len(self.timex)
+        # _log.info('profile saved 13383: %s', self.timex)
+        self.aw.pf = self.aw.getProfile()
+        self.aw.buttonSTARTSTOP.click()
         self.aw.markDropClick()
+        self.aw.buttonSTARTSTOP.click()
         self.tpChangeBool = False
         self.changeBool = False
         self.aw.fourTimer.stop()
@@ -13563,6 +13576,8 @@ class tgraphcanvas(FigureCanvas):
                     self.aw.onMarkMoveToNext(self.aw.buttonDROP)
                 except Exception as e: # pylint: disable=broad-except
                     _log.exception(e)
+            self.resetButtonAction()
+
 
     # if noaction is True, the button event action is not triggered
     @pyqtSlot(bool)

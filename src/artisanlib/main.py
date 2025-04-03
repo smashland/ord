@@ -17020,13 +17020,14 @@ class ApplicationWindow(
         self.gjxytimer.start()
         self.zhezhaoWidget.setVisible(False)
         self.ccjlWidget.setVisible(False)
-        self.computedData = self.getProfile()
+        self.computedData = self.pf
         self.yrqk.setVisible(False)
         self.jdqk.setVisible(False)
         self.gjxy.setVisible(True)
         self.resetPhase()
         self.status_label2.setText('已完成')
         self.statusLabel.setText("锅间协议")
+        self.agtronNum.setText("0")
         self.chukuImg.setStyleSheet(f"""
                                                                     QPushButton {{
                                                                         border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
@@ -17073,7 +17074,6 @@ class ApplicationWindow(
 
                     # 添加额外的字段到数据中
                     enriched_order = order.copy()
-                    _log.info("self.computedData['computed']:::%s",self.computedData['computed'])
                     # 获取 computed 数据并提供默认值
                     computed = self.computedData.get('computed', {})
                     totaltime = computed.get('totaltime', 0)
@@ -17118,7 +17118,7 @@ class ApplicationWindow(
                             "target_values": [30, 35, 40, 90, 80, 65],  # 示例值
                             "actual_temperature": [135, 166, 182, 195, 200, 205],  # 示例值
                             "actual_values": [35, 40, 40, 90, 50, 65],  # 示例值
-                            "alogJson": self.getProfile()
+                            "alogJson": self.computedData
                         },
                     })
 
@@ -17147,9 +17147,6 @@ class ApplicationWindow(
             QMessageBox.warning(self, "警告", "JSON 文件不存在")
         except Exception as e:
             QMessageBox.warning(self, "错误", f"处理订单时发生错误: {e}")
-        self.qmc.timex = []
-        self.qmc.temp1 = []
-        self.qmc.temp2 = []
 
     def historyList_Json(self):
         self.list_widget.clear()
