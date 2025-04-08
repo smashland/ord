@@ -85,10 +85,10 @@ from time import sleep
 import sys
 sys.dont_write_bytecode = True  #prevents __pycache__ folder written to help/
 
-# try:
-from PyQt6.QtWidgets import QApplication
-# except ImportError:
-#     from PyQt5.QtWidgets import QApplication # type: ignore # noqa: F401
+try:
+    from PyQt6.QtWidgets import QApplication
+except ImportError:
+    from PyQt5.QtWidgets import QApplication # type: ignore # noqa: F401
 from openpyxl import load_workbook
 
 def u(x):
@@ -186,7 +186,7 @@ def buildpyCode(filename_in):
     outstr += '\n' + 'try:'
     outstr += '\n' + '    from PyQt6.QtWidgets import QApplication # @Reimport @UnresolvedImport @UnusedImport # pylint: disable=import-error'
     outstr += '\n' + 'except Exception: # pylint: disable=broad-except'
-    # outstr += '\n' + '    from PyQt5.QtWidgets import QApplication # type: ignore # @Reimport @UnresolvedImport @UnusedImport'
+    outstr += '\n' + '    from PyQt5.QtWidgets import QApplication # type: ignore # @Reimport @UnresolvedImport @UnusedImport'
     outstr += '\n'
     outstr += '\ndef content() -> str:'
     outstr += nlind + 'strlist = []'
@@ -299,15 +299,15 @@ if __name__ == '__main__':
                     fname_out = currPath + '../../../src/help/' + fn + '_help.py'
                     fname_htm = currPath + '../Output_html/' + fn + '_help.html'
                     print(f'\n{filename}')
-                    # writepyFile(fname_in,fname_out)
-                    # writehtmlFile(fname_in,fname_out,fname_htm)
+                    writepyFile(fname_in,fname_out)
+                    writehtmlFile(fname_in,fname_out,fname_htm)
         else:   #only one file
             fname_in =  currPath + '../Input_files/' + sys.argv[1] + '.xlsx'
             fname_out = currPath + '../../../src/help/' + sys.argv[1] + '_help.py'
             fname_htm = currPath + '../Output_html/' + sys.argv[1] + '_help.html'
             print(f'\n{sys.argv[1]}.xslx')
-            # writepyFile(fname_in,fname_out)
-            # writehtmlFile(fname_in,fname_out,fname_htm)
+            writepyFile(fname_in,fname_out)
+            writehtmlFile(fname_in,fname_out,fname_htm)
     else:
         print("Requires a <filename> to convert or 'all'")
         sys.exit()

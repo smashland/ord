@@ -1,0 +1,191 @@
+{
+  "id": "4823154",
+  "name": "风味科学",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "43661049",
+      "name": "风味_箭头",
+      "font_class": "fengwei_jiantou",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "43643420",
+      "name": "风味_logo",
+      "font_class": "fengwei_logo",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "43634401",
+      "name": "风味_日志",
+      "font_class": "fengwei_rizhi",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "43516453",
+      "name": "风味_生豆选型 偏右",
+      "font_class": "a-fengwei_shengdouxuanxingpianyou",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "43516454",
+      "name": "风味_生豆选型 偏左",
+      "font_class": "a-fengwei_shengdouxuanxingpianzuo",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "43516330",
+      "name": "风味_生豆选型居中",
+      "font_class": "fengwei_shengdouxuanxingjuzhong",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "43291183",
+      "name": "风味_已完成",
+      "font_class": "fengwei_yiwancheng",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "43287406",
+      "name": "风味_附件",
+      "font_class": "fengwei_fujian",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "43287405",
+      "name": "风味_成品包装",
+      "font_class": "fengwei_chengpinbaozhuang",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "43282338",
+      "name": "风味_出库管理",
+      "font_class": "fengwei_chukuguanli",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "43282337",
+      "name": "风味_成品管理",
+      "font_class": "fengwei_chengpinguanli",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "43282336",
+      "name": "风味_入库检测",
+      "font_class": "fengwei_rukujiance",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "43282335",
+      "name": "风味_在库状态",
+      "font_class": "fengwei_zaikuzhuangtai",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "43281834",
+      "name": "风味_样品评估",
+      "font_class": "fengwei_yangpinpinggu",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "43281833",
+      "name": "风味_烘焙记录",
+      "font_class": "fengwei_hongbeijilu",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "43281832",
+      "name": "风味_感官测评",
+      "font_class": "fengwei_ganguanceping",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "43281837",
+      "name": "风味_生豆选型",
+      "font_class": "fengwei_shengdouxuanxing",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "43281836",
+      "name": "风味_理化数据",
+      "font_class": "fengwei_lihuashuju",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "43281835",
+      "name": "风味_配方管理",
+      "font_class": "fengwei_peifangguanli",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "43281488",
+      "name": "风味_设置",
+      "font_class": "shezhi",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "43281486",
+      "name": "风味_用户管理",
+      "font_class": "renyuanliebiao",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "43281485",
+      "name": "风味_能耗",
+      "font_class": "shandian",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "43281490",
+      "name": "风味_主页",
+      "font_class": "zhuye",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "43281491",
+      "name": "风味_设备管理",
+      "font_class": "shebeiguanli",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "43281489",
+      "name": "风味_生产看板",
+      "font_class": "siweidaotu",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "43281487",
+      "name": "风味_视频",
+      "font_class": "shexiangtou",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    }
+  ]
+}

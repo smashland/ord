@@ -13893,7 +13893,7 @@ class ApplicationWindow(
                 return
             else:
                 if self.qmc.changeBool == False:
-                    if float(self.processInfo1WD.text()) > int(self.temperatureEdit.text()):
+                    # if float(self.processInfo1WD.text()) > int(self.temperatureEdit.text()):
                         self.diologRect.setVisible(True)
 
             self.jdtGJXYStep += 0.0111  # 每次增加进度
