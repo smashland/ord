@@ -141,12 +141,4 @@ pip install python-dateutil -i https://mirrors.aliyun.com/pypi/simple
 pip install artisan-builder -i https://mirrors.aliyun.com/pypi/simple  
 pip install numpy -i https://mirrors.aliyun.com/pypi/simple          
 pip install PyQt6 -i https://mirrors.aliyun.com/pypi/simple        
-pip install PyQt5-tools -i https://mirrors.aliyun.com/pypi/simple   
-pip install opencv-python -i https://mirrors.aliyun.com/pypi/simple   
-pip install pymodbus -i https://mirrors.aliyun.com/pypi/simple 
-pip install requests -i https://mirrors.aliyun.com/pypi/simple
-pip install pyinstaller -i https://mirrors.aliyun.com/pypi/simple 
-pip install portalocker -i https://mirrors.aliyun.com/pypi/simple 
-pip install unidecode -i https://mirrors.aliyun.com/pypi/simple 
-pip install scikit-learn -i https://mirrors.aliyun.com/pypi/simple  
-pip install pandas -i https://mirrors.aliyun.com/pypi/simple  
+pip install PyQt5-tools -i https://mirrors.aliyun.com/pypi/simple         
