@@ -12597,7 +12597,7 @@ class tgraphcanvas(FigureCanvas):
         self.changeBool = True
         self.aw.diologRect.setVisible(False)
 
-        self.aw.buttonSTARTSTOP.click()
+         self.aw.buttonSTARTSTOP.click()
 
         self.aw.stop_time()
         self.aw.gjxytimer.stop()#关闭锅间协议
