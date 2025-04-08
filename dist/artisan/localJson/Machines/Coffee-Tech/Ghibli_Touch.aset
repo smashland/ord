@@ -166,8 +166,9 @@ slidervisibilities = 1, 1, 0, 1
 [OtherSettings]
 sethost = 192.168.1.27
 setjx = Coffee-Tech
-setheating = Natural Gas (NG)
-setheatingtype = 2
-setsbxl = MIIIW
-setdz = 一号房
+setheating = Propane Gas (LPG)
+setheatingtype = 1
+setsbxl = 4444
+setdz = 一楼
+setimg = G:\Vue\artisan-master\artisan\localJson\MachinesImg\back.png
 

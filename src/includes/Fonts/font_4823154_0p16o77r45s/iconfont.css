@@ -1,0 +1,120 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4823154 */
+  src: url('iconfont.woff2?t=1744007165381') format('woff2'),
+       url('iconfont.woff?t=1744007165381') format('woff'),
+       url('iconfont.ttf?t=1744007165381') format('truetype'),
+       url('iconfont.svg?t=1744007165381#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fengwei_jiantou:before {
+  content: "\e621";
+}
+
+.icon-fengwei_logo:before {
+  content: "\e620";
+}
+
+.icon-fengwei_rizhi:before {
+  content: "\e61f";
+}
+
+.icon-a-fengwei_shengdouxuanxingpianyou:before {
+  content: "\e61d";
+}
+
+.icon-a-fengwei_shengdouxuanxingpianzuo:before {
+  content: "\e61c";
+}
+
+.icon-fengwei_shengdouxuanxingjuzhong:before {
+  content: "\e61e";
+}
+
+.icon-fengwei_yiwancheng:before {
+  content: "\e61b";
+}
+
+.icon-fengwei_fujian:before {
+  content: "\e619";
+}
+
+.icon-fengwei_chengpinbaozhuang:before {
+  content: "\e61a";
+}
+
+.icon-fengwei_chukuguanli:before {
+  content: "\e615";
+}
+
+.icon-fengwei_chengpinguanli:before {
+  content: "\e616";
+}
+
+.icon-fengwei_rukujiance:before {
+  content: "\e617";
+}
+
+.icon-fengwei_zaikuzhuangtai:before {
+  content: "\e618";
+}
+
+.icon-fengwei_yangpinpinggu:before {
+  content: "\e612";
+}
+
+.icon-fengwei_hongbeijilu:before {
+  content: "\e613";
+}
+
+.icon-fengwei_ganguanceping:before {
+  content: "\e614";
+}
+
+.icon-fengwei_shengdouxuanxing:before {
+  content: "\e60f";
+}
+
+.icon-fengwei_lihuashuju:before {
+  content: "\e610";
+}
+
+.icon-fengwei_peifangguanli:before {
+  content: "\e611";
+}
+
+.icon-shezhi:before {
+  content: "\e60c";
+}
+
+.icon-renyuanliebiao:before {
+  content: "\e60d";
+}
+
+.icon-shandian:before {
+  content: "\e60e";
+}
+
+.icon-zhuye:before {
+  content: "\e608";
+}
+
+.icon-shebeiguanli:before {
+  content: "\e609";
+}
+
+.icon-siweidaotu:before {
+  content: "\e60a";
+}
+
+.icon-shexiangtou:before {
+  content: "\e60b";
+}
+

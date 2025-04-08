@@ -179,10 +179,11 @@ capacity = 2.4
 heating_type = 3
 
 [OtherSettings]
+setimg = G:\Vue\artisan-master\artisan\localJson\MachinesImg\back2.jpg
 sethost = 192.168.1.2
 setjx = Coffee-Tech
 setheating = Propane Gas (LPG)
 setheatingtype = 1
-setsbxl = enter
-setdz = 九号房
+setsbxl = 66666
+setdz = 酒楼
 
