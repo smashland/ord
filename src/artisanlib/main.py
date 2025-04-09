@@ -7839,7 +7839,7 @@ class ApplicationWindow(
         self.hfChartKey_dw.setGeometry(596*self.width_scale, 18*self.height_scale, 11*self.width_scale, 19*self.height_scale)
         self.hfChartKey_dwText = QLabel(self.hfChartKey)
         self.hfChartKey_dwText.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignLeft)
-        self.hfChartKey_dwText.setText('ROC')
+        self.hfChartKey_dwText.setText('ROR')
         self.hfChartKey_dwText.setGeometry(621*self.width_scale, 18*self.height_scale, 60*self.width_scale, 20*self.height_scale)
         self.hfChartKey_dwText.setStyleSheet("color: #292827;border:none;")
         self.hfChartKey_dwText.setFont(hfChartKeyfont)
