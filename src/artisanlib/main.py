@@ -2312,7 +2312,7 @@ class ApplicationWindow(
                                                                                                  }}
                                                                                              """)
         # self.switchEngLabel.setText("英")
-        # self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
+        self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
 
         self.sfxxLabel = QLabel(self)
         self.sfxxLabel.setGeometry(1690 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
@@ -2764,7 +2764,7 @@ class ApplicationWindow(
 
         self.hlTxt = QLabel(self.statusCardEdit)
         self.hlTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.hlTxt.setText('设置火力')
+        self.hlTxt.setText(QApplication.translate("RoastHead", '设置火力'))
         self.hlTxt.setGeometry(28 * self.width_scale, 91 * self.height_scale, 64 * self.width_scale,
                                  28 * self.height_scale)
         self.hlTxt.setStyleSheet(
@@ -2789,7 +2789,7 @@ class ApplicationWindow(
 
         self.fmTxt = QLabel(self.statusCardEdit)
         self.fmTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.fmTxt.setText('设置风门')
+        self.fmTxt.setText(QApplication.translate("RoastHead", '设置风门'))
         self.fmTxt.setGeometry(28 * self.width_scale, 123 * self.height_scale, 64 * self.width_scale,
                                28 * self.height_scale)
         self.fmTxt.setStyleSheet(
@@ -2815,7 +2815,7 @@ class ApplicationWindow(
 
         self.zsTxt = QLabel(self.statusCardEdit)
         self.zsTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.zsTxt.setText('设置转速')
+        self.zsTxt.setText(QApplication.translate("RoastHead", '设置转速'))
         self.zsTxt.setGeometry(28 * self.width_scale, 155 * self.height_scale, 64 * self.width_scale,
                                28 * self.height_scale)
         self.zsTxt.setStyleSheet(
@@ -2958,7 +2958,7 @@ class ApplicationWindow(
 
         self.temperature = QLabel(self.gjxy)
         self.temperature.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        # self.temperature.setText(self.temperatureEdit.text())
+        self.temperature.setText(self.mbwdContent.text())
         self.temperature.setGeometry(106*self.width_scale, 21*self.height_scale, 56*self.width_scale, 24*self.height_scale)
         self.temperature.setStyleSheet(
             f"color: #222222;background-color: #ffffff;border: 2px solid #F32B16;border-radius: {11*self.height_scale}px;")
@@ -2975,7 +2975,7 @@ class ApplicationWindow(
 
         self.gjxyLabel = QLabel(self.gjxy)
         self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        self.gjxyLabel.setText('| 15：00')
+        self.gjxyLabel.setText('|15：00')
         self.gjxyLabel.setGeometry(223*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
         self.gjxyLabel.setStyleSheet("color: #8A929C;")
         self.gjxyLabel.setFont(yrqkfont2)
@@ -3928,9 +3928,9 @@ class ApplicationWindow(
         self.processInfoImg.setScaledContents(True)  # Scale pixmap to fit QLabel
 
         self.processInfoLabel_wd = QLabel(self.processInfo1)
-        self.processInfoLabel_wd.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.processInfoLabel_wd.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
         self.processInfoLabel_wd.setText(QApplication.translate("RoastHead", '风温|豆温'))
-        self.processInfoLabel_wd.setGeometry(143*self.width_scale, 127*self.height_scale, 80*self.width_scale, 24*self.height_scale)
+        self.processInfoLabel_wd.setGeometry(143*self.width_scale, 127*self.height_scale, 65*self.width_scale, 24*self.height_scale)
         self.processInfoLabel_wd.setStyleSheet("color: #616265;font-weight: 400;")
         processInfofont2 = QFont(self.font_family3, 10*self.width_scale)
         self.processInfoLabel_wd.setFont(processInfofont2)
@@ -4005,7 +4005,7 @@ class ApplicationWindow(
         self.cksezLabel.setFont(ssdfont)
 
         self.processInfoLabel2 = QLabel(self.processInfo3)
-        self.processInfoLabel2.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.processInfoLabel2.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
         self.processInfoLabel2.setText(QApplication.translate("RoastHead", 'Agtron色值'))
         self.processInfoLabel2.setGeometry(124*self.width_scale, 127*self.height_scale, 80*self.width_scale, 24*self.height_scale)
         self.processInfoLabel2.setStyleSheet("color: #ffffff;font-weight: 400;")
@@ -4073,7 +4073,7 @@ class ApplicationWindow(
         self.processInfoImg.setScaledContents(True)  # Scale pixmap to fit QLabel
 
         self.processInfoLabel2 = QLabel(self.processInfo4)
-        self.processInfoLabel2.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.processInfoLabel2.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
         self.processInfoLabel2.setText(QApplication.translate("RoastHead", '排气湿度|温度'))
         self.processInfoLabel2.setGeometry(119*self.width_scale, 127*self.height_scale, 93*self.width_scale, 24*self.height_scale)
         self.processInfoLabel2.setStyleSheet("color: #616265;font-weight: 400;")
@@ -4258,7 +4258,7 @@ class ApplicationWindow(
         self.hl = QLabel(self.rightCenter)
         self.hl.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
         self.hl.setText(QApplication.translate("RoastHead", '火力'))
-        self.hl.setGeometry(38*self.width_scale, 52*self.height_scale, 35*self.width_scale, 18*self.height_scale)
+        self.hl.setGeometry(38*self.width_scale, 52*self.height_scale, 40*self.width_scale, 18*self.height_scale)
         self.hl.setStyleSheet("color: #222222;")
         hlfont = QFont(self.font_family2, 14*self.width_scale)
         self.hl.setFont(hlfont)
@@ -4320,7 +4320,7 @@ class ApplicationWindow(
         self.hl = QLabel(self.rightCenter)
         self.hl.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
         self.hl.setText(QApplication.translate("RoastHead", '风门'))
-        self.hl.setGeometry(38*self.width_scale, 136*self.height_scale, 35*self.width_scale, 18*self.height_scale)
+        self.hl.setGeometry(38*self.width_scale, 136*self.height_scale, 40*self.width_scale, 18*self.height_scale)
         self.hl.setStyleSheet("color: #222222;")
         hlfont = QFont(self.font_family2, 14*self.width_scale)
         self.hl.setFont(hlfont)
@@ -4375,7 +4375,7 @@ class ApplicationWindow(
         self.hl = QLabel(self.rightCenter)
         self.hl.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
         self.hl.setText(QApplication.translate("RoastHead", '转速'))
-        self.hl.setGeometry(38*self.width_scale, 219*self.height_scale, 35*self.width_scale, 18*self.height_scale)
+        self.hl.setGeometry(38*self.width_scale, 219*self.height_scale, 40*self.width_scale, 18*self.height_scale)
         self.hl.setStyleSheet("color: #222222;")
         hlfont = QFont(self.font_family2, 14*self.width_scale)
         self.hl.setFont(hlfont)
@@ -4516,7 +4516,7 @@ class ApplicationWindow(
         self.chartKey_szText = QLabel(self.chartKey)
         self.chartKey_szText.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.chartKey_szText.setText(QApplication.translate("RoastHead", '色值'))
-        self.chartKey_szText.setGeometry(476*self.width_scale, 9*self.height_scale, 28*self.width_scale, 18*self.height_scale)
+        self.chartKey_szText.setGeometry(476*self.width_scale, 9*self.height_scale, 48*self.width_scale, 18*self.height_scale)
         self.chartKey_szText.setStyleSheet("color: #292827;border:none;")
         chartKeyfont = QFont(self.font_family4, 10*self.width_scale)
         self.chartKey_szText.setFont(chartKeyfont)
@@ -5586,7 +5586,7 @@ class ApplicationWindow(
         self.addOrderTitle = QLabel(self.addOrderWidget)
         self.addOrderTitle.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
         self.addOrderTitle.setText(QApplication.translate("RoastHead", '添加任务'))
-        self.addOrderTitle.setGeometry(37 * self.width_scale, 32 * self.height_scale, 85 * self.width_scale,
+        self.addOrderTitle.setGeometry(37 * self.width_scale, 32 * self.height_scale, 115 * self.width_scale,
                                        22 * self.height_scale)
         self.addOrderTitle.setStyleSheet(
             "color: #333333;background-color:transparent; border: none"
@@ -5843,7 +5843,7 @@ class ApplicationWindow(
 
         self.finishTxt = QLabel(self.addOrderWidget)
         self.finishTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.finishTxt.setText('截止时间')
+        self.finishTxt.setText(QApplication.translate("RoastHead", '截止时间'))
         self.finishTxt.setGeometry(314 * self.width_scale, 130 * self.height_scale, 64 * self.width_scale,
                                    32 * self.height_scale)
         self.finishTxt.setStyleSheet(
@@ -5890,7 +5890,7 @@ class ApplicationWindow(
         self.finishTxt = QLabel(self.addOrderWidget)
         self.finishTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
         self.finishTxt.setText(QApplication.translate("RoastHead", '生豆设置'))
-        self.finishTxt.setGeometry(38 * self.width_scale, 226 * self.height_scale, 64 * self.width_scale,
+        self.finishTxt.setGeometry(38 * self.width_scale, 226 * self.height_scale, 124 * self.width_scale,
                                    32 * self.height_scale)
         self.finishTxt.setStyleSheet(
             "color: #333333;background-color:transparent; border: none"
@@ -5915,7 +5915,7 @@ class ApplicationWindow(
         self.shengdouTitle.setStyleSheet(
             f"color: #333333;background-color:transparent; border:none; border-radius:{10 * self.width_scale}px"
         )
-        self.shengdouTitle.setText("生豆品种")
+        self.shengdouTitle.setText(QApplication.translate("RoastHead", "生豆品种"))
         self.shengdouTitle.setFont(shengdouTitlefont)
 
         self.shengdouTitle = QLabel(self.shengdouBack)
@@ -5925,7 +5925,7 @@ class ApplicationWindow(
         self.shengdouTitle.setStyleSheet(
             f"color: #333333;background-color:transparent; border:none; border-radius:{10 * self.width_scale}px"
         )
-        self.shengdouTitle.setText("生豆重量(KG)")
+        self.shengdouTitle.setText(QApplication.translate("RoastHead", "生豆重量(KG)"))
         self.shengdouTitle.setFont(shengdouTitlefont)
 
         self.shengdouTitle = QLabel(self.shengdouBack)
@@ -5935,7 +5935,7 @@ class ApplicationWindow(
         self.shengdouTitle.setStyleSheet(
             f"color: #333333;background-color:transparent; border:none; border-radius:{10 * self.width_scale}px"
         )
-        self.shengdouTitle.setText("含水量(%)")
+        self.shengdouTitle.setText(QApplication.translate("RoastHead", "含水量(%)"))
         self.shengdouTitle.setFont(shengdouTitlefont)
 
         # self.shuruBack1 = QLabel(self.addOrderWidget)
@@ -5990,7 +5990,7 @@ class ApplicationWindow(
         self.jdszTxt = QLabel(self.addOrderWidget)
         self.jdszTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
         self.jdszTxt.setText(QApplication.translate("RoastHead", '阶段设置'))
-        self.jdszTxt.setGeometry(38 * self.width_scale, 425 * self.height_scale, 64 * self.width_scale,
+        self.jdszTxt.setGeometry(38 * self.width_scale, 425 * self.height_scale, 124 * self.width_scale,
                                    32 * self.height_scale)
         self.jdszTxt.setStyleSheet(
             "color: #333333;background-color:transparent; border: none"
@@ -6741,8 +6741,8 @@ class ApplicationWindow(
 
         self.tjsbTitle = QLabel(self.addMonitorWidget)
         self.tjsbTitle.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.tjsbTitle.setText('添加设备')
-        self.tjsbTitle.setGeometry(30 * self.width_scale, 30 * self.height_scale, 113 * self.width_scale,
+        self.tjsbTitle.setText(QApplication.translate("RoastHead", '添加设备'))
+        self.tjsbTitle.setGeometry(30 * self.width_scale, 30 * self.height_scale, 153 * self.width_scale,
                                    24 * self.height_scale)
         self.tjsbTitle.setStyleSheet(
             "color: #333333;background-color:transparent; border: none"
@@ -6753,7 +6753,7 @@ class ApplicationWindow(
 
         self.sxtTxt = QLabel(self.addMonitorWidget)
         self.sxtTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.sxtTxt.setText('摄像头名称')
+        self.sxtTxt.setText(QApplication.translate("RoastHead", '摄像头名称'))
         self.sxtTxt.setGeometry(39 * self.width_scale, 81 * self.height_scale, 114 * self.width_scale,
                                  19 * self.height_scale)
         self.sxtTxt.setStyleSheet(
@@ -6779,7 +6779,7 @@ class ApplicationWindow(
 
         self.sxtTxt = QLabel(self.addMonitorWidget)
         self.sxtTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.sxtTxt.setText('视频地址')
+        self.sxtTxt.setText(QApplication.translate("RoastHead", '视频地址'))
         self.sxtTxt.setGeometry(195 * self.width_scale, 81 * self.height_scale, 114 * self.width_scale,
                                 19 * self.height_scale)
         self.sxtTxt.setStyleSheet(
@@ -6805,7 +6805,7 @@ class ApplicationWindow(
 
         self.sxtTxt = QLabel(self.addMonitorWidget)
         self.sxtTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.sxtTxt.setText('使用区域')
+        self.sxtTxt.setText(QApplication.translate("RoastHead", '使用区域'))
         self.sxtTxt.setGeometry(39 * self.width_scale, 160 * self.height_scale, 114 * self.width_scale,
                                 19 * self.height_scale)
         self.sxtTxt.setStyleSheet(
@@ -6831,7 +6831,7 @@ class ApplicationWindow(
 
         self.sxtTxt = QLabel(self.addMonitorWidget)
         self.sxtTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
-        self.sxtTxt.setText('使用位置')
+        self.sxtTxt.setText(QApplication.translate("RoastHead", '使用位置'))
         self.sxtTxt.setGeometry(195 * self.width_scale, 160 * self.height_scale, 114 * self.width_scale,
                                 19 * self.height_scale)
         self.sxtTxt.setStyleSheet(
@@ -6943,12 +6943,12 @@ class ApplicationWindow(
 
         self.deviceName = QLabel(self.deviceDetail)
         self.deviceName.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.deviceName.setGeometry(409 * self.width_scale, 263 * self.height_scale, 100 * self.width_scale,
+        self.deviceName.setGeometry(409 * self.width_scale, 263 * self.height_scale, 200 * self.width_scale,
                                     32 * self.height_scale)
         self.deviceName.setStyleSheet(
             f"QLabel{{background-color: transparent; border-radius: {16*self.height_scale}px; border: none;}}"
         )
-        self.deviceName.setText("名称：")
+        self.deviceName.setText(QApplication.translate("RoastHead", "名称："))
         deviceNameFont = QFont(self.font_family4, 14 * self.width_scale)
         self.deviceName.setFont(deviceNameFont)
 
@@ -6999,12 +6999,12 @@ class ApplicationWindow(
 
         self.deviceModel = QLabel(self.deviceDetail)
         self.deviceModel.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.deviceModel.setGeometry(820 * self.width_scale, 264 * self.height_scale, 100 * self.width_scale,
+        self.deviceModel.setGeometry(820 * self.width_scale, 264 * self.height_scale, 200 * self.width_scale,
                                      32 * self.height_scale)
         self.deviceModel.setStyleSheet(
             f"QLabel{{background-color: transparent; border-radius: {16*self.height_scale}px; border: none;}}"
         )
-        self.deviceModel.setText("机型：")
+        self.deviceModel.setText(QApplication.translate("RoastHead", "机型："))
         self.deviceModel.setFont(deviceNameFont)
 
         self.deviceModelEdit = QComboBox(self.deviceDetail)
@@ -7051,12 +7051,12 @@ class ApplicationWindow(
 
         self.deviceXLH = QLabel(self.deviceDetail)
         self.deviceXLH.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.deviceXLH.setGeometry(409 * self.width_scale, 389 * self.height_scale, 150 * self.width_scale,
+        self.deviceXLH.setGeometry(409 * self.width_scale, 389 * self.height_scale, 200 * self.width_scale,
                                    32 * self.height_scale)
         self.deviceXLH.setStyleSheet(
             f"QLabel{{background-color: transparent; border-radius: {16*self.height_scale}px; border: none;}}"
         )
-        self.deviceXLH.setText("设备序列号：")
+        self.deviceXLH.setText(QApplication.translate("RoastHead", "设备序列号："))
         self.deviceXLH.setFont(deviceNameFont)
 
         self.deviceXLHEdit = QLineEdit(self.deviceDetail)
@@ -7077,12 +7077,12 @@ class ApplicationWindow(
 
         self.deviceAddress = QLabel(self.deviceDetail)
         self.deviceAddress.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.deviceAddress.setGeometry(820 * self.width_scale, 389 * self.height_scale, 150 * self.width_scale,
+        self.deviceAddress.setGeometry(820 * self.width_scale, 389 * self.height_scale, 200 * self.width_scale,
                                        32 * self.height_scale)
         self.deviceAddress.setStyleSheet(
             f"QLabel{{background-color: transparent; border-radius: {16*self.height_scale}px; border: none;}}"
         )
-        self.deviceAddress.setText("设备IP：")
+        self.deviceAddress.setText(QApplication.translate("RoastHead", "设备IP："))
         self.deviceAddress.setFont(deviceNameFont)
 
         self.deviceAddressEdit = QLineEdit(self.deviceDetail)
@@ -7129,12 +7129,12 @@ class ApplicationWindow(
 
         self.devicejrfs = QLabel(self.deviceDetail)
         self.devicejrfs.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.devicejrfs.setGeometry(409 * self.width_scale, 515 * self.height_scale, 150 * self.width_scale,
+        self.devicejrfs.setGeometry(409 * self.width_scale, 515 * self.height_scale, 200 * self.width_scale,
                                     32 * self.height_scale)
         self.devicejrfs.setStyleSheet(
             f"QLabel{{background-color: transparent; border-radius: {16*self.height_scale}px; border: none;}}"
         )
-        self.devicejrfs.setText("加热方式：")
+        self.devicejrfs.setText(QApplication.translate("RoastHead", "加热方式："))
         self.devicejrfs.setFont(deviceNameFont)
 
         # self.deviceHeating = QLineEdit(self.deviceDetail)
@@ -7165,12 +7165,12 @@ class ApplicationWindow(
 
         self.deviceDZ = QLabel(self.deviceDetail)
         self.deviceDZ.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.deviceDZ.setGeometry(820 * self.width_scale, 515 * self.height_scale, 150 * self.width_scale,
+        self.deviceDZ.setGeometry(820 * self.width_scale, 515 * self.height_scale, 200 * self.width_scale,
                                   32 * self.height_scale)
         self.deviceDZ.setStyleSheet(
             f"QLabel{{background-color: transparent; border-radius: {16 * self.height_scale}px; border: none;}}"
         )
-        self.deviceDZ.setText("设备地址：")
+        self.deviceDZ.setText(QApplication.translate("RoastHead", "设备地址："))
         self.deviceDZ.setFont(deviceNameFont)
 
         self.deviceDZEdit = QLineEdit(self.deviceDetail)
@@ -7900,8 +7900,8 @@ class ApplicationWindow(
         self.hfChartKey_dw.setGeometry(596*self.width_scale, 18*self.height_scale, 11*self.width_scale, 19*self.height_scale)
         self.hfChartKey_dwText = QLabel(self.hfChartKey)
         self.hfChartKey_dwText.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignLeft)
-        self.hfChartKey_dwText.setText('ROC')
-        self.hfChartKey_dwText.setGeometry(621*self.width_scale, 18*self.height_scale, 60*self.width_scale, 20*self.height_scale)
+        self.hfChartKey_dwText.setText('ROR')
+        self.hfChartKey_dwText.setGeometry(621*self.width_scale, 18*self.height_scale, 70*self.width_scale, 20*self.height_scale)
         self.hfChartKey_dwText.setStyleSheet("color: #292827;border:none;")
         self.hfChartKey_dwText.setFont(hfChartKeyfont)
 
@@ -7911,7 +7911,7 @@ class ApplicationWindow(
         self.hfChartKey_dwText = QLabel(self.hfChartKey)
         self.hfChartKey_dwText.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignLeft)
         self.hfChartKey_dwText.setText(QApplication.translate("RoastHead", '色值'))
-        self.hfChartKey_dwText.setGeometry(791*self.width_scale, 18*self.height_scale, 60*self.width_scale, 20*self.height_scale)
+        self.hfChartKey_dwText.setGeometry(791*self.width_scale, 18*self.height_scale, 70*self.width_scale, 20*self.height_scale)
         self.hfChartKey_dwText.setStyleSheet("color: #292827;border:none;")
         self.hfChartKey_dwText.setFont(hfChartKeyfont)
 
@@ -8922,14 +8922,14 @@ class ApplicationWindow(
 
         self.kstTxt = QLabel(self.historyAnalyse)
         self.kstTxt.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        self.kstTxt.setText('可视图')
+        self.kstTxt.setText(QApplication.translate("RoastHead", '可视图'))
         self.kstTxt.setGeometry(60*self.width_scale, 868*self.height_scale, 240*self.width_scale, 30*self.height_scale)
         self.kstTxt.setStyleSheet("background-color: transparent; border:none;color: #222222;")
         self.kstTxt.setFont(hbscfont)
 
         self.kstTxt = QLabel(self.historyAnalyse)
         self.kstTxt.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        self.kstTxt.setText('AI值')
+        self.kstTxt.setText(QApplication.translate("RoastHead", 'AI值'))
         self.kstTxt.setGeometry(58*self.width_scale, 930*self.height_scale, 90*self.width_scale, 66*self.height_scale)
         self.kstTxt.setStyleSheet("background-color: transparent; border:none;color: #2187F9;")
         self.kstTxt.setFont(hbscfont)
@@ -9135,8 +9135,8 @@ class ApplicationWindow(
 
         self.tsqText1 = QLabel(self.historyAnalyse)
         self.tsqText1.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        self.tsqText1.setText('脱水期')
-        self.tsqText1.setGeometry(439*self.width_scale, 1369*self.height_scale, 60*self.width_scale, 24*self.height_scale)
+        self.tsqText1.setText(QApplication.translate("RoastHead", '脱水期'))
+        self.tsqText1.setGeometry(439*self.width_scale, 1369*self.height_scale, 120*self.width_scale, 24*self.height_scale)
         self.tsqText1.setStyleSheet("background-color: transparent; border:none;color: #222222;")
         tsqText1font = QFont(self.font_family4, 14*self.width_scale)
         self.tsqText1.setFont(tsqText1font)
@@ -9148,7 +9148,7 @@ class ApplicationWindow(
         self.tsqText2 = QLabel(self.historyAnalyse)
         self.tsqText2.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
         self.tsqText2.setText(QApplication.translate("RoastHead", '转黄点'))
-        self.tsqText2.setGeometry(757*self.width_scale, 1369*self.height_scale, 60*self.width_scale, 24*self.height_scale)
+        self.tsqText2.setGeometry(757*self.width_scale, 1369*self.height_scale, 120*self.width_scale, 24*self.height_scale)
         self.tsqText2.setStyleSheet("background-color: transparent; border:none;color: #222222;")
         tsqText2font = QFont(self.font_family4, 14*self.width_scale)
         self.tsqText2.setFont(tsqText2font)
@@ -9159,8 +9159,8 @@ class ApplicationWindow(
 
         self.tsqText3 = QLabel(self.historyAnalyse)
         self.tsqText3.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        self.tsqText3.setText('发展期')
-        self.tsqText3.setGeometry(1074*self.width_scale, 1369*self.height_scale, 60*self.width_scale, 24*self.height_scale)
+        self.tsqText3.setText(QApplication.translate("RoastHead", '发展期'))
+        self.tsqText3.setGeometry(1074*self.width_scale, 1369*self.height_scale, 120*self.width_scale, 24*self.height_scale)
         self.tsqText3.setStyleSheet("background-color: transparent; border:none;color: #222222;")
         tsqText2font = QFont(self.font_family4, 14*self.width_scale)
         self.tsqText3.setFont(tsqText2font)
@@ -9226,7 +9226,7 @@ class ApplicationWindow(
         self.historyOrder_hbrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbrq1.setGeometry(57*self.width_scale, 142*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbrq1.setText('烘焙日期:')
+        self.historyOrder_hbrq1.setText(QApplication.translate("RoastHead", '烘焙日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbrq1.setFont(bcrqfont)
 
@@ -9243,7 +9243,7 @@ class ApplicationWindow(
         self.historyOrder_hbssl1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbssl1.setGeometry(57*self.width_scale, 190*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbssl1.setText('烘焙损失率:')
+        self.historyOrder_hbssl1.setText(QApplication.translate("RoastHead", '烘焙损失率：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbssl1.setFont(bcrqfont)
 
@@ -9260,7 +9260,7 @@ class ApplicationWindow(
         self.historyOrder_hbpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbpf1.setGeometry(57*self.width_scale, 238*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbpf1.setText('烘焙评分：')
+        self.historyOrder_hbpf1.setText(QApplication.translate("RoastHead", '烘焙评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbpf1.setFont(bcrqfont)
 
@@ -9294,7 +9294,7 @@ class ApplicationWindow(
         self.historyOrder_bcpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcpf1.setGeometry(57*self.width_scale, 334*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcpf1.setText('杯测评分：')
+        self.historyOrder_bcpf1.setText(QApplication.translate("RoastHead", '杯测评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcpf1.setFont(bcrqfont)
 
@@ -9311,7 +9311,7 @@ class ApplicationWindow(
         self.historyOrder_bcrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcrq1.setGeometry(57*self.width_scale, 385*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcrq1.setText('杯测日期：')
+        self.historyOrder_bcrq1.setText(QApplication.translate("RoastHead", '杯测日期：'))
         bcrqfont = QFont(self.font_family4, 18)
         self.historyOrder_bcrq1.setFont(bcrqfont)
 
@@ -9386,7 +9386,7 @@ class ApplicationWindow(
         self.historyOrder_hbrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbrq1.setGeometry(57*self.width_scale, 142*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbrq1.setText('烘焙日期:')
+        self.historyOrder_hbrq1.setText(QApplication.translate("RoastHead", '烘焙日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbrq1.setFont(bcrqfont)
 
@@ -9403,7 +9403,7 @@ class ApplicationWindow(
         self.historyOrder_hbssl1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbssl1.setGeometry(57*self.width_scale, 190*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbssl1.setText('烘焙损失率:')
+        self.historyOrder_hbssl1.setText(QApplication.translate("RoastHead", '烘焙损失率：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbssl1.setFont(bcrqfont)
 
@@ -9420,7 +9420,7 @@ class ApplicationWindow(
         self.historyOrder_hbpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbpf1.setGeometry(57*self.width_scale, 238*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbpf1.setText('烘焙评分：')
+        self.historyOrder_hbpf1.setText(QApplication.translate("RoastHead", '烘焙评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbpf1.setFont(bcrqfont)
 
@@ -9454,7 +9454,7 @@ class ApplicationWindow(
         self.historyOrder_bcpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcpf1.setGeometry(57*self.width_scale, 334*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcpf1.setText('杯测评分：')
+        self.historyOrder_bcpf1.setText(QApplication.translate("RoastHead", '杯测评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcpf1.setFont(bcrqfont)
 
@@ -9471,7 +9471,7 @@ class ApplicationWindow(
         self.historyOrder_bcrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcrq1.setGeometry(57*self.width_scale, 385*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcrq1.setText('杯测日期：')
+        self.historyOrder_bcrq1.setText(QApplication.translate("RoastHead", '杯测日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcrq1.setFont(bcrqfont)
 
@@ -9541,7 +9541,7 @@ class ApplicationWindow(
         self.historyOrder_hbrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbrq1.setGeometry(57*self.width_scale, 142*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbrq1.setText('烘焙日期:')
+        self.historyOrder_hbrq1.setText(QApplication.translate("RoastHead", '烘焙日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbrq1.setFont(bcrqfont)
 
@@ -9558,7 +9558,7 @@ class ApplicationWindow(
         self.historyOrder_hbssl1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbssl1.setGeometry(57*self.width_scale, 190*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbssl1.setText('烘焙损失率:')
+        self.historyOrder_hbssl1.setText(QApplication.translate("RoastHead", '烘焙损失率：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbssl1.setFont(bcrqfont)
 
@@ -9575,7 +9575,7 @@ class ApplicationWindow(
         self.historyOrder_hbpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbpf1.setGeometry(57*self.width_scale, 238*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbpf1.setText('烘焙评分：')
+        self.historyOrder_hbpf1.setText(QApplication.translate("RoastHead", '烘焙评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbpf1.setFont(bcrqfont)
 
@@ -9609,7 +9609,7 @@ class ApplicationWindow(
         self.historyOrder_bcpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcpf1.setGeometry(57*self.width_scale, 334*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcpf1.setText('杯测评分：')
+        self.historyOrder_bcpf1.setText(QApplication.translate("RoastHead", '杯测评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcpf1.setFont(bcrqfont)
 
@@ -9626,7 +9626,7 @@ class ApplicationWindow(
         self.historyOrder_bcrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcrq1.setGeometry(57*self.width_scale, 385*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcrq1.setText('杯测日期：')
+        self.historyOrder_bcrq1.setText(QApplication.translate("RoastHead", '杯测日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcrq1.setFont(bcrqfont)
 
@@ -9696,7 +9696,7 @@ class ApplicationWindow(
         self.historyOrder_hbrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbrq1.setGeometry(57*self.width_scale, 142*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbrq1.setText('烘焙日期:')
+        self.historyOrder_hbrq1.setText(QApplication.translate("RoastHead", '烘焙日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbrq1.setFont(bcrqfont)
 
@@ -9713,7 +9713,7 @@ class ApplicationWindow(
         self.historyOrder_hbssl1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbssl1.setGeometry(57*self.width_scale, 190*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbssl1.setText('烘焙损失率:')
+        self.historyOrder_hbssl1.setText(QApplication.translate("RoastHead", '烘焙损失率：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbssl1.setFont(bcrqfont)
 
@@ -9730,7 +9730,7 @@ class ApplicationWindow(
         self.historyOrder_hbpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_hbpf1.setGeometry(57*self.width_scale, 238*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_hbpf1.setText('烘焙评分：')
+        self.historyOrder_hbpf1.setText(QApplication.translate("RoastHead", '烘焙评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_hbpf1.setFont(bcrqfont)
 
@@ -9764,7 +9764,7 @@ class ApplicationWindow(
         self.historyOrder_bcpf1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcpf1.setGeometry(57*self.width_scale, 334*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcpf1.setText('杯测评分：')
+        self.historyOrder_bcpf1.setText(QApplication.translate("RoastHead", '杯测评分：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcpf1.setFont(bcrqfont)
 
@@ -9781,7 +9781,7 @@ class ApplicationWindow(
         self.historyOrder_bcrq1.setStyleSheet(
             'background-color: transparent; border: none; color:#A8A8A8;')
         self.historyOrder_bcrq1.setGeometry(57*self.width_scale, 385*self.height_scale, 610*self.width_scale, 75*self.height_scale)
-        self.historyOrder_bcrq1.setText('杯测日期：')
+        self.historyOrder_bcrq1.setText(QApplication.translate("RoastHead", '杯测日期：'))
         bcrqfont = QFont(self.font_family4, 18*self.width_scale)
         self.historyOrder_bcrq1.setFont(bcrqfont)
 
@@ -15688,7 +15688,7 @@ class ApplicationWindow(
         self.monitorPixmap = QIcon(self.normalized_path + '/includes/Icons/general/monitorHover.png')
         self.monitorLabel.setIcon(self.monitorPixmap)
         self.shebeiLabel2.setVisible(True)
-        self.shebeiLabel2.setText("监控情况")
+        self.shebeiLabel2.setText(QApplication.translate("RoastHead", "监控情况"))
         self.todayTime.setVisible(False)
         self.shuxian.setGeometry(2*self.width_scale, 562*self.height_scale, 3*self.width_scale, 60*self.height_scale)
         self.jiankongTabel.setVisible(True)
@@ -15736,7 +15736,7 @@ class ApplicationWindow(
         self.setLabelPixmap = QIcon(self.normalized_path + '/includes/Icons/general/setHover.png')
         self.setLabel.setIcon(self.setLabelPixmap)
         self.shebeiLabel2.setVisible(True)
-        self.shebeiLabel2.setText("设备管理")
+        self.shebeiLabel2.setText(QApplication.translate("RoastHead", "设备管理"))
         self.todayTime.setVisible(True)
         self.deviceScroll.setVisible(True)
         self.shuxian.setGeometry(2*self.width_scale, 674*self.height_scale, 3*self.width_scale, 60*self.height_scale)
@@ -15858,13 +15858,13 @@ class ApplicationWindow(
             com_devices = {0, 9, 19, 53, 101, 115, 126}
 
             if deviceID2_int in ip_devices:
-                self.deviceAddress.setText("设备IP：")
+                self.deviceAddress.setText(QApplication.translate("RoastHead", "设备IP："))
                 self.deviceAddressEdit.setText(host if host else "未知IP")
                 self.deviceAddressEdit.setVisible(True)
                 self.deviceAddressCom.setVisible(False)
 
             elif deviceID2_int in com_devices:
-                self.deviceAddress.setText("设备串口：")
+                self.deviceAddress.setText(QApplication.translate("RoastHead", "设备串口："))
                 self.deviceAddressCom.setCurrentText(com if com else "未知串口")
                 self.deviceAddressCom.setVisible(True)
                 self.deviceAddressEdit.setVisible(False)
@@ -15979,13 +15979,13 @@ class ApplicationWindow(
         com_devices = {0, 9, 19, 53, 101, 115, 126}
 
         if int(idNum) in ip_devices:
-            self.deviceAddress.setText("设备IP：")
+            self.deviceAddress.setText(QApplication.translate("RoastHead", "设备IP："))
             self.deviceAddressEdit.setText(set_host)
             self.deviceAddressEdit.setVisible(True)
             self.deviceAddressCom.setVisible(False)
 
         elif int(idNum) in com_devices:
-            self.deviceAddress.setText("设备串口：")
+            self.deviceAddress.setText(QApplication.translate("RoastHead", "设备串口："))
             self.deviceAddressCom.setCurrentText(comText)
             self.deviceAddressCom.setVisible(True)
             self.deviceAddressEdit.setVisible(False)
@@ -16391,7 +16391,7 @@ class ApplicationWindow(
             self.yxjTitle = QLabel(backlabel)
             self.yxjTitle.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft)
             self.yxjTitle.setText(
-                f"<span style='color: #B2B1B1;'>机型: </span>{setJX}")
+                f"<span style='color: #B2B1B1;'>{QApplication.translate('RoastHead', '机型')}: </span>{setJX}")
             self.yxjTitle.setGeometry(32 * self.width_scale, 239 * self.height_scale,
                                       260 * self.width_scale, 34 * self.height_scale)
             self.yxjTitle.setStyleSheet(
@@ -16404,7 +16404,7 @@ class ApplicationWindow(
             self.yxjTitle = QLabel(backlabel)
             self.yxjTitle.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft)
             self.yxjTitle.setText(
-                f"<span style='color: #B2B1B1;'>设备地址: </span>{set_host}")
+                f"<span style='color: #B2B1B1;'>{QApplication.translate('RoastHead', '设备地址')}: </span>{set_host}")
             self.yxjTitle.setGeometry(32 * self.width_scale, 276 * self.height_scale,
                                       260 * self.width_scale, 34 * self.height_scale)
             self.yxjTitle.setStyleSheet(
@@ -16952,27 +16952,19 @@ class ApplicationWindow(
                     # 重新构建每个订单项的控件
                     ordersRect2 = QLabel()
                     ordersRect2.setStyleSheet(
-                        f'border-radius: {25 * self.height_scale}px; background-color: #f5f8fb; border: 1px solid #e1f0fe;'
+                        f'border-radius: {25 * self.height_scale}px; background-color: #E7F0FB; border: 1px solid #6caaf9;'
                     )
                     ordersRect2.setFixedSize(288 * self.width_scale, 185 * self.height_scale)
 
-                    # 创建任务名称标签
+                    # 创建标签和设置内容
                     task_name_label = QLabel(ordersRect2)
                     task_name_label.setStyleSheet("color: #222222;border:none;background-color:transparent")
                     task_name_label.setGeometry(26 * self.width_scale, 26 * self.height_scale,
-                                                183 * self.width_scale, 24 * self.height_scale)
-                    font = QFont(self.font_family3, 12 * self.width_scale)
+                                                183 * self.width_scale, 28 * self.height_scale)
+                    font = QFont(self.font_family3, 14 * self.width_scale)
+                    # font.setBold(True)
                     task_name_label.setFont(font)
                     task_name_label.setText(order['taskName'])
-
-                    # 创建任务订单文本标签
-                    self.taskTxt_label = QLabel(ordersRect2)
-                    self.taskTxt_label.setStyleSheet("color: #222222;border:none;")
-                    self.taskTxt_label.setGeometry(26 * self.width_scale, 68 * self.height_scale,
-                                              73 * self.width_scale, 24 * self.height_scale)
-                    font2 = QFont(self.font_family4, 12 * self.width_scale)
-                    self.taskTxt_label.setFont(font2)
-                    self.taskTxt_label.setText(QApplication.translate("RoastHead", "任务订单:"))
 
                     taskMoreSet = QPushButton(ordersRect2)
                     taskMoreSet.setGeometry(260 * self.width_scale, 25 * self.height_scale, 9 * self.width_scale,
@@ -16986,13 +16978,19 @@ class ApplicationWindow(
                     # taskMoreSet.clicked.connect(lambda checked, order=order: self.delectTaskClicked(order)) # taskMoreSetClicked
                     taskMoreSet.clicked.connect(lambda checked, order=order: self.taskMoreSetClicked(order))
 
-                    # 创建批次号标签
+                    self.taskTxt_label = QLabel(ordersRect2)
+                    self.taskTxt_label.setStyleSheet("color: #222222;border:none;")
+                    self.taskTxt_label.setGeometry(26 * self.width_scale, 68 * self.height_scale,
+                                                   73 * self.width_scale, 24 * self.height_scale)
+                    font2 = QFont(self.font_family4, 12 * self.width_scale)
+                    self.taskTxt_label.setFont(font2)
+                    self.taskTxt_label.setText(QApplication.translate("RoastHead", "任务订单:"))
+
                     self.task_no_label = ScrollingLabel(f"{order['bakingBatch']}", ordersRect2)
                     self.task_no_label.setGeometry(99 * self.width_scale, 68 * self.height_scale,
                                                    170 * self.width_scale, 24 * self.height_scale)
                     self.task_no_label.setFont(font2)
 
-                    # 创建截止日期标签
                     self.deadline_label = QLabel(ordersRect2)
                     self.deadline_label.setStyleSheet("color: #222222;border:none;")
                     self.deadline_label.setGeometry(26 * self.width_scale, 103 * self.height_scale,
@@ -17001,7 +16999,6 @@ class ApplicationWindow(
                     template = QApplication.translate("RoastHead", "截止日期: {}")
                     self.deadline_label.setText(template.format(order['finishTime']))
 
-                    # 创建订单编号标签
                     self.order_id_label = QLabel(ordersRect2)
                     self.order_id_label.setStyleSheet("color: #222222;border:none;")
                     self.order_id_label.setGeometry(26 * self.width_scale, 138 * self.height_scale,
@@ -17009,6 +17006,7 @@ class ApplicationWindow(
                     self.order_id_label.setFont(font2)
                     numbering = QApplication.translate("RoastHead", "订单编号: {}")
                     self.order_id_label.setText(numbering.format(order['id']))
+
 
                     # 添加间隔控件
                     spacer_widget = QWidget()
@@ -17175,21 +17173,21 @@ class ApplicationWindow(
 
                         # 将数据追加到 hbList
                         self.hbList.append([
-                            order.get('id'),
-                            order.get('taskName'),
-                            order.get('bakingBatch'),
-                            order.get('finishTime'),
-                            order.get('taskId'),
-                            stage1,
-                            stage2,
-                            stage3,
-                            stage4,
-                            stage5,
-                            stage6,
-                            order.get('beanTypes'),
-                            order.get('formulationName'),
-                            order.get('targetAgtron'),
-                            order.get('fakeValue'),
+                            order.get('id'),  # id
+                            order.get('taskName'), # 任务名称
+                            order.get('bakingBatch'),  # 任务订单编号
+                            order.get('finishTime'),  # 结束时间
+                            order.get('taskId'),  # 任务编号
+                            stage1, #阶段一
+                            stage2, #阶段二
+                            stage3, #阶段三
+                            stage4, #阶段四
+                            stage5, #阶段五
+                            stage6, #阶段六
+                            order.get('beanTypes'),  # 生豆信息
+                            order.get('formulationName'),  # 配方名称
+                            order.get('targetAgtron'),  # 目标色值
+                            order.get('fakeValue'),  # 随机色值
                         ])
 
         except FileNotFoundError:
