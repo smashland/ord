@@ -30,6 +30,7 @@ from artisanlib import __build__
 from artisanlib import __release_sponsor_name__
 import gettext
 import tkinter as tk
+from struct import unpack
 ## Profiling: use @profile annotations
 # import cProfile
 # import io
@@ -1673,14 +1674,15 @@ class CustomPlotWidget(QWidget):
         self.font_prop = font_manager.FontProperties(fname=font_path)
 
     
-    def refresh_chart(self, time_data, data1, data2, data3, obj2):
+    def refresh_chart(self, time_data, data1, data2, data3, data4, obj2):
         """更新图表内容，并在 data1 线上标注 obj2 提供的时间点"""
 
         # 确保数据正确传入
         print(f"time_data: {time_data}")
         print(f"data1: {data1}")
         print(f"data2: {data2}")
-        # print(f"data3: {data3}")
+        print(f"data3: {data3}")
+        print(f"data3: {data4}")
         print(f"obj2: {obj2}")
 
         self.figure.clf()
@@ -1699,31 +1701,37 @@ class CustomPlotWidget(QWidget):
         # 画三条线
         ax.plot(time_data, data1, label="Data1", color="#D18F65")  # 橙棕色
         ax.plot(time_data, data2, label="Data2", color="#AC3230")  # 深红色
-        # ax.plot(time_data, data3, label="Data3", color="#7864AA")  # 紫色
+        
+        if data3 != "未知任务":
+            ax.plot(time_data, data3, label="Data3", color="#7864AA")  # 紫色
+        if data4 != "未知任务" and len(data4)>0:
+            ax.plot(time_data, data4, label="Data4", color="#6BAE76")  # ROR
+        # if len(data4) > 0:
+        #     ax.plot(time_data, data5, label="Data5", color="#D0B53F")  # 紫色
 
         # **标注 obj2 提供的 Time 和 BT 值**
-        time_keys = ["CHARGE_time", "TP_time", "DRY_time", "FCs_time", "DROP_time"]
-        bt_keys = ["CHARGE_BT", "TP_BT", "DRY_BT", "FCs_BT", "DROP_BT"]
-        labels = ["Charge", "TP", "Dry", "FCs", "Drop"]  # 标注点名称
-
-        for i in range(len(time_keys)):
-            time_key, bt_key = time_keys[i], bt_keys[i]
-            if time_key in obj2 and bt_key in obj2:
-                try:
-                    time_val = float(obj2[time_key])  # 获取时间值
-                    bt_val = float(obj2[bt_key])  # 获取 BT 值
-                    closest_idx = np.argmin(np.abs(np.array(time_data) - time_val))  # 找到最接近的时间索引
-
-                    # **缩小标记点**
-                    ax.scatter(time_data[closest_idx], data1[closest_idx], color='#A4A3A3',
-                               s=50, edgecolors='#A4A3A3', zorder=3)  # `s=50` 让点变小
-
-                    # **让标记文字距离标记点更远**
-                    ax.text(time_data[closest_idx], data1[closest_idx] + 15,  # `+15` 让文字远一点
-                            f"{labels[i]}: {bt_val:.1f}", color='#A4A3A3', fontsize=10,
-                            ha='center', weight='bold')
-                except Exception as e:
-                    print(f"标注 {time_key} 失败: {e}")
+        # time_keys = ["CHARGE_time", "TP_time", "DRY_time", "FCs_time", "DROP_time"]
+        # bt_keys = ["CHARGE_BT", "TP_BT", "DRY_BT", "FCs_BT", "DROP_BT"]
+        # labels = ["Charge", "TP", "Dry", "FCs", "Drop"]  # 标注点名称
+        #
+        # for i in range(len(time_keys)):
+        #     time_key, bt_key = time_keys[i], bt_keys[i]
+        #     if time_key in obj2 and bt_key in obj2:
+        #         try:
+        #             time_val = float(obj2[time_key])  # 获取时间值
+        #             bt_val = float(obj2[bt_key])  # 获取 BT 值
+        #             closest_idx = np.argmin(np.abs(np.array(time_data) - time_val))  # 找到最接近的时间索引
+        #
+        #             # **缩小标记点**
+        #             ax.scatter(time_data[closest_idx], data1[closest_idx], color='#A4A3A3',
+        #                        s=50, edgecolors='#A4A3A3', zorder=3)  # `s=50` 让点变小
+        #
+        #             # **让标记文字距离标记点更远**
+        #             ax.text(time_data[closest_idx], data1[closest_idx] + 15,  # `+15` 让文字远一点
+        #                     f"{labels[i]}: {bt_val:.1f}", color='#A4A3A3', fontsize=10,
+        #                     ha='center', weight='bold')
+        #         except Exception as e:
+        #             print(f"标注 {time_key} 失败: {e}")
 
         if "CHARGE_time" not in obj2:
             # 计算 `data1` 的差分
@@ -1794,7 +1802,7 @@ class CustomPlotWidget(QWidget):
         ax.margins(x=0.05)  # 让 X 轴数据稍微缩进
 
         # **调整 Y 轴字体**
-        ax.set_ylim(0, 250)
+        ax.set_ylim(0, 600)
         ax.tick_params(axis='y', labelsize=14, colors='#7D7A79')  # 这里设置 Y 轴字体大小为 14
 
         # **设置刻度与轴之间的距离**
@@ -4786,17 +4794,18 @@ class ApplicationWindow(
         # self.lqBtn.clicked.connect(self.showAgtron)markTP
         self.lqBtn.clicked.connect(self.qmc.markTP)
 
-        self.jbBtn = QLabel(self.rightBottom)
-        self.jbBtn.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+        self.jbBtn = QPushButton(self.rightBottom)
+        # self.jbBtn.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
         self.jbBtn.setText(QApplication.translate("RoastHead", '搅 拌'))
         self.jbBtn.setGeometry(125*self.width_scale, 106*self.height_scale, 76*self.width_scale, 40*self.height_scale)
         self.jbBtn.setStyleSheet(
-            f"QLabel{{color: #222222;background-color: #F0F3F7;border-radius: {19*self.height_scale}px;border: 1px solid #222222}}"
-            f"QLabel:hover{{color: #ffffff;background-color: #393939;border-radius: {19*self.height_scale}px;}}"
+            f"QPushButton{{color: #222222;background-color: #F0F3F7;border-radius: {19 * self.height_scale}px;border: 1px solid #222222}}"
+            f"QPushButton:hover{{color: #ffffff;background-color: #393939;border-radius: {19 * self.height_scale}px;}}"
         )
         jbfont = QFont(self.font_family2, 12*self.width_scale)
         self.jbBtn.setFont(jbfont)
         self.jbBtn.setEnabled(False)
+        self.jbBtn.clicked.connect(self.markJB)
 
         self.rightTop_suo = QWidget(self)  # 右上
         self.rightTop_suo.setStyleSheet(f'border-radius: {25 * self.height_scale}px;background-color: #F5F5F5;')
@@ -14157,23 +14166,23 @@ class ApplicationWindow(
 
     def resetProgressBar(self):
         self.rudouStep = 0  # 重置步数
-        self.rudouBar.setValue(0)  # 将进度条值重置为 0
-        self.rudouImg.setPixmap(self.rudouPixmap)
-        self.zhdImg.setStyleSheet(f"""
-                                    QPushButton {{
-                                        border-image: url('{self.normalized_path}/includes/Icons/yrzb/zhd.png');
-                                    }}
-                                """)
-        self.yibaoImg.setStyleSheet(f"""
-                                            QPushButton {{
-                                                border-image: url('{self.normalized_path}/includes/Icons/yrzb/yb.png');
-                                            }}
-                                        """)
-        self.chukuImg.setStyleSheet(f"""
-                                                    QPushButton {{
-                                                        border-image: url('{self.normalized_path}/includes/Icons/yrzb/ck.png');
-                                                    }}
-                                                """)
+        # self.rudouBar.setValue(0)  # 将进度条值重置为 0
+        # self.rudouImg.setPixmap(self.rudouPixmap)
+        # self.zhdImg.setStyleSheet(f"""
+        #                             QPushButton {{
+        #                                 border-image: url('{self.normalized_path}/includes/Icons/yrzb/zhd.png');
+        #                             }}
+        #                         """)
+        # self.yibaoImg.setStyleSheet(f"""
+        #                                     QPushButton {{
+        #                                         border-image: url('{self.normalized_path}/includes/Icons/yrzb/yb.png');
+        #                                     }}
+        #                                 """)
+        # self.chukuImg.setStyleSheet(f"""
+        #                                             QPushButton {{
+        #                                                 border-image: url('{self.normalized_path}/includes/Icons/yrzb/ck.png');
+        #                                             }}
+        #                                         """)
         # if self.rudouTimer.isActive():
         #     self.rudouTimer.stop()  # 停止计时器
 
@@ -17129,7 +17138,11 @@ class ApplicationWindow(
     def markChargeClick(self):
         # print(self.time_left)
         # self.qmc.markCharge()
-        self.fireslideraction2(1)
+        # self.fireslideraction2(0,True)
+        # self.thread = threading.Thread(target=self.delayed_operation, args=(3, 0))
+        # # 启动子线程
+        # self.thread.start()
+
         self.statusLabel.setText(QApplication.translate("RoastHead", "烘焙中..."))
         self.start_countdown()
         self.status_label2.setText(QApplication.translate("RoastHead", '进行中'))
@@ -17146,6 +17159,7 @@ class ApplicationWindow(
         # self.rudouPixmap2 = QPixmap(self.normalized_path + '/includes/Icons/yrzb/rd-hover.png')
         # self.rudouImg.setPixmap(QPixmap(self.normalized_path + '/includes/Icons/yrzb/rd-hover.png'))
 
+        # self.resetPhase()
         self.hbList = []
         try:
             with open(os.path.join(ytycwdpath,"localJson","order.json"), "r", encoding="utf-8") as file:
@@ -17245,7 +17259,7 @@ class ApplicationWindow(
         self.current_bar_index = 0
         for bar in self.progress_bars:
             bar.setValue(0)  # 重置所有进度条
-
+        self.qmc.resetButtonAction()
         # 启动定时器
         self.fourTimer.start(self.fourInterval)
 
@@ -17255,7 +17269,10 @@ class ApplicationWindow(
                 data = json.load(file)
                 self.orderList_data = data
             found_order = False
-            self.fireslideraction2(2)
+            # self.fireslideraction2(1,True)
+            # self.thread = threading.Thread(target=self.delayed_operation, args=(self,4, 1))
+            # 启动子线程
+            # self.thread.start()
             # self.getTPMark=[]
             # 遍历订单数据并生成控件
             for i, order in enumerate(self.orderList_data):
@@ -17303,6 +17320,23 @@ class ApplicationWindow(
         # else:
         #     self.jdtGJXYTimer.start(100, self)
 
+    def markDTP(self):
+        self.fireslideraction2(2, True)
+        self.thread = threading.Thread(target=self.delayed_operation, args=(self,3, 2))
+        # 启动子线程
+        self.thread.start()
+        
+    def markJB(self):
+        self.fireslideraction2(3, True)
+        self.thread = threading.Thread(target=self.delayed_operation, args=(self,3, 3))
+        # 启动子线程
+        self.thread.start()
+
+    def delayed_operation(self,delay_time, index):
+        time.sleep(delay_time)
+        self.fireslideraction2(index, False)
+
+        
     def create_toplevel(self, title="新窗口", width=300, height=200):
         window = QMainWindow(self)
         window.setWindowTitle(title)
@@ -17444,7 +17478,7 @@ class ApplicationWindow(
             self.jdtGJXYTimer.stop()
         else:
             self.jdtGJXYTimer.start(100, self)
-
+        self.agtronNum.setText("0.0")
         try:
             with open(os.path.join(ytycwdpath,"localJson","order.json"), "r", encoding="utf-8") as file:
                 data = json.load(file)
@@ -17473,22 +17507,36 @@ class ApplicationWindow(
 
                     # 添加额外的字段到数据中
                     enriched_order = order.copy()
-                    _log.info("self.computedData['computed']:::%s",self.computedData['computed'])
+                    # _log.info("self.computedData['computed']:::%s",self.computedData['computed'])
                     # 获取 computed 数据并提供默认值
-                    computed = self.computedData.get('computed', {})
-                    totaltime = computed.get('totaltime', 0)
-                    CHARGE_BT = computed.get('CHARGE_BT', 0)
-                    TP_BT = computed.get('TP_BT', 0)
-                    TP_time = computed.get('TP_time', 0)
-                    DRY_BT = computed.get('DRY_BT', 0)
-                    DRY_time = computed.get('DRY_time', 0)
-                    FCs_BT = computed.get('FCs_BT', 0)
-                    FCs_time = computed.get('FCs_time', 0)
-                    SCs_BT = computed.get('SCs_BT', 0)
-                    SCs_time = computed.get('SCs_time', 0)
-                    DROP_BT = computed.get('DROP_BT', 0)
-                    finishphasetime = computed.get('finishphasetime', 0)
-                    DTR = computed.get('DTR', 0)
+                    totaltime =  0
+                    CHARGE_BT =  0
+                    TP_BT =  0
+                    TP_time =  0
+                    DRY_BT = 0
+                    DRY_time = 0
+                    FCs_BT = 0
+                    FCs_time =  0
+                    SCs_BT = 0
+                    SCs_time =  0
+                    DROP_BT = 0
+                    finishphasetime =  0
+                    DTR =  0
+                    if self.computedData:
+                        computed = self.computedData.get('computed', {})
+                        totaltime = computed.get('totaltime', 0)
+                        CHARGE_BT = computed.get('CHARGE_BT', 0)
+                        TP_BT = computed.get('TP_BT', 0)
+                        TP_time = computed.get('TP_time', 0)
+                        DRY_BT = computed.get('DRY_BT', 0)
+                        DRY_time = computed.get('DRY_time', 0)
+                        FCs_BT = computed.get('FCs_BT', 0)
+                        FCs_time = computed.get('FCs_time', 0)
+                        SCs_BT = computed.get('SCs_BT', 0)
+                        SCs_time = computed.get('SCs_time', 0)
+                        DROP_BT = computed.get('DROP_BT', 0)
+                        finishphasetime = computed.get('finishphasetime', 0)
+                        DTR = computed.get('DTR', 0)
 
                     target_temperature = []  # 示例值
 
@@ -17985,6 +18033,8 @@ class ApplicationWindow(
             list_item2.setSizeHint(timeList.sizeHint())  # 设置项的大小提示
             self.list_widget2.setItemWidget(list_item2, timeList)
 
+
+
     def showHistorydetail(self, item):
         item_id = item.data(22)  # 获取选中的项目的 ID 或文件路径
         dateStr = item.data(23)
@@ -18060,7 +18110,9 @@ class ApplicationWindow(
             time_data3 = obj.get("timex", "未知任务") # 时间
             data11 = obj.get("temp2", "未知任务") # 豆温
             data22 = obj.get("temp1", "未知任务")
-            data33 = obj.get("timeindex", "未知任务")
+            data44 = obj.get("agtron", "未知任务") # 色值
+            data33 = obj.get("delta2", "未知任务")  # 色值
+            # data33 = obj.get("timeindex", "未知任务")
 
             obj2 = obj.get("computed", "0")
 
@@ -18077,24 +18129,24 @@ class ApplicationWindow(
             # delta2 = numpy.array(self.qmc.delta2[charge_idx + skip:drop_idx - skip2])
 
             # 转换为 NumPy 数组
-            time_data3 = np.array(time_data3, dtype=np.float64)
-            data11 = np.array(data11, dtype=np.float64)
+            # time_data3 = np.array(time_data3, dtype=np.float64)
+            # data11 = np.array(data11, dtype=np.float64)
+            #
+            # # 计算时间差（避免除以零）
+            # time_diff = np.diff(time_data3)
+            # time_diff[time_diff == 0] = np.nan  # 避免除零错误
+            #
+            # # 计算温度变化
+            # temp_diff = np.diff(data11)
+            #
+            # # 计算 ROR（单位：°C/分钟）
+            # delta2 = (temp_diff / time_diff) * 60  # 乘以 60 变成每分钟温升率
+            #
+            # # 补 NaN 使 delta2 长度与 time_data3 相同
+            # delta2 = np.append(delta2, np.nan)
 
-            # 计算时间差（避免除以零）
-            time_diff = np.diff(time_data3)
-            time_diff[time_diff == 0] = np.nan  # 避免除零错误
 
-            # 计算温度变化
-            temp_diff = np.diff(data11)
-
-            # 计算 ROR（单位：°C/分钟）
-            delta2 = (temp_diff / time_diff) * 60  # 乘以 60 变成每分钟温升率
-
-            # 补 NaN 使 delta2 长度与 time_data3 相同
-            delta2 = np.append(delta2, np.nan)
-
-
-            self.matplotlib_info.refresh_chart(time_data3, data11, data22, delta2, obj2)
+            self.matplotlib_info.refresh_chart(time_data3, data11, data22, data33, data44, obj2)
 
 
 
@@ -22999,8 +23051,8 @@ class ApplicationWindow(
                     cmd = str(int(round(value)))
                 else:
                     cmd = self.eventslidercommands[n]
-                    cmd = cmd.format(*(tuple([value] * cmd.count('{}'))))
-                self.eventaction(action, cmd)  # cmd needs to be a string!
+                    cmd = cmd.format(*(tuple([value] * cmd.count('{}'))))  # cmd needs to be a string!
+                # self.eventaction(action, cmd)
             except Exception as e:  # pylint: disable=broad-except
                 _log.exception(e)
                 _, _, exc_tb = sys.exc_info()
@@ -23009,7 +23061,7 @@ class ApplicationWindow(
                     getattr(exc_tb, 'tb_lineno', '?'))
 
 
-    def fireslideraction2(self, n: int) -> None:
+    def fireslideraction2(self, n: int,v: bool) -> None:
         action = self.eventbuttonactions[n]
         if action:
             try:
@@ -23035,8 +23087,9 @@ class ApplicationWindow(
                     cmd = str(int(round(value)))
                 else:
                     cmd = self.eventsbuttoncommands[n]
-                    cmd = cmd.format(True * cmd.count('{}'))
-                self.eventaction(action, cmd)  # cmd needs to be a string!
+                    cmd = cmd.format(v * cmd.count('{}'))
+                    
+                # self.eventaction(action, cmd)  # cmd needs to be a string!
             except Exception as e:  # pylint: disable=broad-except
                 _log.exception(e)
                 _, _, exc_tb = sys.exc_info()
@@ -23247,6 +23300,32 @@ class ApplicationWindow(
     #            self.qmc.updateBackground()
     #            self.qmc.updategraphicsSignal.emit() # we need this to have the projections redrawn immediately
 
+    def float_to_modbus_registers(self,value):
+        """
+        将浮点数转换为两个 16 位 Modbus 寄存器值
+        :param value: 浮点数
+        :return: 包含两个 16 位整数的元组
+        """
+        # 使用 struct 模块将浮点数编码为 32 位二进制数据
+        binary_data = unpack('f', value)
+        # 从二进制数据中提取两个 16 位整数
+        high_word = unpack('H', binary_data[:2])[0]
+        low_word = unpack('H', binary_data[2:])[0]
+        return high_word, low_word
+
+    def modbus_registers_to_float(self,high_word, low_word):
+        """
+        将两个 16 位 Modbus 寄存器值转换为浮点数
+        :param high_word: 高 16 位寄存器值
+        :param low_word: 低 16 位寄存器值
+        :return: 浮点数
+        """
+        # 将两个 16 位整数合并为 32 位二进制数据
+        binary_data = struct.pack('>HH', high_word, low_word)
+        # 使用 struct 模块将 32 位二进制数据解码为浮点数
+        value = struct.unpack('>f', binary_data)[0]
+        return value
+
     # 注意:这可能在单独的EventActionThread中运行，而不是在GUI线程中运行，因此修改GUI的操作可能需要使用信号来
     # 确保它们在GUI线程中运行，以避免硬崩溃(参见pidON/pidOFF)
     def eventaction_internal(self, action: int, cmd: str, eventtype: Optional[
@@ -23358,7 +23437,7 @@ class ApplicationWindow(
                             ';'))  # allows for sequences of commands like in "<cmd>;<cmd>;...;<cmd>"
                         followupCmd = 0.  # contains the required sleep time
                         # 检查设备标签是否为MB-01，如果是则处理最后一位数值为浮点数
-                        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'MB-01'
+                        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
                         _log.info('lj 22840', cmd_str, is_mb01)
                         for c in cmds:
                             cs = c.strip().replace('_', ('0' if self.modbus.lastReadResult is None else str(
@@ -23387,9 +23466,14 @@ class ApplicationWindow(
                                                     last_param.startswith('-') and last_param[1:].replace('.', '',
                                                                                                           1).isdigit()):
                                                 # 转换为浮点数
-                                                params[-1] = str(float(last_param))
-                                                # 重建命令字符串
-                                                cs = f"{cmd_part}({','.join(params)})"
+
+                                                # high, low = self.float_to_modbus_registers(last_param)
+                                                # print(f"浮点数 {float_value} 转换为 Modbus 寄存器值: 高字 = {high}, 低字 = {low}")
+                                                # # 从 Modbus 寄存器值还原浮点数
+                                                # hex_string = self.modbus_registers_to_float(high, low)
+                                                # print(f"从 Modbus 寄存器值还原的浮点数: {hex_string}")
+                                                # # 重建命令字符串
+                                                # cs = f"{cmd_part}({','.join(hex_string)})"
                                                 _log.info('lj 22871', cs)
                                         except (ValueError, IndexError):
                                             pass  # 如果转换失败，保持原样
@@ -23492,6 +23576,7 @@ class ApplicationWindow(
                                     if isinstance(cmds, tuple):
                                         if len(cmds) == 3 and not isinstance(cmds[0], list):
                                             # cmd has format "writeSingle(s,r,v)"
+
                                             self.modbus.writeSingleRegister(*cmds)
                                             followupCmd = 0.08
                                         else:
@@ -31103,6 +31188,8 @@ class ApplicationWindow(
             profile['timex'] = [self.float2float(x, 10) for x in self.qmc.timex]
             profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1]
             profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2]
+            profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values]
+            profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2]
             profile['phases'] = self.qmc.phases
             profile['zmax'] = int(self.qmc.zlimit)
             profile['zmin'] = int(self.qmc.zlimit_min)
@@ -31263,70 +31350,70 @@ class ApplicationWindow(
 
             # 生成文件名
             path = QDir(save_dir)
-            if self.qmc.batchcounter > -1 and self.qmc.roastbatchnr > 0 and self.qmc.autosaveprefix == '':
-                prefix = self.qmc.batchprefix + str(self.qmc.roastbatchnr)
-            elif self.qmc.roastbatchprefix != '' and self.qmc.autosaveprefix == '':
-                prefix = self.qmc.roastbatchprefix
-            else:
-                prefix = self.qmc.autosaveprefix
-            filename = path.absoluteFilePath(self.generateFilename(prefix=prefix))  # 直接拼接路径
-
-            if filename:
+            # if self.qmc.batchcounter > -1 and self.qmc.roastbatchnr > 0 and self.qmc.autosaveprefix == '':
+            #     prefix = self.qmc.batchprefix + str(self.qmc.roastbatchnr)
+            # elif self.qmc.roastbatchprefix != '' and self.qmc.autosaveprefix == '':
+            #     prefix = self.qmc.roastbatchprefix
+            # else:
+            #     prefix = self.qmc.autosaveprefix
+            # filename = path.absoluteFilePath(self.generateFilename(prefix=prefix))  # 直接拼接路径
+            #
+            # if filename:
                 # 获取 Profile 数据
-                pf = self.getProfile()
-                if pf:
-                    if copy:
-                        pf['roastUUID'] = uuid.uuid4().hex  # 生成新的 UUID
-
-                    sync_record_hash = plus.controller.updateSyncRecordHashAndSync()
-                    if sync_record_hash is not None:
-                        srh = encodeLocal(sync_record_hash)
-                        if srh is not None:
-                            pf['plus_sync_record_hash'] = srh
-
-                    # 保存文件
-                    self.serialize(filename, cast(Dict[str, Any], pf))
-                    self.sendmessage(QApplication.translate('Message', 'Profile saved'))
-                    _log.info('profile saved: %s', filename)
-
-                    if not copy:
-                        self.setCurrentFile(filename)
-                        self.curFile = filename
-                        self.qmc.fileCleanSignal.emit()
-
-                    # 更新文件修改时间
-                    self.qmc.plus_file_last_modified = plus.util.getModificationDate(filename)
-
-                    # 处理自动保存图片
-                    if self.qmc.autosaveimage:
-                        name_also = QFileInfo(filename).completeBaseName() if QFileInfo(
-                            filename).suffix() == 'alog' else QFileInfo(filename).fileName()
-                        filename_also = os.path.join(save_dir, name_also)
-
-                        if self.qmc.autosaveimageformat == 'PDF':
-                            self.saveVectorGraph(extension='.pdf', fname=filename_also)
-                        elif self.qmc.autosaveimageformat == 'SVG':
-                            self.saveVectorGraph(extension='.svg', fname=filename_also)
-                        elif self.qmc.autosaveimageformat == 'CSV':
-                            self.exportCSV(filename_also + '.csv')
-                        elif self.qmc.autosaveimageformat == 'JSON':
-                            self.exportJSON(filename_also + '.json')
-                        else:
-                            self.resizeImgToSize(0, 0, self.qmc.autosaveimageformat, fname=filename_also)
-                    return True
-
-                self.sendmessage(QApplication.translate('Message', 'Cancelled'))
-                return False
-
-            self.sendmessage(QApplication.translate('Message', 'Cancelled'))
+            #     pf = self.getProfile()
+            #     if pf:
+            #         if copy:
+            #             pf['roastUUID'] = uuid.uuid4().hex  # 生成新的 UUID
+            #
+            #         sync_record_hash = plus.controller.updateSyncRecordHashAndSync()
+            #         if sync_record_hash is not None:
+            #             srh = encodeLocal(sync_record_hash)
+            #             if srh is not None:
+            #                 pf['plus_sync_record_hash'] = srh
+            #
+            #         # 保存文件
+            #         self.serialize(filename, cast(Dict[str, Any], pf))
+            #         self.sendmessage(QApplication.translate('Message', 'Profile saved'))
+            #         _log.info('profile saved: %s', filename)
+            #
+            #         if not copy:
+            #             self.setCurrentFile(filename)
+            #             self.curFile = filename
+            #             self.qmc.fileCleanSignal.emit()
+            #
+            #         # 更新文件修改时间
+            #         self.qmc.plus_file_last_modified = plus.util.getModificationDate(filename)
+            #
+            #         # 处理自动保存图片
+            #         if self.qmc.autosaveimage:
+            #             name_also = QFileInfo(filename).completeBaseName() if QFileInfo(
+            #                 filename).suffix() == 'alog' else QFileInfo(filename).fileName()
+            #             filename_also = os.path.join(save_dir, name_also)
+            #
+            #             if self.qmc.autosaveimageformat == 'PDF':
+            #                 self.saveVectorGraph(extension='.pdf', fname=filename_also)
+            #             elif self.qmc.autosaveimageformat == 'SVG':
+            #                 self.saveVectorGraph(extension='.svg', fname=filename_also)
+            #             elif self.qmc.autosaveimageformat == 'CSV':
+            #                 self.exportCSV(filename_also + '.csv')
+            #             elif self.qmc.autosaveimageformat == 'JSON':
+            #                 self.exportJSON(filename_also + '.json')
+            #             else:
+            #                 self.resizeImgToSize(0, 0, self.qmc.autosaveimageformat, fname=filename_also)
+            #         return True
+            #
+            #     self.sendmessage(QApplication.translate('Message', 'Cancelled'))
+            #     return False
+            #
+            # self.sendmessage(QApplication.translate('Message', 'Cancelled'))
             return False
 
         except Exception as ex:  # pylint: disable=broad-except
-            _log.exception(ex)
-            _, _, exc_tb = sys.exc_info()
-            self.qmc.adderror(
-                (QApplication.translate('Error Message', 'Exception:') + ' filesave(): {0}').format(str(ex)),
-                getattr(exc_tb, 'tb_lineno', '?'))
+            # _log.exception(ex)
+            # _, _, exc_tb = sys.exc_info()
+            # self.qmc.adderror(
+            #     (QApplication.translate('Error Message', 'Exception:') + ' filesave(): {0}').format(str(ex)),
+            #     getattr(exc_tb, 'tb_lineno', '?'))
             return False
     def fileExport(self, msg: str, ext: str, dumper: Callable[[str], bool]) -> None:
         try:
@@ -38182,7 +38269,8 @@ class ApplicationWindow(
         if start < SOR_index < end:
             start = SOR_index
         for i in range(end - 1, start - 1, -1):
-            if temp[i] > 0 and temp[i] < TP:
+            # temp[i] > 0 and
+            if temp[i] < TP:
                 TP = temp[i]
                 idx = i
         return idx

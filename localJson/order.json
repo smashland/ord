@@ -1,15 +1,15 @@
 [
     {
-        "id": 9,
-        "taskName": "11",
-        "bakingBatch": "20250408171833",
-        "createTime": "2025-04-08 17:18:33",
-        "finishTime": "选择日期",
+        "id": 3,
+        "taskName": "2",
+        "bakingBatch": "20250416092901",
+        "createTime": "2025-04-16 09:29:01",
+        "finishTime": "",
         "bakingStatue": 2,
         "bakingDeviceId": 2,
-        "taskId": "905311973398959920",
-        "formulationName": "1",
-        "fakeValue": "76.5",
+        "taskId": "901222447089140933",
+        "formulationName": "2",
+        "fakeValue": "77.6",
         "beanTypes": {
             "type1": {
                 "name": "1",
@@ -17,44 +17,101 @@
                 "numberOfBeans": "1"
             }
         },
-        "targetAgtron": "1",
+        "targetAgtron": "50",
         "remark": "1",
         "stage1": [
-            0,
-            0,
-            0,
-            0
+            130,
+            200,
+            30,
+            30
         ],
         "stage2": [
-            0,
-            0,
-            0,
-            0
+            150,
+            200,
+            30,
+            30
         ],
         "stage3": [
-            0,
-            0,
-            0,
-            0
+            170,
+            200,
+            30,
+            30
         ],
         "stage4": [
-            0,
-            0,
-            0,
-            0
+            180,
+            200,
+            30,
+            30
         ],
         "stage5": [
-            0,
-            0,
-            0,
-            0
+            190,
+            200,
+            30,
+            30
         ],
         "stage6": [
-            0,
-            0,
-            0,
-            0
+            105,
+            200,
+            30,
+            30
         ],
-        "bakingCreateTime": "2025-04-08 17:20:58"
+        "bakingCreateTime": "2025-04-16 10:08:02"
+    },
+    {
+        "id": 4,
+        "taskName": "ceshi4",
+        "bakingBatch": "20250416100238",
+        "createTime": "2025-04-16 10:02:38",
+        "finishTime": "选择日期",
+        "bakingStatue": 1,
+        "bakingDeviceId": 2,
+        "taskId": "069006912976037065",
+        "formulationName": "4",
+        "fakeValue": "76.7",
+        "beanTypes": {
+            "type1": {
+                "name": "云南豆",
+                "number": "15",
+                "numberOfBeans": "1"
+            }
+        },
+        "targetAgtron": "50",
+        "remark": "1",
+        "stage1": [
+            130,
+            500,
+            70,
+            50
+        ],
+        "stage2": [
+            150,
+            500,
+            70,
+            50
+        ],
+        "stage3": [
+            170,
+            450,
+            55,
+            50
+        ],
+        "stage4": [
+            180,
+            450,
+            55,
+            50
+        ],
+        "stage5": [
+            190,
+            500,
+            55,
+            50
+        ],
+        "stage6": [
+            205,
+            470,
+            55,
+            50
+        ]
     }
 ]

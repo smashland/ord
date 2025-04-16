@@ -523,7 +523,7 @@ class tgraphcanvas(FigureCanvas):
         # default delay between readings in milliseconds
         self.default_delay: Final[int] = 2000 # default 2s
         self.delay:int = self.default_delay
-        self.min_delay: Final[int] = 250 #500 # 1000 # Note that a 0.25s min delay puts a lot of performance pressure on the app
+        self.min_delay: Final[int] = 600 #500 # 1000 # Note that a 0.25s min delay puts a lot of performance pressure on the app
 
         # extra event sampling interval in milliseconds. If 0, then extra sampling commands are sent "in sync" with the standard sampling commands
         self.extra_event_sampling_delay:int = 0 # sync, 0.5s, 1.0s, 1.5s,.., 5s => 0, 500, 1000, 1500, .. # 0, 500, 1000, 1500, ...
@@ -1111,7 +1111,7 @@ class tgraphcanvas(FigureCanvas):
         #log flag that tells to log ET when using device 18 (manual mode)
         self.manuallogETflag = 0
 
-        self.zoom_follow:bool = False # if True, Artisan "follows" BT in the center by panning during recording. Activated via a click on the HOME icon
+        self.zoom_follow:bool = True # if True, Artisan "follows" BT in the center by panning during recording. Activated via a click on the HOME icon
 
         self.alignEvent = 0 # 0:CHARGE, 1:DRY, 2:FCs, 3:FCe, 4:SCs, 5:SCe, 6:DROP, 7:ALL
         self.alignnames = [
@@ -1454,7 +1454,7 @@ class tgraphcanvas(FigureCanvas):
         self.DeltaBTflag:bool = True
         self.DeltaETlcdflag:bool = False
         self.DeltaBTlcdflag:bool = True
-        self.swapdeltalcds:bool = False
+        self.swapdeltalcds:bool = True
         self.PIDbuttonflag:bool = True # TC4 PID firmware available?
         self.Controlbuttonflag:bool = False # PID Control active (either internal/external or Fuji)
         # user filter values x are translated as follows to internal filter values: y = x*2 + 1 (to go the other direction: x = y/2)
@@ -1740,7 +1740,7 @@ class tgraphcanvas(FigureCanvas):
         self.zlimit_min_F_default: Final[int] = 0
         self.zgrid_F_default: Final[int] = 10
 
-        self.ylimit_C_default: Final[int] = 275 #250
+        self.ylimit_C_default: Final[int] = 600 #250
         self.ylimit_min_C_default: Final[int] = 0
         self.ygrid_C_default: Final[int] = 50
         self.zlimit_C_default: Final[int] = 25
@@ -4263,7 +4263,7 @@ class tgraphcanvas(FigureCanvas):
             # random_temp_str = f"{random_temp:.2f}"
             # self.aw.processInfo1WD.setText(etstr)
 
-            ## BT LCD:
+            ## BT LCD:douwen
             btstr = resLCD
             try:
                 if temp2 and idx is not None and idx < len(temp2) and temp2[idx] not in [None, -1] and not numpy.isnan(temp2[idx]):
@@ -4271,12 +4271,13 @@ class tgraphcanvas(FigureCanvas):
                         btstr = lcdformat%temp2[idx]            # BT
                     elif self.LCDdecimalplaces and -10000 < temp2[idx] < 100000:
                         btstr = f'{temp2[idx]:.0f}'
+                    if len(temp2)>10 and self.changeBool and self.tpChangeBool == False  and temp2[idx]>=temp2[idx-1] and temp2[idx-1]>=temp2[idx-2] and temp2[idx-2]>=temp2[idx-3] and temp2[idx-3]>=temp2[idx-4]:
+                        self.tpChangeBool=True
             except Exception as e: # pylint: disable=broad-except
                 _log.exception(e)
             self.aw.lcd3.display(btstr)
-            random_number = random.uniform(1, 300)
-            random_number_str = f"{random_number:.2f}"
-
+            # random_number = random.uniform(1, 300)
+            # random_number_str = f"{random_number:.2f}"
             # int_part, decimal_part = btstr.split('.')
             # self.aw.processInfoLabel.setText(int_part)
             # self.aw.processInfoLabel_point.setText('.' + decimal_part)
@@ -4365,7 +4366,15 @@ class tgraphcanvas(FigureCanvas):
                         else:
                             # 更新最后一个值
                             self.agtron_values[-1] = predicted_agtron
-                        self.drawAgtron(numpy.array([]))
+
+                        if len(self.agtron_values) < len(self.timex):
+                            # 用最后一个值填充
+                            self.agtron_values = [-1] * (len(self.timex) - len(self.agtron_values)) + self.agtron_values
+
+                        # if len(self.agtron_values) > len(self.timex):
+                        #     index = len(self.agtron_values) - len(self.timex)-1
+                        #     self.agtron_values=self.agtron_values[index:]
+                        # self.drawAgtron(numpy.array([]))
                         # if predicted_agtron < 0:
                         #     self.aw.agtronNum.setText("0")  # 处理负值
                         # elif predicted_agtron > 100:
@@ -4519,6 +4528,15 @@ class tgraphcanvas(FigureCanvas):
                     try:
                         # initialize the arrays depending on the recording state
                         if (self.flagstart and len(self.timex) > 0) or not self.flagon: # on recording or off we use the standard data structures
+                            if self.timex[0] > 1:
+                                self.timex= self.timex[1:]
+                                self.temp1 = self.temp1[1:]
+                                self.temp2 = self.temp2[1:]
+                                self.extratimex = self.extratimex[1:]
+                                self.extratemp1 = self.extratemp1[1:]
+                                self.extratemp2 = self.extratemp2[1:]
+                                self.delta1 = self.delta1[1:]
+                                self.delta2 = self.delta2[1:]
                             sample_timex = self.timex
                             sample_temp1 = self.temp1
                             sample_temp2 = self.temp2
@@ -7877,6 +7895,17 @@ class tgraphcanvas(FigureCanvas):
         path_effects.append(PathEffects.Normal())
         return path_effects
 
+
+    def remove_previous_larger(self,arr):
+        i = 0
+        while i < len(arr) - 1:
+            if arr[i] > i:
+                index=i+1
+                arr = arr[index:]
+                return arr, index
+            else:
+                i = i + 1
+
     def drawET(self, temp:'npt.NDArray[numpy.double]') -> None:
         if self.ETcurve and self.ax is not None:
             try:
@@ -7933,24 +7962,25 @@ class tgraphcanvas(FigureCanvas):
 
             # 确保agtron_values长度与timex一致
             agtron_data = self.agtron_values[:]
+            # 创建第二个Y轴用于显示Agtron色值
+            if len(agtron_data) == 1:
+                self.agtron_ax = self.ax.twinx()
+                self.agtron_ax.set_ylabel('Agtron值', color='#6BAE76')
+                self.agtron_ax.tick_params(axis='y', labelcolor='#6BAE76')
+                self.agtron_ax.set_ylim(0, 400)
+
             if len(agtron_data) < len(self.timex):
                 # 用最后一个值填充
-                last_value = agtron_data[-1] if agtron_data else 0
-                agtron_data.extend([last_value] * (len(self.timex) - len(agtron_data)))
+                agtron_data=[-1] * (len(self.timex) - len(agtron_data))+agtron_data
 
             # 转换为numpy数组并处理无效值
             agtron_array = numpy.array(agtron_data)
             agtron_array = numpy.ma.masked_where(agtron_array <= 0, agtron_array)  # 不绘制0或负值
 
-            # 创建第二个Y轴用于显示Agtron色值
-            if not hasattr(self, 'agtron_ax') or self.agtron_ax is None:
-                self.agtron_ax = self.ax.twinx()
-                self.agtron_ax.set_ylabel('Agtron值', color='#6BAE76')
-                self.agtron_ax.tick_params(axis='y', labelcolor='#6BAE76')
-                self.agtron_ax.set_ylim(0, 100)
+
 
             # 绘制Agtron曲线
-            self.l_agtron, = self.agtron_ax.plot(
+            self.l_agtron, = self.ax.plot(
                 self.timex,
                 agtron_array,
                 markersize=2,
@@ -7964,6 +7994,7 @@ class tgraphcanvas(FigureCanvas):
                 alpha=0.8,
                 label='Agtron'
             )
+            self.ax.grid(True, linestyle='--')
 
     def drawDeltaET(self, trans:Transform, start:int, end:int) -> None:
         if self.DeltaETflag and self.ax is not None:
@@ -10001,13 +10032,15 @@ class tgraphcanvas(FigureCanvas):
                     if self.swaplcds:
                         self.drawET(visible_et)
                         self.drawBT(visible_bt)
+                        self.drawAgtron(visible_bt)
                     else:
                         self.drawBT(visible_bt)
                         self.drawET(visible_et)
+                        self.drawAgtron(visible_bt)
 
                     # 添加绘制Agtron曲线
-                    if hasattr(self, 'agtron_values') and self.agtron_values:
-                        self.drawAgtron(numpy.array([]))
+                    # if self.agtron_values:
+                    #     self.drawAgtron(numpy.array([]))
 
                     if self.ETcurve and self.l_temp1 is not None:
                         self.handles.append(self.l_temp1)
@@ -12597,7 +12630,7 @@ class tgraphcanvas(FigureCanvas):
         self.changeBool = True
         self.aw.diologRect.setVisible(False)
 
-        # self.aw.buttonSTARTSTOP.click()
+        self.aw.buttonSTARTSTOP.click()
 
         self.aw.stop_time()
         self.aw.gjxytimer.stop()  # 关闭锅间协议
@@ -12606,10 +12639,10 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.start()
 
         self.aw.markChargeClick()
-        # self.aw.buttonSTARTSTOP.click()
+        self.aw.buttonSTARTSTOP.click()
 
-        # self.aw.buttonSTARTSTOP.click()
-        # self.aw.buttonSTARTSTOP.click()
+        self.aw.buttonSTARTSTOP.click()
+        self.aw.buttonSTARTSTOP.click()
 
         if len(self.aw.getTPMark) > 0:
             self.aw.jieduanInfo(self.aw.getTPMark)
@@ -12794,6 +12827,7 @@ class tgraphcanvas(FigureCanvas):
                     message = QApplication.translate('Message','[TP] recorded at {0} BT = {1}').format(st,st2)
                     #set message at bottom
                     self.aw.sendmessage(message)
+            self.aw.markDTP()
         except Exception as ex: # pylint: disable=broad-except
             _log.exception(ex)
             _, _, exc_tb = sys.exc_info()
@@ -13387,14 +13421,13 @@ class tgraphcanvas(FigureCanvas):
             return
         # self.markDropTimeIndex = len(self.timex)
         # _log.info('profile saved 13383: %s', self.timex)
-        self.aw.pf = self.aw.getProfile()
-        # self.aw.buttonSTARTSTOP.click()
         self.aw.markDropClick()
-        # self.aw.buttonSTARTSTOP.click()
+
         self.tpChangeBool = False
         self.changeBool = False
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
+        self.aw.pf = self.aw.getProfile()
         if len(self.timex) > 1:
             removed = False
             try:
