@@ -1,7 +1,7 @@
 [General]
 Delay=500
 Oversampling=false
-roastertype_setup=H5U Touch
+roastertype_setup=MB-01
 roastersize_setup_default=15
 
 [Device]
