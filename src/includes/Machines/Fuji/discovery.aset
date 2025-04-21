@@ -1,5 +1,5 @@
 [General]
-Delay=500
+Delay=1000
 Oversampling=false
 roastertype_setup=discovery
 roastersize_setup_default=15

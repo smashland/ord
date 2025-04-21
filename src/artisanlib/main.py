@@ -4605,20 +4605,20 @@ class ApplicationWindow(
         # rudouImg_downfont = QFont(self.font_family3, 10*self.width_scale)
         # self.rudouImg_down.setFont(rudouImg_downfont)
         # 
-        # self.tpMark = QLabel(self.chartRect)  # 回温点
-        # self.tpMark.setGeometry(186 * self.width_scale, 506 * self.height_scale, 9 * self.width_scale,
-        #                           9 * self.width_scale)
-        # self.tpMark.setStyleSheet(f"background-color: #393939; border:none;color: #393939;border-radius:{4*self.height_scale}px;")
-        # self.tpMark.setVisible(False)
-        # 
-        # self.tpMark_up = QLabel(self.chartRect)
-        # self.tpMark_up.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        # self.tpMark_up.setGeometry(170 * self.width_scale, 522 * self.height_scale, 41 * self.width_scale,
-        #                              15 * self.height_scale)
-        # self.tpMark_up.setText('回温点')
-        # self.tpMark_up.setStyleSheet("background-color: transparent; border:none;color: #292827")
+        self.tpMark = QLabel(self.chartRect)  # 回温点
+        self.tpMark.setGeometry(186 * self.width_scale, 506 * self.height_scale, 9 * self.width_scale,
+                                  9 * self.width_scale)
+        self.tpMark.setStyleSheet(f"background-color: #393939; border:none;color: #393939;border-radius:{4*self.height_scale}px;")
+        self.tpMark.setVisible(False)
+
+        self.tpMark_up = QLabel(self.chartRect)
+        self.tpMark_up.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+        self.tpMark_up.setGeometry(170 * self.width_scale, 522 * self.height_scale, 41 * self.width_scale,
+                                     15 * self.height_scale)
+        self.tpMark_up.setText('回温点')
+        self.tpMark_up.setStyleSheet("background-color: transparent; border:none;color: #292827")
         # self.tpMark_up.setFont(rudouImg_upfont)
-        # self.tpMark_up.setVisible(False)
+        self.tpMark_up.setVisible(False)
         # 
         # self.tpMark_down = QLabel(self.chartRect)
         # self.tpMark_down.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
@@ -13698,16 +13698,16 @@ class ApplicationWindow(
     def jieduanInfo(self, first_Value):
         """阶段信息处理函数"""
         if first_Value is None:
-            _log.exception("Error: first_Value 为空，无法执行 jieduanInfo()")
+            # _log.exception("Error: first_Value 为空，无法执行 jieduanInfo()")
             return
 
         if len(first_Value) < 11:
-            _log.exception("Error: first_Value 长度不足 11，无法访问所需索引")
+            # _log.exception("Error: first_Value 长度不足 11，无法访问所需索引")
             return
 
         for i in range(5, 11):
             if first_Value[i] is None or not isinstance(first_Value[i], list) or len(first_Value[i]) < 4:
-                _log.exception(f"Error: first_Value[{i}] 无效，可能为 None 或不是长度为 4 的列表")
+                # _log.exception(f"Error: first_Value[{i}] 无效，可能为 None 或不是长度为 4 的列表")
                 return
 
         # 获取当前的温度值
@@ -13721,7 +13721,7 @@ class ApplicationWindow(
         except ValueError:
             _log.exception(f"Error: 无效的温度值：{temp_text}")
             return
-        _log.info(f"self.qmc.tpChangeBool:{self.qmc.tpChangeBool}")
+        #   _log.info(f"self.qmc.tpChangeBool:{self.qmc.tpChangeBool}")
         # if self.qmc.tpChangeBool:
         #     for i in range(5, 11):
         #         _log.info(f"jieduanInfo_first_Value:{current_temp}--分割线--{first_Value[i]}--分割线--{first_Value[i-1]}--分割线--{first_Value[i - 1][0]}")
@@ -13781,8 +13781,8 @@ class ApplicationWindow(
 
                 stage_temp = stage_data[0]
 
-                _log.info(
-                    f"[阶段判断] 当前温度: {current_temp}, 当前阶段值: {stage_temp}, 上一阶段值: {first_Value[i - 1][0] if i > 5 else 'N/A'}")
+                #  _log.info(
+                #    f"[阶段判断] 当前温度: {current_temp}, 当前阶段值: {stage_temp}, 上一阶段值: {first_Value[i - 1][0] if i > 5 else 'N/A'}")
 
                 if stage_temp <= 0:
                     continue
@@ -13813,8 +13813,6 @@ class ApplicationWindow(
             if self.current_phase != 0:
                 self.current_phase = 0
                 self._updateUIWithStageData(1, first_Value[5])
-                print("tpChangeBool 为 False，保持在第一阶段")
-                _log.info("tpChangeBool 为 False，保持在第一阶段")
 
     def _updateUIWithStageData(self, display_phase: int, stage_data: list):
         """更新 UI 元素和滑动条"""
@@ -13824,7 +13822,6 @@ class ApplicationWindow(
         self.fmNumR.setText(str(stage_data[2]))
         self.zsNumR.setText(str(stage_data[3]))
         self.updateSliders(stage_data)
-        _log.info(f"阶段变更为 {display_phase}")
 
     def updateSliders(self, phase_data):
         """更新滑块和相关控件"""
@@ -17212,7 +17209,7 @@ class ApplicationWindow(
         first_Value = self.hbList[0]
         self.getTPMark = first_Value
 
-        _log.info('first_Value= %s ',first_Value)
+        # _log.info('first_Value= %s ',first_Value)
         self.task_name_label2.setText(first_Value[1])
         new_text = QApplication.translate("RoastHead", "任务订单: {}").format(first_Value[2])
         self.task_no_label2.original_text = new_text  # 更新原始文本
@@ -18086,7 +18083,7 @@ class ApplicationWindow(
             numberOfRipe = data_json.get("numberOfRipe", "未知")
             bakingFinishTime = data_json.get("bakingFinishTime", "未知")
 
-            _log.info(f"历史详情:{data_json}--分割线--{total_number}--分割线--{total_numberOfBeans}")
+            # _log.info(f"历史详情:{data_json}--分割线--{total_number}--分割线--{total_numberOfBeans}")
 
             self.historyDetail_sheibei.setText(task_name)
             self.pfTitle.setText('-')
@@ -18115,10 +18112,22 @@ class ApplicationWindow(
             data44 = obj.get("agtron", "未知任务") # 色值
             data33 = obj.get("delta2", "未知任务")  # 色值
             # data33 = obj.get("timeindex", "未知任务")
+            if len(data11) < len(time_data3):
+                # 用最后一个值填充
+                data11 = [-1] * (len(time_data3) - len(data11)) + data11
+            
+            if len(data22) < len(time_data3):
+                # 用最后一个值填充
+                data22 = [-1] * (len(time_data3) - len(data22)) + data22
 
+            if len(data33) < len(time_data3):
+                # 用最后一个值填充
+                data33 = [-1] * (len(time_data3) - len(data33)) + data33
+                
+                
             obj2 = obj.get("computed", "0")
 
-            _log.info(f"历史详情2:{data_json}--分割线--{json_message}--分割线--{obj}")
+            # _log.info(f"历史详情2:{data_json}--分割线--{json_message}--分割线--{obj}")
 
             # charge_idx = 0
             # if data33[0] > -1:
@@ -18690,7 +18699,7 @@ class ApplicationWindow(
 
     @pyqtSlot(str)
     def updateSubscription(self, subscription: str) -> None:
-        _log.debug('updateSubscription(%s)', subscription)
+        # _log.debug('updateSubscription(%s)', subscription)
         if subscription:
             self.plus_subscription = subscription
         else:
@@ -18698,7 +18707,7 @@ class ApplicationWindow(
 
     # if any of the parameters is <0 the corresponding variable is not updated
     def updatePlusLimits(self, rlimit: float, used: float) -> None:
-        _log.debug('updatePlusLimits(%s, %s)', rlimit, used)
+        # _log.debug('updatePlusLimits(%s, %s)', rlimit, used)
         if rlimit > -1:
             self.plus_rlimit = rlimit
         if used > -1:
@@ -18706,7 +18715,7 @@ class ApplicationWindow(
 
     # if pu is "" the corresponding variable is not updated
     def updatePlusPaidUntil(self, pu: str) -> None:
-        _log.debug('updatePlusPaidUntil(%s)', pu)
+        # _log.debug('updatePlusPaidUntil(%s)', pu)
         try:
             if pu != '':
                 self.plus_paidUntil = (
@@ -18719,7 +18728,7 @@ class ApplicationWindow(
     @pyqtSlot(float, float, str, int, list)
     def updateLimits(self, rlimit: float, rused: float, pu: str, notifications: int, machines: List[
         str]) -> None:  # for Python >= 3.9 can replace 'List' with the generic type hint 'list'
-        _log.debug('updateLimits(%s,%s,%s,%s,%s)', rlimit, rused, pu, notifications, machines)
+        #  _log.debug('updateLimits(%s,%s,%s,%s,%s)', rlimit, rused, pu, notifications, machines)
         self.updatePlusLimits(rlimit, rused)
         self.updatePlusPaidUntil(pu)
         self.updatePlusStatus()
@@ -18849,7 +18858,7 @@ class ApplicationWindow(
             languageAction.setChecked(True)
 
     def sendLog(self) -> None:
-        _log.info('sendLog()')
+        #  _log.info('sendLog()')
 
         from email import encoders, generator
         from email.mime.base import MIMEBase
@@ -20178,7 +20187,7 @@ class ApplicationWindow(
         # print(action.data())
         try:
             if action and hasattr(action, 'text'):
-                _log.info('lj 15914: text')
+                #  _log.info('lj 15914: text')
                 label = (action.text())
                 # label = label.replace('&&',
                 #                       '&')  # we reduce those && again to & that were introduced to have the & rendered in the menu entry
@@ -20222,14 +20231,14 @@ class ApplicationWindow(
                         print("Found 'Sliders' section, hiding UI elements.")
                         self.rightTop_suo.setVisible(False)
                         self.rightCenter_suo.setVisible(False)
-                        self.rightBottom_suo.setVisible(False)
+                        # self.rightBottom_suo.setVisible(False)
                         self.control_False.setVisible(True)
                         self.processInfotimer.timeout.connect(self.checkTextChanged)
                     else:
                         print("Did not find 'Sliders' section, showing UI elements.")
                         self.rightTop_suo.setVisible(True)
                         self.rightCenter_suo.setVisible(True)
-                        self.rightBottom_suo.setVisible(True)
+                        # self.rightBottom_suo.setVisible(True)
                         self.control_False.setVisible(False)
                         # 如果之前已经连接，需要断开信号
                         try:
@@ -20261,7 +20270,7 @@ class ApplicationWindow(
                 except Exception as e:
                     print(f"Error reading INI file for 'sethost': {e}")
                 # orgResi = 1
-                _log.info('lj 15945: %s,%s,%s,%s',self.modbus.host, self.qmc.roasterheating, self.qmc.roastersize,self.modbus.type)
+                # _log.info('lj 15945: %s,%s,%s,%s',self.modbus.host, self.qmc.roasterheating, self.qmc.roastersize,self.modbus.type)
 
                 if hasattr(action, 'text'):
                     print(self.modbus.host, self.qmc.roasterheating, self.qmc.roastersize)
@@ -20313,7 +20322,6 @@ class ApplicationWindow(
                     else:
                         self.qmc.machinesetup = action.text()
                         res = True
-                    _log.info('lj 15996: %s,%s,%s', self.qmc.device, (29 in self.qmc.extradevices), self.modbus.type)
                     if (self.qmc.device == 29 or 29 in self.qmc.extradevices) and self.modbus.type in {3,
                                                                                                        4}:  # MODBUS TCP or UDP
                         # as default we offer the current settings MODBUS host, or if this is set to its default as after a factory reset (self.modbus.default_host) we take the one from the machine setup
@@ -20465,7 +20473,6 @@ class ApplicationWindow(
                                         label, self.qmc.roastersize_setup))
                             self.sendmessage(
                                 QApplication.translate('Message', 'Artisan configured for {0}').format(label))
-                            _log.info('Artisan configured for %s', label)
                         else:
                             res = False
                     if not res:
@@ -31053,6 +31060,7 @@ class ApplicationWindow(
     # wrap values in unicode(.) if and only if those are of type string
     def getProfile(self) -> 'ProfileData':
         try:
+            _log.exception("getProfile")
             profile: 'ProfileData' = {}
             profile['recording_version'] = self.recording_version
             profile['recording_revision'] = self.recording_revision
@@ -31162,10 +31170,10 @@ class ApplicationWindow(
             profile['roastingnotes'] = encodeLocalStrict(self.qmc.roastingnotes)
             profile['cuppingnotes'] = encodeLocalStrict(self.qmc.cuppingnotes)
             profile['timex'] = [self.float2float(x, 10) for x in self.qmc.timex]
-            profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1]
-            profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2]
-            profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values]
-            profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2]
+            profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1 if x is not None]
+            profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2 if x is not None]
+            profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values if x is not None]
+            profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2 if x is not None]
             profile['phases'] = self.qmc.phases
             profile['zmax'] = int(self.qmc.zlimit)
             profile['zmin'] = int(self.qmc.zlimit_min)
@@ -31285,14 +31293,16 @@ class ApplicationWindow(
                 profile['betweenbatch_after_preheat'] = self.qmc.betweenbatch_after_preheat
                 profile['electricEnergyMix'] = self.qmc.electricEnergyMix
             except Exception as ex:  # pylint: disable=broad-except
+                _log.exception("ljgetProfile3")
                 _log.exception(ex)
                 _, _, exc_tb = sys.exc_info()
                 self.qmc.adderror(
                     (QApplication.translate('Error Message', 'Exception:') + ' getProfile(): {0}').format(str(ex)),
                     getattr(exc_tb, 'tb_lineno', '?'))
-
+            _log.exception("ljgetProfile")
             return profile
         except Exception as ex:  # pylint: disable=broad-except
+            _log.exception("ljgetProfile2")
             _log.exception(ex)
             _, _, exc_tb = sys.exc_info()
             self.qmc.adderror(
