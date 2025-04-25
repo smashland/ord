@@ -30,7 +30,7 @@ from artisanlib import __build__
 from artisanlib import __release_sponsor_name__
 import gettext
 import tkinter as tk
-from struct import unpack
+import struct
 ## Profiling: use @profile annotations
 # import cProfile
 # import io
@@ -12096,6 +12096,17 @@ class ApplicationWindow(
         # self.label1111.setGeometry(20, 20, 76, 40)
         self.jieduanTimer = QTimer()
         self.jieduanTimer.timeout.connect(self.update_countdown)
+
+        # 给定的 32 位整数
+        int_value = 17008
+
+        # 将整数转换为 4 字节的字节序列
+        bytes_value = int_value.to_bytes(8, byteorder='big')
+
+        # 使用 struct 模块将字节序列解包为双精度浮点数
+        float_value = struct.unpack('>f', bytes_value)[0]
+        formatted_float = "{:.2f}".format(float_value)
+        print(f"整数 {int_value} 对应的单精度浮点数是: {formatted_float}")
 
     def resource_path(relative_path):
         """ Get the absolute path to a resource, works for both development and PyInstaller builds """

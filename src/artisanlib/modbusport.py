@@ -580,7 +580,7 @@ class modbusport:
 
     # function 6 (Write Single Holding Register)
     def writeSingleRegister(self, slave:int, register:int, value:float) -> None:
-        _log.debug('writeSingleRegister(%d,%d,%s)', slave, register, value)
+        _log.info('writeSingleRegister(%d,%d,%s)', slave, register, value)
         if slave == 0:
             return
         try:
@@ -669,7 +669,7 @@ class modbusport:
     # value=int or float
     # writes a single precision 32bit float (2-registers)
     def writeWord(self, slave:int, register:int, value:float) -> None:
-        _log.debug('writeWord(%d,%d,%s)', slave, register, value)
+        _log.info('writeWord(%d,%d,%s)', slave, register, value)
         if slave == 0:
             return
         try:
