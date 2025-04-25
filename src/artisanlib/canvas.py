@@ -4234,7 +4234,7 @@ class tgraphcanvas(FigureCanvas):
                 resLCD = '-.-' if idx is None else '0.0'
             else:
                 lcdformat = '%.0f'
-                resLCD = '--' if idx is None else 'uu'
+                resLCD = '--' if idx is None else '0.0'
             timestr = None
             # TIMER LCDS:
             if not self.flagon and time is not None:
@@ -4272,7 +4272,10 @@ class tgraphcanvas(FigureCanvas):
                     elif self.LCDdecimalplaces and -10000 < temp2[idx] < 100000:
                         btstr = f'{temp2[idx]:.0f}'
                     if len(temp2)>10 and self.changeBool and self.tpChangeBool == False  and temp2[idx]>=temp2[idx-1] and temp2[idx-1]>=temp2[idx-2] and temp2[idx-2]>=temp2[idx-3] and temp2[idx-3]>=temp2[idx-4]:
-                        self.tpChangeBool=True
+                        self.aw.TP_BT = self.temp1[-1]
+                        self.aw.TP_time = self.timex[-1]
+                        self.tpChangeBool = True
+                        self.aw.tpMark_down.setText(str(self.aw.TP_BT))
             except Exception as e: # pylint: disable=broad-except
                 _log.exception(e)
             self.aw.lcd3.display(btstr)
@@ -4281,7 +4284,8 @@ class tgraphcanvas(FigureCanvas):
             # int_part, decimal_part = btstr.split('.')
             # self.aw.processInfoLabel.setText(int_part)
             # self.aw.processInfoLabel_point.setText('.' + decimal_part)
-
+            if self.timex[0] > 2:
+                self.clearMeasurementLj()
             if self.changeBool == True:
                 self.aw.sswd.setText(btstr)
                 int_part, decimal_part = btstr.split('.')
@@ -4289,20 +4293,6 @@ class tgraphcanvas(FigureCanvas):
                 self.aw.processInfoLabel_point.setText('.' + decimal_part)
                 self.aw.processInfo1WD.setText(etstr)
                 self.aw.processInfoLabel_wd.setText(QApplication.translate("RoastHead", '豆温|风温'))
-                # if len(self.timex) > 300:
-                #     self.aw.agtronNum.setText(self.aw.getFakeValue)
-                # if int(int_part) >= 100:
-                #     self.aw.processInfoLabel_point.setGeometry(120 * self.aw.width_scale, 37 * self.aw.height_scale,
-                #                                             100 * self.aw.width_scale,
-                #                                             58 * self.aw.height_scale)
-                #     self.aw.ssdLabel1.setGeometry(170 * self.aw.width_scale, 26 * self.aw.height_scale, 16 * self.aw.width_scale,
-                #                                18 * self.aw.height_scale)
-                # else:
-                #     self.aw.processInfoLabel_point.setGeometry(90 * self.width_scale, 37 * self.height_scale,
-                #                                             100 * self.width_scale,
-                #                                             58 * self.height_scale)
-                #     self.aw.ssdLabel1.setGeometry(140 * self.width_scale, 26 * self.height_scale, 16 * self.width_scale,
-                #                                18 * self.height_scale)
             else:
                 self.aw.sswd.setText(etstr)
                 int_part2, decimal_part2 = etstr.split('.')
@@ -4310,19 +4300,6 @@ class tgraphcanvas(FigureCanvas):
                 self.aw.processInfoLabel_point.setText('.' + decimal_part2)
                 self.aw.processInfo1WD.setText(btstr)
                 self.aw.processInfoLabel_wd.setText(QApplication.translate("RoastHead", '风温|豆温'))
-                # if int(int_part2) >= 100:
-                #     self.aw.processInfoLabel_point.setGeometry(120 * self.aw.width_scale, 37 * self.aw.height_scale,
-                #                                             100 * self.aw.width_scale,
-                #                                             58 * self.aw.height_scale)
-                #     self.aw.ssdLabel1.setGeometry(170 * self.aw.width_scale, 26 * self.aw.height_scale, 16 * self.aw.width_scale,
-                #                                18 * self.aw.height_scale)
-                #
-                # else:
-                #     self.aw.processInfoLabel_point.setGeometry(90 * self.aw.width_scale, 37 * self.aw.height_scale,
-                #                                             100 * self.aw.width_scale,
-                #                                             58 * self.aw.height_scale)
-                #     self.aw.ssdLabel1.setGeometry(140 * self.aw.width_scale, 26 * self.aw.height_scale, 16 * self.aw.width_scale,
-                #                                18 * self.aw.height_scale)
 
             self.aw.processInfoLabel_point.setGeometry(
                 (26 + self.aw.calculate_text_width(self.aw.processInfoLabel)) * self.aw.width_scale, 37 * self.aw.height_scale,
@@ -4336,17 +4313,19 @@ class tgraphcanvas(FigureCanvas):
            # Agtron色值计算和显示
             try:
                 # 检查是否已经烘焙超过5分钟且有足够数据点
-                if len(self.timex) > 300:
+                beantimex = self.timex
+                beanDWtemp = self.temp2
+                beanFWtemp = self.temp1
+                if len(self.timex) > 300 and self.changeBool:
                     # 每秒更新一次Agtron色值
                     # beantimex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494, 495, 496, 497, 498, 499, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606, 607, 608, 609, 610, 611, 612, 613, 614, 615, 616, 617, 618, 619, 620, 621, 622, 623, 624, 625, 626, 627, 628, 629, 630, 631, 632, 633, 634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 663, 664, 665, 666, 667, 668, 669, 670, 671, 672, 673, 674, 675, 676, 677, 678, 679, 680, 681, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719, 720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733, 734, 735, 736, 737, 738, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816]
                     # beantemp = [222.0, 221.7, 220.6, 218.7, 216.6, 213.6, 210.7, 207.5, 203.5, 200.1, 195.9, 192.5, 188.4, 185.0, 181.0, 177.7, 173.9, 170.8, 167.1, 164.1, 160.6, 157.9, 154.7, 152.0, 149.5, 146.6, 144.2, 141.5, 139.3, 136.7, 134.6, 132.3, 130.4, 128.2, 126.4, 124.7, 122.8, 121.2, 119.4, 117.9, 116.3, 115.0, 113.5, 112.3, 110.8, 109.7, 108.4, 107.5, 106.2, 105.4, 104.2, 103.4, 102.5, 101.7, 100.9, 100.1, 99.4, 98.8, 98.1, 97.6, 97.0, 96.4, 95.9, 95.4, 95.0, 94.6, 94.2, 93.8, 93.4, 93.1, 92.8, 92.5, 92.2, 92.0, 91.8, 91.6, 91.4, 91.2, 91.1, 91.0, 90.9, 90.7, 90.7, 90.6, 90.6, 90.6, 90.6, 90.5, 90.4, 90.4, 90.4, 90.4, 90.4, 90.4, 90.4, 90.4, 90.4, 90.5, 90.5, 90.7, 90.7, 90.8, 91.1, 91.2, 91.3, 91.5, 91.6, 91.8, 92.0, 92.2, 92.2, 92.5, 92.6, 92.9, 93.1, 93.4, 93.5, 93.8, 94.0, 94.3, 94.4, 94.7, 94.9, 95.3, 95.5, 95.7, 95.9, 96.2, 96.5, 96.7, 97.0, 97.2, 97.5, 97.8, 98.0, 98.3, 98.4, 98.7, 99.0, 99.3, 99.5, 99.8, 100.1, 100.3, 100.6, 100.8, 101.1, 101.4, 101.6, 102.0, 102.2, 102.5, 102.8, 103.0, 103.4, 103.6, 103.9, 104.1, 104.4, 104.8, 104.9, 105.3, 105.5, 105.9, 106.1, 106.5, 106.7, 107.0, 107.2, 107.6, 107.8, 108.1, 108.4, 108.7, 109.0, 109.2, 109.5, 109.8, 110.1, 110.3, 110.6, 110.9, 111.2, 111.4, 111.8, 112.0, 112.2, 112.5, 112.7, 113.0, 113.3, 113.6, 113.8, 114.1, 114.4, 114.6, 114.9, 115.1, 115.4, 115.7, 115.9, 116.2, 116.5, 116.7, 117.0, 117.1, 117.4, 117.6, 118.0, 118.2, 118.5, 118.7, 119.0, 119.2, 119.4, 119.8, 120.0, 120.2, 120.4, 120.8, 120.9, 121.2, 121.5, 121.8, 122.0, 122.2, 122.5, 122.7, 122.9, 123.2, 123.3, 123.6, 123.8, 124.1, 124.3, 124.5, 124.7, 125.0, 125.1, 125.4, 125.6, 125.9, 126.1, 126.4, 126.5, 126.8, 127.0, 127.2, 127.5, 127.7, 127.9, 128.2, 128.3, 128.4, 128.7, 129.0, 129.2, 129.4, 129.6, 129.9, 130.1, 130.3, 130.5, 130.8, 130.9, 131.1, 131.4, 131.6, 131.8, 132.1, 132.2, 132.4, 132.6, 132.9, 133.0, 133.2, 133.4, 133.6, 133.7, 134.1, 134.2, 134.4, 134.6, 134.9, 135.1, 135.2, 135.5, 135.7, 135.9, 136.1, 136.3, 136.4, 136.7, 136.8, 137.1, 137.2, 137.4, 137.6, 137.7, 137.9, 138.2, 138.3, 138.6, 138.7, 138.9, 139.2, 139.3, 139.5, 139.7, 140.0, 140.1, 140.2, 140.5, 140.7, 140.9, 141.1, 141.2, 141.4, 141.7, 141.8, 141.9, 142.2, 142.3, 142.5, 142.7, 142.9, 143.1, 143.3, 143.4, 143.6, 143.7, 143.9, 144.1, 144.3, 144.5, 144.7, 144.8, 145.1, 145.2, 145.4, 145.6, 145.7, 145.8, 146.1, 146.3, 146.4, 146.6, 146.8, 146.9, 147.0, 147.3, 147.4, 147.6, 147.8, 148.0, 148.1, 148.2, 148.5, 148.6, 148.8, 148.9, 149.1, 149.3, 149.5, 149.6, 149.8, 150.0, 150.2, 150.4, 150.5, 150.7, 150.9, 151.0, 151.2, 151.4, 151.5, 151.8, 151.8, 152.1, 152.3, 152.4, 152.6, 152.8, 152.9, 153.0, 153.3, 153.4, 153.6, 153.8, 153.9, 154.1, 154.3, 154.4, 154.6, 154.8, 154.9, 155.0, 155.3, 155.4, 155.5, 155.7, 155.9, 156.1, 156.2, 156.4, 156.6, 156.7, 156.9, 157.0, 157.2, 157.3, 157.4, 157.7, 157.8, 157.9, 158.2, 158.3, 158.4, 158.7, 158.8, 158.9, 159.1, 159.2, 159.4, 159.6, 159.7, 159.9, 160.0, 160.2, 160.4, 160.5, 160.7, 160.9, 161.0, 161.1, 161.4, 161.5, 161.7, 161.8, 161.9, 162.1, 162.3, 162.4, 162.6, 162.7, 162.9, 163.1, 163.2, 163.4, 163.6, 163.7, 163.9, 164.1, 164.3, 164.5, 164.6, 164.7, 164.9, 165.0, 165.3, 165.4, 165.6, 165.7, 165.9, 166.1, 166.2, 166.3, 166.5, 166.7, 166.8, 166.9, 167.0, 167.3, 167.4, 167.5, 167.7, 167.8, 168.0, 168.2, 168.4, 168.5, 168.6, 168.8, 168.9, 169.1, 169.3, 169.4, 169.5, 169.7, 169.9, 170.1, 170.2, 170.3, 170.5, 170.7, 170.8, 170.9, 171.1, 171.3, 171.4, 171.6, 171.8, 171.9, 172.0, 172.2, 172.4, 172.5, 172.8, 172.8, 173.0, 173.1, 173.3, 173.4, 173.6, 173.7, 173.9, 174.0, 174.2, 174.3, 174.5, 174.6, 174.8, 174.9, 175.0, 175.2, 175.3, 175.5, 175.6, 175.8, 175.9, 176.1, 176.3, 176.3, 176.5, 176.7, 176.8, 176.9, 177.1, 177.2, 177.4, 177.5, 177.6, 177.7, 177.9, 178.1, 178.2, 178.3, 178.5, 178.6, 178.7, 178.9, 179.0, 179.2, 179.4, 179.5, 179.7, 179.7, 179.9, 180.1, 180.3, 180.4, 180.5, 180.8, 180.9, 181.0, 181.1, 181.3, 181.5, 181.6, 181.8, 181.9, 182.0, 182.2, 182.3, 182.5, 182.6, 182.8, 182.9, 183.0, 183.2, 183.4, 183.5, 183.7, 183.8, 183.9, 184.1, 184.2, 184.3, 184.5, 184.7, 184.8, 185.0, 185.1, 185.3, 185.4, 185.6, 185.7, 185.9, 186.1, 186.2, 186.4, 186.5, 186.6, 186.8, 186.9, 187.1, 187.3, 187.4, 187.5, 187.8, 187.9, 188.0, 188.3, 188.4, 188.6, 188.8, 188.9, 189.1, 189.2, 189.3, 189.5, 189.7, 189.8, 190.0, 190.1, 190.3, 190.5, 190.6, 190.7, 190.9, 191.0, 191.2, 191.4, 191.5, 191.6, 191.8, 191.9, 192.1, 192.2, 192.3, 192.5, 192.6, 192.8, 192.9, 193.1, 193.2, 193.3, 193.5, 193.6, 193.8, 193.9, 194.0, 194.1, 194.2, 194.4, 194.5, 194.6, 194.9, 195.0, 195.0, 195.2, 195.4, 195.4, 195.5, 195.6, 195.8, 195.9, 196.0, 196.2, 196.3, 196.4, 196.6, 196.7, 196.8, 196.9, 197.0, 197.1, 197.3, 197.3, 197.5, 197.6, 197.7, 197.7, 197.8, 197.9, 198.1, 198.2, 198.3, 198.4, 198.5, 198.6, 198.7, 198.8, 198.9, 199.0, 199.1, 199.2, 199.3, 199.5, 199.5, 199.6, 199.7, 199.9, 200.0, 200.1, 200.2, 200.2, 200.4, 200.5, 200.7, 200.8, 200.9, 201.0, 201.1, 201.3, 201.3, 201.4, 201.6, 201.8, 201.9, 202.0, 202.2, 202.3, 202.3, 202.5, 202.6, 202.7, 202.8, 203.0, 203.1, 203.1, 203.3, 203.3, 203.5, 203.6, 203.7, 203.9, 204.0, 204.1, 204.2, 204.3, 204.4, 204.5, 204.7, 204.8, 204.8, 204.9, 205.1, 205.2, 205.2, 205.3, 205.5, 205.6, 205.7, 205.7, 205.9, 206.0, 206.1, 206.2, 206.4, 206.4, 206.5, 206.6, 206.7, 206.8, 206.9, 207.0, 207.0, 207.2, 207.2, 207.4, 207.5, 207.6, 207.6, 207.7, 207.8, 207.9, 208.0, 208.1, 208.1, 208.2, 208.4, 208.5, 208.5, 208.6, 208.8, 208.8, 208.9, 209.0, 209.0, 209.2, 209.3, 209.3, 209.5, 209.6, 209.7, 209.8, 209.8, 210.0, 210.1, 210.1, 210.2, 210.3, 210.4, 210.5, 210.6, 210.6, 210.8, 210.9, 211.0, 211.1, 211.2, 211.3, 211.4, 211.5, 211.6, 211.7]
-                    beantimex = self.timex
-                    beantemp = self.temp2
+
                     formulation_name = getattr(self.aw, 'getFormulationName', '')
                     # 模型路径，根据实际情况调整
                     model_path = os.path.join(ytycwdpath, "localJson", "models", "agtron_model", "")
 
-                    predicted_agtron = predict_agtron_color(beantimex, beantemp, formulation_name, model_path)
+                    predicted_agtron = predict_agtron_color(beantimex, beanDWtemp, formulation_name, model_path)
                     # 更新显示
                     if predicted_agtron is not None:
                         predicted_agtron = float(predicted_agtron)  # 确保是数值
@@ -4414,6 +4393,14 @@ class tgraphcanvas(FigureCanvas):
             self.aw.lcd4.display(deltaetstr)
             self.aw.lcd5.display(deltabtstr)
 
+            if self.changeBool == True and self.aw.backformulation is not None:
+                if len(beantimex) <3:
+                    self.changeBool
+                self.aw.matplotlib_maininfo.update_chart_in_thread(time_data=self.aw.backformulation.get('alogJson').get('timex'),data1=self.aw.backformulation.get('alogJson').get('temp2'),data2=self.aw.backformulation.get('alogJson').get('temp1'),data3=self.aw.backformulation.get('alogJson').get('agtron'),data4=self.aw.backformulation.get('alogJson').get('delta2'),time_data2 = beantimex, data21 =beanDWtemp, data22 =beanFWtemp, data23 =self.agtron_values, data24 =self.delta2)
+            else:
+                if len(beantimex) <3:
+                    self.changeBool
+                self.aw.matplotlib_maininfo.update_chart_in_thread(time_data2 = beantimex, data21 =beanDWtemp, data22 =beanFWtemp, data23 =self.agtron_values, data24 =self.delta2)
             try:
                 self.updateLargeDeltaLCDs(deltabt=deltabtstr,deltaet=deltaetstr)
             except Exception as e: # pylint: disable=broad-except
@@ -4421,7 +4408,7 @@ class tgraphcanvas(FigureCanvas):
 
             self.aw.processInfo2ROR.setText(deltabtstr)
 
-            if len(self.aw.getTPMark) == 0 and float(self.aw.processInfo1WD.text()) > int(self.aw.temperatureEdit.text()):
+            if len(self.aw.getTPMark) == 0 and float(self.aw.processInfo1WD.text()) > int(self.aw.mbwdContent.text()):
                 self.aw.diologRect.setVisible(True)
 
             # Fuji/Delta LCDs
@@ -4469,7 +4456,7 @@ class tgraphcanvas(FigureCanvas):
                                     fmt = '%.0f'
                                     extra1_value = fmt%v
                             elif self.intChannel(i,0):
-                                extra1_value = 'uu'
+                                extra1_value = '0'
                         self.aw.extraLCD1[i].display(extra1_value)
                         extra1_values.append(extra1_value)
                     except Exception as e: # pylint: disable=broad-except
@@ -4491,7 +4478,7 @@ class tgraphcanvas(FigureCanvas):
                                     fmt = '%.0f'
                                     extra2_value = fmt%v
                             elif self.intChannel(i,1):
-                                extra2_value = 'uu'
+                                extra2_value = '0'
                         self.aw.extraLCD2[i].display(extra2_value)
                         extra2_values.append(extra2_value)
                     except Exception as e: # pylint: disable=broad-except
@@ -6500,6 +6487,30 @@ class tgraphcanvas(FigureCanvas):
         if self.aw.largePhasesLCDs_dialog is not None:
             self.aw.largePhasesLCDs_dialog.updateDecimals()
 
+    def clearMeasurementLj(self) -> None:
+        self.rateofchange1 = 0.0
+        self.rateofchange2 = 0.0
+        charge: float = 0
+        if self.timeindex[0] > -1:
+            charge = self.timex[self.timeindex[0]]
+        # initialize temperature and delta data
+        self.temp1, self.temp2, self.delta1, self.delta2, self.timex, self.stemp1, self.stemp2, self.ctimex1, self.ctimex2, self.ctemp1, self.ctemp2 = [], [], [], [], [], [], [], [], [], [], []
+        self.tstemp1, self.tstemp2 = [], []
+        self.unfiltereddelta1, self.unfiltereddelta2 = [], []
+        self.unfiltereddelta1_pure, self.unfiltereddelta2_pure = [], []
+        # initialize projections data:
+        self.BTprojection_tx, self.BTprojection_temp, self.ETprojection_tx, self.ETprojection_temp = [], [], [], []
+        self.DeltaBTprojection_tx, self.DeltaBTprojection_temp, self.DeltaETprojection_tx, self.DeltaETprojection_temp = [], [], [], []
+        # timeindex
+        self.timeindex = [-1, 0, 0, 0, 0, 0, 0, 0]
+        # we set startofx to x-axis min limit as timeindex[0] is no cleared, to keep the axis limits constant (note that startx depends on timeindex[0]!)
+        self.startofx = self.startofx - charge
+        # extra devices
+        for i in range(min(len(self.extradevices), len(self.extratimex), len(self.extratemp1), len(self.extratemp2),
+                           len(self.extrastemp1), len(self.extrastemp2))):
+            self.extratimex[i], self.extratemp1[i], self.extratemp2[i], self.extrastemp1[i], self.extrastemp2[
+                i] = [], [], [], [], []  # reset all variables that need to be reset (but for the actually measurements that will be treated separately at the end of this function)
+            self.extractimex1[i], self.extractimex2[i], self.extractemp1[i], self.extractemp2[i] = [], [], [], []
     def clearMeasurements(self, andLCDs:bool=True) -> None:
         try:
             #### lock shared resources #####
@@ -12614,15 +12625,15 @@ class tgraphcanvas(FigureCanvas):
         removed = False
         self.changeBool = True
         self.aw.diologRect.setVisible(False)
-
         self.aw.stop_time()
         self.aw.gjxytimer.stop()  # 关闭锅间协议
-
+        self.aw.CHARGE_BT=self.temp1[-1]
+        self.aw.rudouImg_down.setText(str(self.aw.CHARGE_BT))
         self.aw.ksyrtimer.stop()
         self.aw.fourTimer.start()
 
         self.aw.markChargeClick()
-
+        self.clearMeasurementLj()
         if len(self.aw.getTPMark) > 0:
             self.aw.jieduanInfo(self.aw.getTPMark)
         try:
@@ -12710,7 +12721,7 @@ class tgraphcanvas(FigureCanvas):
                                 tx = self.timex[self.timeindex[0]]
                                 self.ystep_down,self.ystep_up = self.findtextgap(0,0,temp,temp,d)
                                 time_temp_annos = self.annotate(temp,st1,tx,temp,self.ystep_up,self.ystep_down,draggable_anno_key=0)
-                                # self.aw.rudouImg_down.setText(f'{round(temp, 1)}℃')
+                                self.aw.rudouImg_down.setText(f'{round(temp, 1)}℃')
                                 if time_temp_annos is not None:
                                     self.l_annotations += time_temp_annos
 
@@ -12770,8 +12781,16 @@ class tgraphcanvas(FigureCanvas):
                 if self.roastpropertiesAutoOpenFlag:
                     self.aw.openPropertiesSignal.emit()
             self.aw.onMarkMoveToNext(self.aw.buttonCHARGE)
-        self.reset()
-
+    # def resetData(self) -> None:
+    #     self.timex.clear()
+    #     self.temp1.clear()
+    #     self.temp2.clear()
+    #     self.delta1.clear()
+    #     self.delta2.clear()
+    #     self.agtron_values.clear()
+    #     self.timexindex = 0
+    #     self.flagstart =False
+    #     self.redrawSignal.emit(True, False, False, False, False)
     # called via markTPSignal (queued), triggered by external device
     # does directly call markTP()
     @pyqtSlot()
@@ -12795,10 +12814,10 @@ class tgraphcanvas(FigureCanvas):
                     d = self.ylimit - self.ylimit_min
                     self.ystep_down,self.ystep_up = self.findtextgap(self.ystep_down,self.ystep_up,temp,temp,d)
                     time_temp_annos = self.annotate(temp,st1,self.timex[self.TPalarmtimeindex],temp,self.ystep_up,self.ystep_down,0,1.,draggable_anno_key=-1)
-                    # self.aw.tpMark.setVisible(True)
-                    # self.aw.tpMark_up.setVisible(True)
-                    # self.aw.tpMark_down.setText(f'({round(self.timex[self.TPalarmtimeindex])}-{round(temp, 1)}℃)')
-                    # self.aw.rudouBar.setValue(13)
+                    self.aw.tpMark.setVisible(True)
+                    self.aw.tpMark_up.setVisible(True)
+                    self.aw.tpMark_down.setText(f'({round(self.timex[self.TPalarmtimeindex])}-{round(temp, 1)}℃)')
+                    self.aw.rudouBar.setValue(13)
                     if time_temp_annos is not None:
                         self.l_annotations += time_temp_annos
                     self.updateBackground() # but we need to update the background cache with the new annotation
@@ -12882,8 +12901,8 @@ class tgraphcanvas(FigureCanvas):
                                 else:
                                     self.ystep_down,self.ystep_up = self.findtextgap(self.ystep_down,self.ystep_up,temp,temp,d)
                                 time_temp_annos = self.annotate(temp,st1,self.timex[self.timeindex[1]],temp,self.ystep_up,self.ystep_down,draggable_anno_key=1)
-                                # self.aw.zhd_down.setText(f'{round(temp, 1)}℃')
-                                # self.aw.rudouBar.setValue(40)
+                                self.aw.zhd_down.setText(f'{round(temp, 1)}℃')
+                                self.aw.rudouBar.setValue(40)
                                 if time_temp_annos is not None:
                                     self.l_annotations += time_temp_annos
                                 if not self.flagstart or self.alignEvent not in {1, 7}: # in this case the updateBackground is triggered by the redraw of timealign below
@@ -13001,7 +13020,7 @@ class tgraphcanvas(FigureCanvas):
                                 else:
                                     self.ystep_down,self.ystep_up = self.findtextgap(self.ystep_down,self.ystep_up,temp,temp,d)
                                 time_temp_annos = self.annotate(temp,st1,self.timex[self.timeindex[2]],temp,self.ystep_up,self.ystep_down,draggable_anno_key=2)
-                                # self.aw.rudouBar.setValue(72)
+                                self.aw.rudouBar.setValue(72)
                                 if time_temp_annos is not None:
                                     self.l_annotations += time_temp_annos
                                 if not self.flagstart or self.alignEvent not in {2, 7}: # in this case the updateBackground is triggered by the redraw of timealign below
@@ -13407,6 +13426,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()
+        self.clearMeasurementLj()
         if len(self.timex) > 1:
             removed = False
             try:
@@ -13495,7 +13515,7 @@ class tgraphcanvas(FigureCanvas):
                                     else:
                                         self.ystep_down,self.ystep_up = self.findtextgap(self.ystep_down,self.ystep_up,temp,temp,d)
                                 time_temp_annos = self.annotate(temp,st1,self.timex[self.timeindex[6]],temp,self.ystep_up,self.ystep_down,draggable_anno_key=6)
-                                # self.aw.rudouBar.setValue(100)
+                                self.aw.rudouBar.setValue(100)
                                 if time_temp_annos is not None:
                                     self.l_annotations += time_temp_annos
                                 if not self.flagstart or self.alignEvent not in {6, 7}: # in this case the updateBackground is triggered by the redraw of timealign below
