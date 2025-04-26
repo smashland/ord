@@ -1734,12 +1734,12 @@ class CustomMainPlotWidget(QWidget):
         ax.spines['bottom'].set_color('#7D7A79')
         ax.spines['bottom'].set_linewidth(0.5)
         ax.spines['bottom'].set_alpha(0.7)
-        
+
         if time_data is not None:
             # 画线 配方曲线
             ax.plot(time_data, data1, label="Data1", color="#E8CAAF")  # 豆温
             ax.plot(time_data, data2, label="Data2", color="#C7706F")  # 风温
-    
+
             if data3 != "未知任务":
                 ax.plot(time_data, data3, label="Data3", color="#AFD9B7")  # 色值
             if data4 != "未知任务" and len(data4) > 0:
@@ -1749,7 +1749,7 @@ class CustomMainPlotWidget(QWidget):
             # 画线 实时曲线
             ax.plot(time_data2, data21, label="Data21", color="#D18F65")  # 豆温
             ax.plot(time_data2, data22, label="Data22", color="#AC3230")  # 风温
-    
+
             if data23 is not None and data23 != "未知任务" and len(data23) > 0:
                 ax.plot(time_data2, data23, label="Data23", color="#7864AA")  # 色值
             if data24 is not None and  data24 != "未知任务" and len(data24) > 0:
@@ -1800,11 +1800,11 @@ class CustomMainPlotWidget(QWidget):
         ax.tick_params(axis='y', length=0)
 
         # 移除图例
-        ax.legend().remove()
-
-        # 确保 Matplotlib 画布刷新
+        # ax.legend().remove()
+        #
+        # # 确保 Matplotlib 画布刷新
         self.canvas.draw()
-        self.canvas.flush_events()
+        # self.canvas.flush_events()
 
     def update_chart_in_thread(self, time_data=None,  data1=None,  data2=None,  data3=None, data4=None,  obj2=None, time_data2=None,  data21=None,  data22=None,  data23=None,
                                data24=None):
@@ -12097,16 +12097,6 @@ class ApplicationWindow(
         self.jieduanTimer = QTimer()
         self.jieduanTimer.timeout.connect(self.update_countdown)
 
-        # 给定的 32 位整数
-        int_value = 17008
-
-        # 将整数转换为 4 字节的字节序列
-        bytes_value = int_value.to_bytes(8, byteorder='big')
-
-        # 使用 struct 模块将字节序列解包为双精度浮点数
-        float_value = struct.unpack('>f', bytes_value)[0]
-        formatted_float = "{:.2f}".format(float_value)
-        print(f"整数 {int_value} 对应的单精度浮点数是: {formatted_float}")
 
     def resource_path(relative_path):
         """ Get the absolute path to a resource, works for both development and PyInstaller builds """
@@ -13573,7 +13563,7 @@ class ApplicationWindow(
         self.TP_time = self.qmc.timex[-1]
         self.qmc.tpChangeBool=True
         self.tpMark_down.setText(str(self.TP_BT))
-        self.fireslideraction2(0, False)
+        # self.fireslideraction2(0, False)
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
@@ -21658,7 +21648,6 @@ class ApplicationWindow(
                         cmds = filter(None, cmd_str.split(
                             ';'))  # allows for sequences of commands like in "<cmd>;<cmd>;...;<cmd>"
                         followupCmd = 0.  # contains the required sleep time
-                        # 检查设备标签是否为MB-01，如果是则处理最后一位数值为浮点数
                         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
                         _log.info('lj 22840', cmd_str, is_mb01)
                         for c in cmds:
@@ -21765,7 +21754,45 @@ class ApplicationWindow(
                                     _log.exception(e)
                             elif cs.startswith('writeSingle'):
                                 try:
-                                    cmds = eval(cs[len('writeSingle'):])  # pylint: disable=eval-used
+                                    cmds = eval(cs[len('writeSingle'):])  # pylint: disable=eval-used 
+                                    # 检查设备标签是否为MB-01，如果是则处理最后一位数值为浮点数
+                                    if is_mb01 and '(' in cs and ')' in cs:
+                                        try:
+                                            # 提取命令中的参数部分
+                                            cmd_part = cs[:cs.find('(')]
+                                            params_part = cs[cs.find('(') + 1:cs.rfind(')')]
+                                            params = [p.strip() for p in params_part.split(',')]
+                                            _log.info('lj 22858', cmd_part, params_part, params)
+                                            # 如果有参数，尝试将最后一个参数转换为浮点数
+                                            if params and cmd_part not in ['sleep']:  # 排除sleep命令
+                                                try:
+                                                    last_param = params[-1]
+                                                    # 检查最后一个参数是否为数值
+                                                    # if last_param.replace('.', '', 1).isdigit() or (
+                                                    #         last_param.startswith('-') and last_param[1:].replace('.',
+                                                    #                                                               '',
+                                                    #                                                               1).isdigit()):
+                                                        # 转换为浮点数
+
+                                                        # high, low = self.float_to_modbus_registers(last_param)
+                                                        # print(f"浮点数 {float_value} 转换为 Modbus 寄存器值: 高字 = {high}, 低字 = {low}")
+                                                        # # 从 Modbus 寄存器值还原浮点数
+                                                        # hex_string = self.modbus_registers_to_float(high, low)
+                                                        # print(f"从 Modbus 寄存器值还原的浮点数: {hex_string}")
+                                                    uuw = struct.pack('f', float(last_param))
+                                                    ip = struct.unpack('i', uuw)[0]
+
+                                                        # 右移16位
+                                                    res = ip >> 16
+                                                    params[-1]=str(res)
+                                                    # # 重建命令字符串
+                                                    cmds = f"{cmd_part}({','.join(params)})"
+                                                    _log.info('lj 22871', cs)
+                                                except (ValueError, IndexError):
+
+                                                    pass  # 如果转换失败，保持原样
+                                        except Exception:
+                                            pass  # 如果解析失败，保持原样
                                     if isinstance(cmds, tuple):
                                         if len(cmds) == 3 and not isinstance(cmds[0], list):
                                             # cmd has format "writeSingle(s,r,v)"
@@ -21849,36 +21876,6 @@ class ApplicationWindow(
                             elif cs.startswith('wcoil'):
                                 try:
                                     # 如果是MB-01设备，将最后一位数值转换为浮点数
-                                    if is_mb01 and '(' in cs and ')' in cs:
-                                        try:
-                                            # 提取命令中的参数部分
-                                            cmd_part = cs[:cs.find('(')]
-                                            params_part = cs[cs.find('(') + 1:cs.rfind(')')]
-                                            params = [p.strip() for p in params_part.split(',')]
-                                            _log.info('lj 22858', cmd_part, params_part, params)
-                                            # 如果有参数，尝试将最后一个参数转换为浮点数
-                                            if params and cmd_part not in ['sleep']:  # 排除sleep命令
-                                                try:
-                                                    last_param = params[-1]
-                                                    # 检查最后一个参数是否为数值
-                                                    if last_param.replace('.', '', 1).isdigit() or (
-                                                            last_param.startswith('-') and last_param[1:].replace('.',
-                                                                                                                  '',
-                                                                                                                  1).isdigit()):
-                                                        # 转换为浮点数
-
-                                                        # high, low = self.float_to_modbus_registers(last_param)
-                                                        # print(f"浮点数 {float_value} 转换为 Modbus 寄存器值: 高字 = {high}, 低字 = {low}")
-                                                        # # 从 Modbus 寄存器值还原浮点数
-                                                        # hex_string = self.modbus_registers_to_float(high, low)
-                                                        # print(f"从 Modbus 寄存器值还原的浮点数: {hex_string}")
-                                                        # # 重建命令字符串
-                                                        # cs = f"{cmd_part}({','.join(hex_string)})"
-                                                        _log.info('lj 22871', cs)
-                                                except (ValueError, IndexError):
-                                                    pass  # 如果转换失败，保持原样
-                                        except Exception:
-                                            pass  # 如果解析失败，保持原样
                                     cmds = eval(cs[len('wcoil'):])  # pylint: disable=eval-used
                                     if isinstance(cmds, tuple) and len(cmds) == 3:
                                         # cmd has format "wcoil(s,r,<b>)"

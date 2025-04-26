@@ -4284,7 +4284,7 @@ class tgraphcanvas(FigureCanvas):
             # int_part, decimal_part = btstr.split('.')
             # self.aw.processInfoLabel.setText(int_part)
             # self.aw.processInfoLabel_point.setText('.' + decimal_part)
-            if self.timex[0] > 2:
+            if len(self.timex)>2 and self.timex[0] > 2 and self.timex[1] < 2:
                 self.clearMeasurementLj()
             if self.changeBool == True:
                 self.aw.sswd.setText(btstr)
