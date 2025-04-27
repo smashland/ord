@@ -13563,7 +13563,6 @@ class ApplicationWindow(
         self.TP_time = self.qmc.timex[-1]
         self.qmc.tpChangeBool=True
         self.tpMark_down.setText(str(self.TP_BT))
-        # self.fireslideraction2(0, False)
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
@@ -15668,12 +15667,6 @@ class ApplicationWindow(
             self.ccBtn.setEnabled(True)
 
     def markChargeClick(self):
-        # print(self.time_left)
-        # self.qmc.markCharge()
-        self.fireslideraction2(0,True)
-        # self.thread = threading.Thread(target=self.delayed_operation, args=(3, 0))
-        # # 启动子线程
-        # self.thread.start()
         self.statusLabel.setText(QApplication.translate("RoastHead", "烘焙中..."))
         self.start_countdown()
         self.status_label2.setText(QApplication.translate("RoastHead", '进行中'))
@@ -15790,6 +15783,11 @@ class ApplicationWindow(
         # 启动定时器
         self.fourTimer.start(self.fourInterval)
 
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(0,True)
+            Qtimer.singleShot(40000,lambda:self.fireslideraction2(0,False))
+
     def markDropClick(self):      
         try:
             self.qmc.reset(redraw=True, keepProperties=False)
@@ -15797,12 +15795,6 @@ class ApplicationWindow(
                 data = json.load(file)
                 self.orderList_data = data
             found_order = False
-            self.fireslideraction2(1,True)
-            # self.thread = threading.Thread(target=self.delayed_operation, args=(self,4, 1))
-            # 启动子线程
-            # self.thread.start()
-            # self.getTPMark=[]
-            # 遍历订单数据并生成控件
 
             self.DROP_BT = self.qmc.temp1[-1]
             self.totaltime = self.qmc.timex[-1]
@@ -15826,22 +15818,23 @@ class ApplicationWindow(
             pass
         self.zhezhaoWidget.setVisible(True)
         self.ccjlWidget.setVisible(True)
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(1, True)
+            Qtimer.singleShot(40000, lambda: self.fireslideraction2(1, False))
 
     def markDTP(self):
-        self.fireslideraction2(2, True)
-        # self.thread = threading.Thread(target=self.delayed_operation, args=(self,3, 2))
-        # # 启动子线程
-        # self.thread.start()
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(2, True)
+            Qtimer.singleShot(40000, lambda: self.fireslideraction2(2, False))
         
     def markJB(self):
-        self.fireslideraction2(3, True)
-        # self.thread = threading.Thread(target=self.delayed_operation, args=(self,3, 3))
-        # # 启动子线程
-        # self.thread.start()
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(3, True)
+            Qtimer.singleShot(40000, lambda: self.fireslideraction2(3, False))
 
-    def delayed_operation(self,delay_time, index):
-        time.sleep(delay_time)
-        self.fireslideraction2(index, False)
 
         
     def create_toplevel(self, title="新窗口", width=300, height=200):
