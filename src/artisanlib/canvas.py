@@ -3453,7 +3453,7 @@ class tgraphcanvas(FigureCanvas):
         tx_org:List[float] = []
         temp_trail:List[float] = []
         for x, tp in zip(tx_in[-l:],temp_in[-l:]): # we only iterate over l-elements
-            if tp is not None and tp != -1:
+            if tp is not None and tp != -1 and x is not None:
                 tx_org.append(x)
                 temp_trail.append(tp)
         if len(temp_trail) == 0:
