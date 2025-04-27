@@ -15786,7 +15786,7 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(0,True)
-            Qtimer.singleShot(40000,lambda:self.fireslideraction2(0,False))
+            QTimer.singleShot(40000,lambda:self.fireslideraction2(0,False))
 
     def markDropClick(self):      
         try:
@@ -15821,19 +15821,19 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(1, True)
-            Qtimer.singleShot(40000, lambda: self.fireslideraction2(1, False))
+            QTimer.singleShot(40000, lambda: self.fireslideraction2(1, False))
 
     def markDTP(self):
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(2, True)
-            Qtimer.singleShot(40000, lambda: self.fireslideraction2(2, False))
+            QTimer.singleShot(40000, lambda: self.fireslideraction2(2, False))
         
     def markJB(self):
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(3, True)
-            Qtimer.singleShot(40000, lambda: self.fireslideraction2(3, False))
+            QTimer.singleShot(40000, lambda: self.fireslideraction2(3, False))
 
 
         
