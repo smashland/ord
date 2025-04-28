@@ -4301,14 +4301,14 @@ class tgraphcanvas(FigureCanvas):
                 self.aw.processInfo1WD.setText(btstr)
                 self.aw.processInfoLabel_wd.setText(QApplication.translate("RoastHead", '风温|豆温'))
 
-            self.aw.processInfoLabel_point.setGeometry(
-                (26 + self.aw.calculate_text_width(self.aw.processInfoLabel)) * self.aw.width_scale, 37 * self.aw.height_scale,
-                50 * self.aw.width_scale,
-                58 * self.aw.height_scale)
+            # self.aw.processInfoLabel_point.setGeometry(
+            #     (26 + self.aw.calculate_text_width(self.aw.processInfoLabel)) * self.aw.width_scale, 37 * self.aw.height_scale,
+            #     50 * self.aw.width_scale,
+            #     58 * self.aw.height_scale)
 
-            self.aw.ssdLabel1.setGeometry((26 + self.aw.calculate_text_width(
-                self.aw.processInfoLabel) + self.aw.calculate_text_width(self.aw.processInfoLabel_point)) * self.aw.width_scale,
-                                      26 * self.aw.height_scale, 16 * self.aw.width_scale, 18 * self.aw.height_scale)
+            # self.aw.ssdLabel1.setGeometry((26 + self.aw.calculate_text_width(
+            #     self.aw.processInfoLabel) + self.aw.calculate_text_width(self.aw.processInfoLabel_point)) * self.aw.width_scale,
+            #                           26 * self.aw.height_scale, 16 * self.aw.width_scale, 18 * self.aw.height_scale)
 
            # Agtron色值计算和显示
             try:
@@ -12628,7 +12628,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.stop_time()
         self.aw.gjxytimer.stop()  # 关闭锅间协议
         self.aw.CHARGE_BT=self.temp1[-1]
-        self.aw.rudouImg_down.setText(str(self.aw.CHARGE_BT))
+        self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 1)))
         self.aw.ksyrtimer.stop()
         self.aw.fourTimer.start()
 

@@ -767,7 +767,7 @@ else:
 if platform.system().startswith('Windows'):
     # on Windows we use the Fusion style per default which supports the dark mode
     app.setStyle('Fusion')
-    app.setWindowIcon(QIcon(os.path.join(getAppPath(), 'artisan.png')))
+    app.setWindowIcon(QIcon(os.path.join(getAppPath(), 'fwkx.ico')))
 #    try:
 #        # activate scaling for hiDPI screen support on Windows
 #        app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
@@ -3084,42 +3084,48 @@ class ApplicationWindow(
         self.yrqk = QWidget(self)  # 预热情况
         self.yrqk.setStyleSheet(f'border-radius: {25*self.height_scale}px;background-color: #E7F0FB;')
         self.yrqk.setGeometry(231*self.width_scale, 436*self.height_scale, 290*self.width_scale, 120*self.height_scale)
-
-        self.yrqkLabel = QLabel(self.yrqk)
+        layout = QVBoxLayout()
+        layout.setSpacing(0)
+        self.yrqk.setLayout(layout)
+        self.yrqkLabel = QLabel()
         self.yrqkLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.yrqkLabel.setText(QApplication.translate("RoastHead", "预热情况"))
         self.yrqkLabel.setGeometry(25*self.width_scale, 20*self.height_scale, 290*self.width_scale, 45*self.height_scale)
         self.yrqkLabel.setStyleSheet("color: #222222;")
         yrqkfont = QFont(self.font_family3, 14*self.width_scale)
         self.yrqkLabel.setFont(yrqkfont)
-
+        layout.addWidget(self.yrqkLabel)
+        layout1 = QHBoxLayout()
+        layout.addLayout(layout1)
         self.yrqkLabelTime = QLabel(self.yrqk)
-        self.yrqkLabelTime.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.yrqkLabelTime.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.yrqkLabelTime.setText('00：00')
-        self.yrqkLabelTime.setGeometry(25*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
-        self.yrqkLabelTime.setStyleSheet("color: #222222;")
+        # self.yrqkLabelTime.setGeometry(25*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
+        self.yrqkLabelTime.setStyleSheet("color: #222222;font-size: 30px;")
         yrqkfont2 = QFont(self.font_family3, 8*self.width_scale)
         self.yrqkLabelTime.setFont(yrqkfont2)
+        layout1.addWidget(self.yrqkLabelTime)
 
-        self.yrqkLabel = QLabel(self.yrqk)
-        self.yrqkLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        self.yrqkLabel.setText('30：00')
-        self.yrqkLabel.setGeometry(226*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
-        self.yrqkLabel.setStyleSheet("color: #8A929C;")
-        self.yrqkLabel.setFont(yrqkfont2)
+        # self.yrqkLabel = QLabel()
+        # self.yrqkLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        # self.yrqkLabel.setText('30：00')
+        # self.yrqkLabel.setGeometry(226*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
+        # self.yrqkLabel.setStyleSheet("color: #8A929C;")
+        # self.yrqkLabel.setFont(yrqkfont2)
+        # layout1.addWidget(self.yrqkLabel)
 
-        self.jdtbk = QWidget(self.yrqk)  # 进度条边框
-        self.jdtbk.setGeometry(25 * self.width_scale, 73 * self.height_scale, 240 * self.width_scale,
-                               20 * self.height_scale)
-        self.jdtbk.setStyleSheet(f'border-radius: {9 * self.height_scale}px;border: 1px solid #CAD6E5;')
-
-
-        self.jdt = QProgressBar(self.yrqk)
-        self.jdt.setGeometry(31*self.width_scale, 80*self.height_scale, 228*self.width_scale, 6*self.height_scale)
-        self.jdt.setStyleSheet(
-            f"QProgressBar {{border-radius: {3*self.height_scale}px;background-color: #CAD6E5; text-align:center; font-size:0px; color: transparent}}"
-            f"QProgressBar::chunk {{border-radius: {3*self.height_scale}px;background-color: #72AFFF;}}"
-        )
+        # self.jdtbk = QWidget(self.yrqk)  # 进度条边框
+        # self.jdtbk.setGeometry(25 * self.width_scale, 73 * self.height_scale, 240 * self.width_scale,
+        #                        20 * self.height_scale)
+        # self.jdtbk.setStyleSheet(f'border-radius: {9 * self.height_scale}px;border: 1px solid #CAD6E5;')
+        #
+        #
+        # self.jdt = QProgressBar(self.yrqk)
+        # self.jdt.setGeometry(31*self.width_scale, 80*self.height_scale, 228*self.width_scale, 6*self.height_scale)
+        # self.jdt.setStyleSheet(
+        #     f"QProgressBar {{border-radius: {3*self.height_scale}px;background-color: #CAD6E5; text-align:center; font-size:0px; color: transparent}}"
+        #     f"QProgressBar::chunk {{border-radius: {3*self.height_scale}px;background-color: #72AFFF;}}"
+        # )
 
         self.jdtTimer = QBasicTimer()
         self.jdtStep = 0
@@ -3131,47 +3137,55 @@ class ApplicationWindow(
         self.gjxy.setGeometry(231*self.width_scale, 436*self.height_scale, 290*self.width_scale, 120*self.height_scale)
         self.gjxy.setVisible(False)
 
-        self.gjxyLabel = QLabel(self.gjxy)
+        layout = QVBoxLayout(self.gjxy)
+        layout.setSpacing(0)
+        layout1 = QHBoxLayout()
+        layout.addLayout(layout1)
+
+        self.gjxyLabel = QLabel()
         self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.gjxyLabel.setText(QApplication.translate("RoastHead", '锅间协议'))
-        self.gjxyLabel.setGeometry(25*self.width_scale, 20*self.height_scale, 290*self.width_scale, 45*self.height_scale)
+        # self.gjxyLabel.setGeometry(25*self.width_scale, 20*self.height_scale, 290*self.width_scale, 45*self.height_scale)
         self.gjxyLabel.setStyleSheet("color: #222222;")
         self.gjxyLabel.setFont(yrqkfont)
+        layout1.addWidget(self.gjxyLabel)
 
-        self.temperature = QLabel(self.gjxy)
-        self.temperature.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+        self.temperature = QLabel()
+        self.temperature.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.temperature.setText(self.mbwdContent.text())
-        self.temperature.setGeometry(106*self.width_scale, 21*self.height_scale, 56*self.width_scale, 24*self.height_scale)
+        # self.temperature.setGeometry(106*self.width_scale, 21*self.height_scale, 56*self.width_scale, 24*self.height_scale)
         self.temperature.setStyleSheet(
             f"color: #222222;background-color: #ffffff;border: 2px solid #F32B16;border-radius: {11*self.height_scale}px;")
         temperatureTextfont = QFont(self.font_family2, 9*self.width_scale)
         self.temperature.setFont(temperatureTextfont)
+        # layout1.addWidget(self.temperature)
 
-        self.gjxyTimeTxt = QLabel(self.gjxy)
-        self.gjxyTimeTxt.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.gjxyTimeTxt = QLabel()
+        self.gjxyTimeTxt.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.gjxyTimeTxt.setText(self.intoTime3.toString("mm:ss"))
-        self.gjxyTimeTxt.setGeometry(171*self.width_scale, 53*self.height_scale, 49*self.width_scale, 19*self.height_scale)
-        self.gjxyTimeTxt.setStyleSheet("color: #222222;")
+        # self.gjxyTimeTxt.setGeometry(171*self.width_scale, 53*self.height_scale, 49*self.width_scale, 19*self.height_scale)
+        self.gjxyTimeTxt.setStyleSheet("color: #222222;font-size: 30px;")
         yrqkfont3 = QFont(self.font_family3, 10*self.width_scale)
         self.gjxyTimeTxt.setFont(yrqkfont3)
+        layout.addWidget(self.gjxyTimeTxt)
 
-        self.gjxyLabel = QLabel(self.gjxy)
-        self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        self.gjxyLabel.setText('|15：00')
-        self.gjxyLabel.setGeometry(223*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
-        self.gjxyLabel.setStyleSheet("color: #8A929C;")
-        self.gjxyLabel.setFont(yrqkfont2)
+        # self.gjxyLabel = QLabel(self.gjxy)
+        # self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        # self.gjxyLabel.setText('|15：00')
+        # self.gjxyLabel.setGeometry(223*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
+        # self.gjxyLabel.setStyleSheet("color: #8A929C;")
+        # self.gjxyLabel.setFont(yrqkfont2)
 
-        self.gjxy_jdtbk = QWidget(self.gjxy)  # 锅间协议进度条边框
-        self.gjxy_jdtbk.setStyleSheet(f'border-radius: {9*self.height_scale}px;border: 1px solid #CAD6E5;')
-        self.gjxy_jdtbk.setGeometry(25*self.width_scale, 73*self.height_scale, 240*self.width_scale, 20*self.height_scale)
+        # self.gjxy_jdtbk = QWidget(self.gjxy)  # 锅间协议进度条边框
+        # self.gjxy_jdtbk.setStyleSheet(f'border-radius: {9*self.height_scale}px;border: 1px solid #CAD6E5;')
+        # self.gjxy_jdtbk.setGeometry(25*self.width_scale, 73*self.height_scale, 240*self.width_scale, 20*self.height_scale)
 
-        self.jdtGJXY = QProgressBar(self.gjxy)
-        self.jdtGJXY.setGeometry(31*self.width_scale, 80*self.height_scale, 228*self.width_scale, 6*self.height_scale)
-        self.jdtGJXY.setStyleSheet(
-            "QProgressBar {border-radius: 3px;background-color: #CAD6E5; text-align:center; font-size:0px; color: transparent}"
-            "QProgressBar::chunk {border-radius: 3px;background-color: #72AFFF;}"
-        )
+        self.jdtGJXY = QProgressBar()
+        # self.jdtGJXY.setGeometry(31*self.width_scale, 80*self.height_scale, 228*self.width_scale, 6*self.height_scale)
+        # self.jdtGJXY.setStyleSheet(
+        #     "QProgressBar {border-radius: 3px;background-color: #CAD6E5; text-align:center; font-size:0px; color: transparent}"
+        #     "QProgressBar::chunk {border-radius: 3px;background-color: #72AFFF;}"
+        # )
         self.jdtGJXYTimer = QBasicTimer()
         self.jdtGJXYStep = 0
 
@@ -3186,57 +3200,64 @@ class ApplicationWindow(
         self.jdqk.setGeometry(231*self.width_scale, 436*self.height_scale, 290*self.width_scale, 120*self.height_scale)
         self.jdqk.setVisible(False)
 
-        self.jdqkLabel = QLabel(self.jdqk)
+        layout = QVBoxLayout(self.jdqk)
+        layout.setSpacing(0)
+
+        self.jdqkLabel = QLabel()
         self.jdqkLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.jdqkLabel.setText(QApplication.translate("RoastHead", '进度情况'))
-        self.jdqkLabel.setGeometry(25*self.width_scale, 20*self.height_scale, 290*self.width_scale, 45*self.height_scale)
+        # self.jdqkLabel.setGeometry(25*self.width_scale, 20*self.height_scale, 290*self.width_scale, 45*self.height_scale)
         self.jdqkLabel.setStyleSheet("color: #222222;")
         self.jdqkLabel.setFont(yrqkfont)
+        layout.addWidget(self.jdqkLabel)
+        layout1 = QHBoxLayout()
+        layout.addLayout(layout1)
 
-        self.jdqkLabelTime = QLabel(self.jdqk)
-        self.jdqkLabelTime.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.jdqkLabelTime = QLabel()
+        self.jdqkLabelTime.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.jdqkLabelTime.setText('00:00')
-        self.jdqkLabelTime.setGeometry(190*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
-        self.jdqkLabelTime.setStyleSheet("color: #222222;")  # 仅在初始化时设置样式
+        # self.jdqkLabelTime.setGeometry(190*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
+        self.jdqkLabelTime.setStyleSheet("color: #222222;font-size: 30px;")  # 仅在初始化时设置样式
         self.jdqkLabelTime.setFont(yrqkfont2)
+        layout1.addWidget(self.jdqkLabelTime)
 
-        self.gjxyLabel = QLabel(self.jdqk)
-        self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        self.gjxyLabel.setText('| 15min')
-        self.gjxyLabel.setGeometry(226*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
-        self.gjxyLabel.setStyleSheet("color: #8A929C;")
-        self.gjxyLabel.setFont(yrqkfont2)
+        # self.gjxyLabel = QLabel(self.jdqk)
+        # self.gjxyLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        # self.gjxyLabel.setText('| 15min')
+        # self.gjxyLabel.setGeometry(226*self.width_scale, 55*self.height_scale, 39*self.width_scale, 19*self.height_scale)
+        # self.gjxyLabel.setStyleSheet("color: #8A929C;")
+        # self.gjxyLabel.setFont(yrqkfont2)
 
         # 设置布局和进度条
-        self.jdqk_jdtbk = QWidget(self.jdqk)  # 进度条容器
-        self.jdqk_jdtbk.setStyleSheet(f'border-radius: {9*self.height_scale}px; border: 1px solid #CAD6E5;')
-        self.jdqk_jdtbk.setGeometry(25*self.width_scale, 73*self.height_scale, 240*self.width_scale, 20*self.height_scale)
+        # self.jdqk_jdtbk = QWidget(self.jdqk)  # 进度条容器
+        # self.jdqk_jdtbk.setStyleSheet(f'border-radius: {9*self.height_scale}px; border: 1px solid #CAD6E5;')
+        # self.jdqk_jdtbk.setGeometry(25*self.width_scale, 73*self.height_scale, 240*self.width_scale, 20*self.height_scale)
 
         # 创建一个 QVBoxLayout，确保进度条可以垂直居中
-        outer_layout = QVBoxLayout(self.jdqk_jdtbk)
-        outer_layout.setContentsMargins(6*self.width_scale, 0, 6*self.width_scale, 0)  # 去掉边距
-        outer_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)  # 垂直居中
+        # outer_layout = QVBoxLayout(self.jdqk_jdtbk)
+        # outer_layout.setContentsMargins(6*self.width_scale, 0, 6*self.width_scale, 0)  # 去掉边距
+        # outer_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)  # 垂直居中
 
         # 创建一个水平布局用于放置进度条
-        self.jdqkProgressLayout = QHBoxLayout()
-        self.jdqkProgressLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 水平居中
+        # self.jdqkProgressLayout = QHBoxLayout()
+        # self.jdqkProgressLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 水平居中
         self.progress_bars = []
         colors = ['#72AFFF', '#428AE9', '#1472EF', 'blue']
 
         for color in colors:
             progress_bar = QProgressBar()
             progress_bar.setValue(0)  # 初始值为 0
-            progress_bar.setStyleSheet(
-                f"QProgressBar {{border-radius: {3*self.height_scale}px; background-color: #cccccc; text-align: center; font-size: 0px; color: transparent}}"
-                f"QProgressBar::chunk {{ background-color: {color}; }}"
-            )
-            progress_bar.setFixedHeight(6*self.height_scale)  # 设置进度条高度
+            # progress_bar.setStyleSheet(
+            #     f"QProgressBar {{border-radius: {3*self.height_scale}px; background-color: #cccccc; text-align: center; font-size: 0px; color: transparent}}"
+            #     f"QProgressBar::chunk {{ background-color: {color}; }}"
+            # )
+            # progress_bar.setFixedHeight(6*self.height_scale)  # 设置进度条高度
             self.progress_bars.append(progress_bar)
-            self.jdqkProgressLayout.addWidget(progress_bar)
+            # self.jdqkProgressLayout.addWidget(progress_bar)
 
         # 将水平布局添加到垂直布局中
-        outer_layout.addLayout(self.jdqkProgressLayout)
-        self.jdqk_jdtbk.setLayout(outer_layout)
+        # outer_layout.addLayout(self.jdqkProgressLayout)
+        # self.jdqk_jdtbk.setLayout(outer_layout)
 
         # 初始化状态
         self.current_progress = 0
@@ -3681,43 +3702,54 @@ class ApplicationWindow(
         self.lookBtstr = 0
         self.lookEtstr = 0
 
-        self.processInfo1 = QLabel(self)  # 豆温|风温
+        self.processInfo1 = QWidget(self)  # 豆温|风温
         self.processInfo1.setStyleSheet(f"border-radius: {25*self.height_scale}px;background-color: #F7F5F2;")
         self.processInfo1.setGeometry(561*self.width_scale, 811*self.height_scale, 224*self.width_scale, 185*self.height_scale)
         # self.processInfo1Img = QPixmap(self.normalized_path + '/includes/Icons/yrzb/bottomBack.png')
         # self.processInfo1.setPixmap(QIcon(self.normalized_path + '/includes/Icons/yrzb/bottomBack.png').pixmap(224*self.width_scale, 185*self.height_scale))
+        layout = QVBoxLayout(self.processInfo1)
+        layout1 = QHBoxLayout()
+        layout1.setSpacing(0)
+        layout.addLayout(layout1)
+
         self.current_temp = 100.0
         self.current_phase = 0
         self.previous_text = ""
-        self.processInfoLabel = QLabel(self.processInfo1)
-        self.processInfoLabel.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.processInfoLabel = QLabel()
+        self.processInfoLabel.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignLeft)
         self.processInfoLabel.setText('0')
-        self.processInfoLabel.setGeometry(24*self.width_scale, 15*self.height_scale, 100*self.width_scale, 58*self.height_scale)
+        # self.processInfoLabel.setGeometry(24*self.width_scale, 15*self.height_scale, 100*self.width_scale, 58*self.height_scale)
         self.processInfoLabel.setStyleSheet("color: #252525;background-color: transparent;")
         processInfofont = QFont(self.font_family7, 42*self.width_scale)
         self.processInfoLabel.setFont(processInfofont)
         self.processInfotimer = QTimer()
         # self.processInfotimer.timeout.connect(self.checkTextChanged)
         self.processInfotimer.start(100)
+        layout1.addWidget(self.processInfoLabel)
 
-        self.processInfoLabel_point = QLabel(self.processInfo1)
-        self.processInfoLabel_point.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.processInfoLabel_point = QLabel()
+        self.processInfoLabel_point.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignLeft)
         self.processInfoLabel_point.setText('.0')
         # self.processInfoLabel_point.setGeometry((26+self.calculate_text_width(self.processInfoLabel)) * self.width_scale, 37 * self.height_scale, 50 * self.width_scale,
         #                                   58 * self.height_scale)
-        self.processInfoLabel_point.setGeometry(57 * self.width_scale, 37 * self.height_scale, 100 * self.width_scale,
-                                          58 * self.height_scale)
+        # self.processInfoLabel_point.setGeometry(57 * self.width_scale, 37 * self.height_scale, 100 * self.width_scale,
+        #                                   58 * self.height_scale)
 
         self.processInfoLabel_point.setStyleSheet("color: #C8C8C8;background-color: transparent;")
         processInfoLabel_pointFont = QFont(self.font_family7, 26 * self.width_scale)
         self.processInfoLabel_point.setFont(processInfoLabel_pointFont)
+        layout1.addWidget(self.processInfoLabel_point)
+        layout.addStretch(1)
 
-        self.ssdLabel1 = QLabel(self.processInfo1)
+
+        self.ssdLabel1 = QLabel()
         self.ssdLabel1.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.ssdLabel1.setText('℃')
         # self.ssdLabel1.setGeometry((26+self.calculate_text_width(self.processInfoLabel)+self.calculate_text_width(self.processInfoLabel_point))*self.width_scale, 26*self.height_scale, 16*self.width_scale, 18*self.height_scale)
-        self.ssdLabel1.setGeometry(85 * self.width_scale, 26 * self.height_scale, 16 * self.width_scale,
-                                   18 * self.height_scale)
+        # self.ssdLabel1.setGeometry(85 * self.width_scale, 26 * self.height_scale, 16 * self.width_scale,
+        #                            18 * self.height_scale)
+        layout1.addWidget(self.ssdLabel1)
+        layout1.addStretch(1)
 
         self.ssdLabel1.setStyleSheet("color: #C8C8C8;background-color: transparent;")
         ssdfont = QFont(self.font_family4, 12*self.width_scale)
@@ -13281,12 +13313,12 @@ class ApplicationWindow(
         if event.timerId() == self.jdtTimer.timerId():
             if self.jdtStep >= 100:
                 self.jdtStep = 0  # 重置进度条
-                self.jdt.setValue(self.jdtStep)
+                # self.jdt.setValue(self.jdtStep)
                 self.jdtTimer.start(100, Qt.TimerType.CoarseTimer, self)  # 启动定时器，间隔为 100 毫秒
                 return
 
             self.jdtStep += 0.005555  # 每次增加的步长
-            self.jdt.setValue(self.jdtStep)
+            # self.jdt.setValue(self.jdtStep)
 
         elif event.timerId() == self.jdtGJXYTimer.timerId():
             # 更新第三个进度条
@@ -13562,7 +13594,7 @@ class ApplicationWindow(
         self.TP_BT=self.qmc.temp1[-1]
         self.TP_time = self.qmc.timex[-1]
         self.qmc.tpChangeBool=True
-        self.tpMark_down.setText(str(self.TP_BT))
+        self.tpMark_down.setText(str(round(self.TP_BT, 1)))
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
@@ -13573,7 +13605,7 @@ class ApplicationWindow(
                                 """)
         self.Maillard = self.qmc.temp1[-1]
         self.Maillard_time = self.qmc.timex[-1]
-        self.zhd_down.setText(str(self.Maillard))
+        self.zhd_down.setText(str(round(self.Maillard, 1)))
 
     def markyibaoClick(self):
         # self.qmc.mark1Cstart()
@@ -13584,7 +13616,7 @@ class ApplicationWindow(
                                         """)
         self.FCs_BT = self.qmc.temp1[-1]
         self.FCs_time = self.qmc.timex[-1]
-        self.yb_down.setText(str(self.FCs_BT))
+        self.yb_down.setText(str(round(self.FCs_BT, 1)))
 
     def start_countdown(self):
         # 设置定时器间隔为1000毫秒（1秒）
@@ -14898,6 +14930,9 @@ class ApplicationWindow(
         self.addOrderWidget.setVisible(True)
         current_time = datetime.datetime.now()
         baking_batch = f"{current_time.strftime('%Y%m%d%H%M%S')}"
+        self.numberContent.clear()
+        self.numberContent.addItems(self.get_pf())
+        self.numberContent.setCurrentIndex(0);
         # self.taskbhContent.setText(baking_batch)
 
 
@@ -16345,7 +16380,7 @@ class ApplicationWindow(
             msg_box.setWindowTitle("保存配方")
             msg_box.setText("保存配方成功.")
             # 设置图标为无图标
-            msg_box.setIcon(QMessageBox.Icon.NoIcon)
+            msg_box.setIcon(QMessageBox.Icon.Information)
             msg_box.exec()
         except Exception as e:
             import traceback
