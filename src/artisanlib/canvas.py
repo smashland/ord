@@ -4433,7 +4433,12 @@ class tgraphcanvas(FigureCanvas):
 
             if self.changeBool == True and self.aw.backformulation is not None:
                 if len(beantimex) <3:
-                    self.changeBool
+                    i = 0
+                    while i < len(beantimex) - 1:
+                        if beantimex[i] > beantimex[i + 1]:
+                            beantimex[i] = 0.0
+                        else:
+                            i = i + 1
                 self.aw.matplotlib_maininfo.update_chart_in_thread(time_data=self.aw.backformulation.get('alogJson').get('timex'),data1=self.aw.backformulation.get('alogJson').get('temp2'),data2=self.aw.backformulation.get('alogJson').get('temp1'),data3=self.aw.backformulation.get('alogJson').get('agtron'),data4=self.aw.backformulation.get('alogJson').get('delta2'),time_data2 = beantimex, data21 =beanDWtemp, data22 =beanFWtemp, data23 =self.agtron_values, data24 =self.delta2)
             else:
                 if len(beantimex) <3:
@@ -12823,7 +12828,6 @@ class tgraphcanvas(FigureCanvas):
                 if self.roastpropertiesAutoOpenFlag:
                     self.aw.openPropertiesSignal.emit()
             self.aw.onMarkMoveToNext(self.aw.buttonCHARGE)
-
         self.clearMeasurementLj()
     # def resetData(self) -> None:
     #     self.timex.clear()
@@ -13470,7 +13474,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()
-        # self.clearMeasurementLj()
+
         if len(self.timex) > 1:
             removed = False
             try:
@@ -13654,6 +13658,7 @@ class tgraphcanvas(FigureCanvas):
                     _log.exception(e)
             self.resetButtonAction()
 
+        # self.clearMeasurementLj()
 
     # if noaction is True, the button event action is not triggered
     @pyqtSlot(bool)

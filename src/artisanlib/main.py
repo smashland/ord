@@ -1746,24 +1746,24 @@ class CustomMainPlotWidget(QWidget):
                 ax.plot(time_data, data4, label="Data4", color="#DCE7DA")  # ROR
 
         if time_data2 is not None:
-            indeces = [i for i,x in enumerate(time_data2) if 0 < x < 1]
+            # indeces = [i for i,x in enumerate(time_data2) if 0 < x < 1]
             # 画线 实时曲线
-            if len(indeces)>0:
-                ax.plot(time_data2[indeces[0]:], data21[indeces[0]:], label="Data21", color="#D18F65")  # 豆温
-                ax.plot(time_data2[indeces[0]:], data22[indeces[0]:], label="Data22", color="#AC3230")  # 风温
+            # if len(indeces)>0:
+            #     ax.plot(time_data2[indeces[0]:], data21[indeces[0]:], label="Data21", color="#D18F65")  # 豆温
+            #     ax.plot(time_data2[indeces[0]:], data22[indeces[0]:], label="Data22", color="#AC3230")  # 风温
+            #
+            #     if data23 is not None and data23 != "未知任务" and len(data23) > 0:
+            #         ax.plot(time_data2[indeces[0]:], data23[indeces[0]:], label="Data23", color="#7864AA")  # 色值
+            #     if data24 is not None and  data24 != "未知任务" and len(data24) > 0:
+            #         ax.plot(time_data2[indeces[0]:], data24[indeces[0]:], label="Data24", color="#6BAE76")  # ROR
+            # else:
+            ax.plot(time_data2, data21, label="Data21", color="#D18F65")  # 豆温
+            ax.plot(time_data2, data22, label="Data22", color="#AC3230")  # 风温
 
-                if data23 is not None and data23 != "未知任务" and len(data23) > 0:
-                    ax.plot(time_data2[indeces[0]:], data23[indeces[0]:], label="Data23", color="#7864AA")  # 色值
-                if data24 is not None and  data24 != "未知任务" and len(data24) > 0:
-                    ax.plot(time_data2[indeces[0]:], data24[indeces[0]:], label="Data24", color="#6BAE76")  # ROR
-            else:
-                ax.plot(time_data2, data21, label="Data21", color="#D18F65")  # 豆温
-                ax.plot(time_data2, data22, label="Data22", color="#AC3230")  # 风温
-
-                if data23 is not None and data23 != "未知任务" and len(data23) > 0:
-                    ax.plot(time_data2, data23, label="Data23", color="#7864AA")  # 色值
-                if data24 is not None and data24 != "未知任务" and len(data24) > 0:
-                    ax.plot(time_data2, data24, label="Data24", color="#6BAE76")  # ROR
+            if data23 is not None and data23 != "未知任务" and len(data23) > 0:
+                ax.plot(time_data2, data23, label="Data23", color="#7864AA")  # 色值
+            if data24 is not None and data24 != "未知任务" and len(data24) > 0:
+                ax.plot(time_data2, data24, label="Data24", color="#6BAE76")  # ROR
 
         # 使用 `ax.axvspan` 绘制矩形，填充颜色，透明度为 0.5
         # ax.axvspan(fc_time, drop_time, color=cmap(0.5), alpha=0.5, zorder=2)
@@ -13608,10 +13608,11 @@ class ApplicationWindow(
                                                 border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
                                             }}
                                         """)
-        self.TP_BT=self.qmc.temp1[-1]
-        self.TP_time = self.qmc.timex[-1]
-        self.qmc.tpChangeBool=True
-        self.tpMark_down.setText(str(round(self.TP_BT, 1)))
+        if len(self.qmc.temp1)>0:
+            self.TP_BT=self.qmc.temp1[-1]
+            self.TP_time = self.qmc.timex[-1]
+            self.qmc.tpChangeBool=True
+            self.tpMark_down.setText(str(round(self.TP_BT, 1)))
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
@@ -13620,9 +13621,10 @@ class ApplicationWindow(
                                         border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
                                     }}
                                 """)
-        self.Maillard = self.qmc.temp1[-1]
-        self.Maillard_time = self.qmc.timex[-1]
-        self.zhd_down.setText(str(round(self.Maillard, 1)))
+        if len(self.qmc.temp1)>0:
+            self.Maillard = self.qmc.temp1[-1]
+            self.Maillard_time = self.qmc.timex[-1]
+            self.zhd_down.setText(str(round(self.Maillard, 1)))
 
     def markyibaoClick(self):
         # self.qmc.mark1Cstart()
@@ -13631,9 +13633,10 @@ class ApplicationWindow(
                                                 border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
                                             }}
                                         """)
-        self.FCs_BT = self.qmc.temp1[-1]
-        self.FCs_time = self.qmc.timex[-1]
-        self.yb_down.setText(str(round(self.FCs_BT, 1)))
+        if len(self.qmc.temp1) > 0:
+            self.FCs_BT = self.qmc.temp1[-1]
+            self.FCs_time = self.qmc.timex[-1]
+            self.yb_down.setText(str(round(self.FCs_BT, 1)))
 
     def start_countdown(self):
         # 设置定时器间隔为1000毫秒（1秒）
@@ -29465,19 +29468,19 @@ class ApplicationWindow(
             profile['etypes'] = [encodeLocalStrict(et) for et in self.qmc.etypes[:]]
             profile['roastingnotes'] = encodeLocalStrict(self.qmc.roastingnotes)
             profile['cuppingnotes'] = encodeLocalStrict(self.qmc.cuppingnotes)
-            indeces = [i for i, x in enumerate(self.qmc.timex) if 0 < x < 1]
-            if len(indeces) > 0:
-                profile['timex'] = [self.float2float(x, 10) for x in self.qmc.timex[indeces[0]:]]
-                profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1[indeces[0]:] if x is not None]
-                profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2[indeces[0]:] if x is not None]
-                profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values[indeces[0]:] if x is not None]
-                profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2[indeces[0]:] if x is not None]
-            else:
-                profile['timex'] = [self.float2float(x, 10) for x in self.qmc.timex]
-                profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1 if x is not None]
-                profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2 if x is not None]
-                profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values if x is not None]
-                profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2 if x is not None]
+            # indeces = [i for i, x in enumerate(self.qmc.timex) if 0 < x < 1]
+            # if len(indeces) > 0:
+            #     profile['timex'] = [self.float2float(x, 10) for x in self.qmc.timex[indeces[0]:]]
+            #     profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1[indeces[0]:] if x is not None]
+            #     profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2[indeces[0]:] if x is not None]
+            #     profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values[indeces[0]:] if x is not None]
+            #     profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2[indeces[0]:] if x is not None]
+            # else:
+            profile['timex'] = [self.float2float(x, 10) for x in self.qmc.timex]
+            profile['temp1'] = [self.float2float(x, 8) for x in self.qmc.temp1 if x is not None]
+            profile['temp2'] = [self.float2float(x, 8) for x in self.qmc.temp2 if x is not None]
+            profile['agtron'] = [self.float2float(x, 8) for x in self.qmc.agtron_values if x is not None]
+            profile['delta2'] = [self.float2float(x, 8) for x in self.qmc.delta2 if x is not None]
             profile['phases'] = self.qmc.phases
             profile['zmax'] = int(self.qmc.zlimit)
             profile['zmin'] = int(self.qmc.zlimit_min)
