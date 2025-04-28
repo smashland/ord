@@ -3443,33 +3443,71 @@ class tgraphcanvas(FigureCanvas):
     # the temp gets averaged using the given decay weights after resampling
     # to linear time based on tx and the current sampling interval
     # -1 and None values are skipped/ignored
-    def decay_average(self, tx_in:List[float], temp_in:Sequence[Optional[float]], decay_weights:Optional[List[int]]) -> float:
-        if decay_weights is None or len(decay_weights)<2 or len(tx_in) != len(temp_in):
-            if len(temp_in)>0 and temp_in[-1] is not None:
-                return temp_in[-1]
-            return -1
-        l = min(len(decay_weights),len(temp_in))
-        # take trail of length l and remove items where temp[i]=None to fulfil precond. of numpy.interp
-        tx_org:List[float] = []
-        temp_trail:List[float] = []
-        for x, tp in zip(tx_in[-l:],temp_in[-l:]): # we only iterate over l-elements
-            if tp is not None and tp != -1 and x is not None:
-                tx_org.append(x)
-                temp_trail.append(tp)
-        if len(temp_trail) == 0:
-            # no valid values
-            return -1
-        l = len(temp_trail) # might be shorter than before
-        # len(tx)=len(temp) here and it is guaranteed that len(tx_org)=len(temp_trail) = l
-        d = self.delay / 1000.
-        # we create a linearly spaced time array starting from the newest timestamp in sampling interval distance
-        tx_lin = numpy.flip(numpy.arange(tx_org[-1],tx_org[-1]-l*d,-d), axis=0) # by construction, len(tx_lin)=len(tx_org)=l
-        temp_trail_re = numpy.interp(tx_lin, tx_org, temp_trail) # resample data into that linear spaced time
+    def decay_average(self, tx_in: List[float], temp_in: Sequence[Optional[float]],
+                      decay_weights: Optional[List[int]]) -> float:
         try:
-            return float(numpy.average(temp_trail_re[-len(decay_weights):],axis=0,weights=decay_weights[-l:]))  # len(decay_weights)>len(temp_trail_re)=l is possible
-        except Exception: # pylint: disable=broad-except
-            # in case something goes very wrong we at least return the standard average over temp, this should always work as len(tx)=len(temp)
-            return float(numpy.average(tx_org, numpy.array(temp_trail)))
+            # 检查输入参数的有效性
+            if decay_weights is None or len(decay_weights) < 2 or len(tx_in) != len(temp_in):
+                # 如果权重无效或长度不匹配，返回最后一个有效温度值
+                if len(temp_in) > 0 and temp_in[-1] is not None:
+                    return float(temp_in[-1])
+                return -1.0
+
+            # 取最小长度，避免数组越界
+            l = min(len(decay_weights), len(temp_in))
+
+            # 提取有效的时间和温度数据
+            tx_org = []
+            temp_trail = []
+            for x, tp in zip(tx_in[-l:], temp_in[-l:]):
+                if tp is not None and tp != -1:
+                    tx_org.append(float(x))
+                    temp_trail.append(float(tp))
+
+            # 如果没有有效温度值，返回-1
+            if not temp_trail:
+                return -1.0
+
+            # 更新有效数据长度
+            l = len(temp_trail)
+
+            if l == 0:
+                return -1.0
+
+            # 创建线性时间数组
+            d = max(self.delay / 1000., 0.001)  # 确保不会除以零
+
+            # 确保时间数组不为空
+            if not tx_org:
+                return -1.0
+
+            # 创建线性间隔的时间数组
+            tx_lin = numpy.linspace(tx_org[-1] - (l - 1) * d, tx_org[-1], l)
+
+            # 对数据进行重采样
+            temp_trail = numpy.array(temp_trail, dtype=numpy.float64)
+            tx_org = numpy.array(tx_org, dtype=numpy.float64)
+
+            if len(tx_org) < 2:
+                return float(temp_trail[-1]) if temp_trail.size > 0 else -1.0
+
+            temp_trail_re = numpy.interp(tx_lin, tx_org, temp_trail)
+
+            # 确保权重长度匹配
+            weights = numpy.array(decay_weights[-l:], dtype=numpy.float64)
+            if len(weights) != len(temp_trail_re):
+                weights = weights[:len(temp_trail_re)]
+
+            try:
+                # 使用加权平均值计算
+                return float(numpy.average(temp_trail_re, weights=weights))
+            except Exception:
+                # 如果加权平均计算失败，返回简单平均值
+                return float(numpy.mean(temp_trail_re)) if temp_trail_re.size > 0 else -1.0
+
+        except Exception as e:
+            _log.exception(e)
+            return -1.0
 
     # returns true after BT passed the TP
     def checkTPalarmtime(self) -> bool:
@@ -4284,8 +4322,8 @@ class tgraphcanvas(FigureCanvas):
             # int_part, decimal_part = btstr.split('.')
             # self.aw.processInfoLabel.setText(int_part)
             # self.aw.processInfoLabel_point.setText('.' + decimal_part)
-            if len(self.timex)>2 and self.timex[0] > 2 and self.timex[1] < 2:
-                self.clearMeasurementLj()
+            # if self.changeBool and len(self.timex)>2 and self.timex[0] > 2 and self.timex[1] < 2:
+            #     self.clearMeasurementLj()
             if self.changeBool == True:
                 self.aw.sswd.setText(btstr)
                 int_part, decimal_part = btstr.split('.')
@@ -6488,6 +6526,8 @@ class tgraphcanvas(FigureCanvas):
             self.aw.largePhasesLCDs_dialog.updateDecimals()
 
     def clearMeasurementLj(self) -> None:
+        self.profileDataSemaphore.acquire(1)
+        self.fileCleanSignal.emit()
         self.rateofchange1 = 0.0
         self.rateofchange2 = 0.0
         charge: float = 0
@@ -6511,6 +6551,9 @@ class tgraphcanvas(FigureCanvas):
             self.extratimex[i], self.extratemp1[i], self.extratemp2[i], self.extrastemp1[i], self.extrastemp2[
                 i] = [], [], [], [], []  # reset all variables that need to be reset (but for the actually measurements that will be treated separately at the end of this function)
             self.extractimex1[i], self.extractimex2[i], self.extractemp1[i], self.extractemp2[i] = [], [], [], []
+        self.replayedBackgroundEvents = []
+        self.beepedBackgroundEvents = []
+        self.clearEvents()  # clear special events
     def clearMeasurements(self, andLCDs:bool=True) -> None:
         try:
             #### lock shared resources #####
@@ -12633,7 +12676,6 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.start()
 
         self.aw.markChargeClick()
-        self.clearMeasurementLj()
         if len(self.aw.getTPMark) > 0:
             self.aw.jieduanInfo(self.aw.getTPMark)
         try:
@@ -12781,6 +12823,8 @@ class tgraphcanvas(FigureCanvas):
                 if self.roastpropertiesAutoOpenFlag:
                     self.aw.openPropertiesSignal.emit()
             self.aw.onMarkMoveToNext(self.aw.buttonCHARGE)
+
+        self.clearMeasurementLj()
     # def resetData(self) -> None:
     #     self.timex.clear()
     #     self.temp1.clear()
@@ -13426,7 +13470,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()
-        self.clearMeasurementLj()
+        # self.clearMeasurementLj()
         if len(self.timex) > 1:
             removed = False
             try:
@@ -13520,7 +13564,7 @@ class tgraphcanvas(FigureCanvas):
                                     self.l_annotations += time_temp_annos
                                 if not self.flagstart or self.alignEvent not in {6, 7}: # in this case the updateBackground is triggered by the redraw of timealign below
                                     self.updateBackground() # but we need to update the background!
-
+    #
                         try:
                             # update ambient temperature if a ambient temperature source is configured and no value yet established
                             self.updateAmbientTempFromPhidgetModulesOrCurve()
