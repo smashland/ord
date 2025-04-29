@@ -1,15 +1,59 @@
 [
     {
-        "id": 3,
-        "taskName": "2",
-        "bakingBatch": "20250416092901",
-        "createTime": "2025-04-16 09:29:01",
-        "finishTime": "",
+        "id": 1,
+        "taskName": "1",
+        "bakingBatch": "20250429181943",
+        "createTime": "2025-04-29 18:19:43",
+        "finishTime": "选择日期",
         "bakingStatue": 2,
         "bakingDeviceId": 2,
-        "taskId": "901222447089140933",
-        "formulationName": "2",
-        "fakeValue": "77.6",
+        "taskId": "497130307280900299",
+        "formulationName": "1",
+        "backformulationName": "配方1",
+        "fakeValue": "83.3",
+        "beanTypes": {},
+        "targetAgtron": "1",
+        "remark": "",
+        "stage": [
+            "130",
+            "200",
+            "30",
+            "30",
+            "150",
+            "200",
+            "30",
+            "30",
+            "170",
+            "200",
+            "30",
+            "30",
+            "180",
+            "200",
+            "30",
+            "30",
+            "190",
+            "200",
+            "30",
+            "30",
+            "105",
+            "200",
+            "30",
+            "30"
+        ],
+        "bakingCreateTime": "2025-04-29 18:23:12"
+    },
+    {
+        "id": 2,
+        "taskName": "",
+        "bakingBatch": "20250429181949",
+        "createTime": "2025-04-29 18:19:49",
+        "finishTime": "",
+        "bakingStatue": 1,
+        "bakingDeviceId": 2,
+        "taskId": "266262916750843288",
+        "formulationName": "",
+        "backformulationName": "配方1",
+        "fakeValue": "75.4",
         "beanTypes": {
             "type1": {
                 "name": "1",
@@ -17,101 +61,181 @@
                 "numberOfBeans": "1"
             }
         },
-        "targetAgtron": "50",
-        "remark": "1",
-        "stage1": [
-            130,
-            200,
-            30,
-            30
-        ],
-        "stage2": [
-            150,
-            200,
-            30,
-            30
-        ],
-        "stage3": [
-            170,
-            200,
-            30,
-            30
-        ],
-        "stage4": [
-            180,
-            200,
-            30,
-            30
-        ],
-        "stage5": [
-            190,
-            200,
-            30,
-            30
-        ],
-        "stage6": [
-            105,
-            200,
-            30,
-            30
-        ],
-        "bakingCreateTime": "2025-04-16 10:08:02"
+        "targetAgtron": "1",
+        "remark": "",
+        "stage": [
+            "130",
+            "200",
+            "30",
+            "30",
+            "150",
+            "200",
+            "30",
+            "30",
+            "170",
+            "200",
+            "30",
+            "30",
+            "180",
+            "200",
+            "30",
+            "30",
+            "190",
+            "200",
+            "30",
+            "30",
+            "105",
+            "200",
+            "30",
+            "30"
+        ]
     },
     {
-        "id": 4,
-        "taskName": "ceshi4",
-        "bakingBatch": "20250416100238",
-        "createTime": "2025-04-16 10:02:38",
+        "id": 3,
+        "taskName": "1",
+        "bakingBatch": "20250429182756",
+        "createTime": "2025-04-29 18:27:56",
         "finishTime": "选择日期",
         "bakingStatue": 1,
         "bakingDeviceId": 2,
-        "taskId": "069006912976037065",
-        "formulationName": "4",
-        "fakeValue": "76.7",
+        "taskId": "842991328041760689",
+        "formulationName": "1",
+        "backformulationName": "配方1",
+        "fakeValue": "82.7",
         "beanTypes": {
             "type1": {
-                "name": "云南豆",
-                "number": "15",
+                "name": "1",
+                "number": "1",
                 "numberOfBeans": "1"
             }
         },
-        "targetAgtron": "50",
+        "targetAgtron": "",
+        "remark": "",
+        "stage": [
+            "130",
+            "200",
+            "30",
+            "30",
+            "150",
+            "200",
+            "30",
+            "30",
+            "170",
+            "200",
+            "30",
+            "30",
+            "180",
+            "200",
+            "30",
+            "30",
+            "190",
+            "200",
+            "30",
+            "30",
+            "105",
+            "200",
+            "30",
+            "30"
+        ]
+    },
+    {
+        "id": 4,
+        "taskName": "1",
+        "bakingBatch": "20250429182844",
+        "createTime": "2025-04-29 18:28:44",
+        "finishTime": "",
+        "bakingStatue": 1,
+        "bakingDeviceId": 2,
+        "taskId": "017874113459862807",
+        "formulationName": "1",
+        "backformulationName": "配方1",
+        "fakeValue": "78.8",
+        "beanTypes": {
+            "type1": {
+                "name": "1",
+                "number": "1",
+                "numberOfBeans": "1"
+            }
+        },
+        "targetAgtron": "1",
+        "remark": "",
+        "stage": [
+            "130",
+            "200",
+            "30",
+            "30",
+            "150",
+            "200",
+            "30",
+            "30",
+            "170",
+            "200",
+            "30",
+            "30",
+            "180",
+            "200",
+            "30",
+            "30",
+            "190",
+            "200",
+            "30",
+            "30",
+            "105",
+            "200",
+            "30",
+            "30",
+            "180",
+            "200",
+            "40",
+            "90"
+        ]
+    },
+    {
+        "id": 5,
+        "taskName": "3额",
+        "bakingBatch": "20250429183009",
+        "createTime": "2025-04-29 18:30:09",
+        "finishTime": "",
+        "bakingStatue": 1,
+        "bakingDeviceId": 2,
+        "taskId": "794182946028056330",
+        "formulationName": "额丰富",
+        "backformulationName": "3",
+        "fakeValue": "83.1",
+        "beanTypes": {
+            "type1": {
+                "name": "1",
+                "number": "1",
+                "numberOfBeans": "1"
+            }
+        },
+        "targetAgtron": "1",
         "remark": "1",
-        "stage1": [
-            130,
-            500,
-            70,
-            50
-        ],
-        "stage2": [
-            150,
-            500,
-            70,
-            50
-        ],
-        "stage3": [
-            170,
-            450,
-            55,
-            50
-        ],
-        "stage4": [
-            180,
-            450,
-            55,
-            50
-        ],
-        "stage5": [
-            190,
-            500,
-            55,
-            50
-        ],
-        "stage6": [
-            205,
-            470,
-            55,
-            50
+        "stage": [
+            "130",
+            "200",
+            "30",
+            "30",
+            "150",
+            "200",
+            "30",
+            "30",
+            "170",
+            "200",
+            "30",
+            "30",
+            "180",
+            "200",
+            "30",
+            "30",
+            "190",
+            "200",
+            "30",
+            "30",
+            "105",
+            "200",
+            "30",
+            "30"
         ]
     }
 ]

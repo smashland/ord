@@ -16318,7 +16318,9 @@ class ApplicationWindow(
             taskTime_label = QLabel(historyListBack)
             taskTime_label.setStyleSheet(
                 "color: #222222; border:none; padding: 2px;background-color: transparent")
-            taskTime_label.setText(str(data.get('taskTime', 0) / 60))  # 将秒转换为分钟
+            taskTimestr=data.get('taskTime', 0)
+            
+            taskTime_label.setText(f"{(int(taskTimestr) // 60):02d}:{(int(taskTimestr) % 60):02d}")  # 将秒转换为分钟
             taskTime_label.setGeometry(787 * self.width_scale, 0, 120 * self.width_scale,
                                        56 * self.height_scale)
             taskTime_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -16804,22 +16806,21 @@ class ApplicationWindow(
             )
 
             # 回温点
-            tp_time_str = "{}:{}".format(int(tp_time) // 60, int(tp_time) % 60)
+            tp_time_str = f"{(int(tp_time) // 60):02d}:{(int(tp_time) % 60):02d}"
             self.huiwendian.setText(
                 QApplication.translate("RoastHead", "回温点: {}℃ / {}").format(tp_bt, tp_time_str)
             )
 
             # 转黄点
-            maillard_time_str = "{}:{}".format(int(maillard_time) // 60, int(maillard_time) % 60)
+            maillard_time_str = f"{(int(maillard_time) // 60):02d}:{(int(maillard_time) % 60):02d}"
             self.zhuanhuangdian.setText(
                 QApplication.translate("RoastHead", "转黄点: {}℃ / {}").format(maillard, maillard_time_str)
             )
 
             # 一爆
-            minutes = int(fCs_time) // 60
-            seconds = int(fCs_time) % 60
+
             self.yibao.setText(
-                QApplication.translate("RoastHead", "一爆: {}℃ / {}:{}").format(fCs_BT, minutes, seconds)
+                QApplication.translate("RoastHead", "一爆: {}℃ / {}").format(fCs_BT,f"{(int(fCs_time) // 60):02d}:{(int(fCs_time) % 60):02d}")
             )
 
             # DTR
@@ -16829,7 +16830,7 @@ class ApplicationWindow(
 
             # 发展时长
             if int(finishphasetime) != 0:
-                dev_time_str = "{}:{}".format(int(finishphasetime) // 60, int(finishphasetime) % 60)
+                dev_time_str =  f"{(int(finishphasetime) // 60):02d}:{(int(finishphasetime) % 60):02d}"
                 dev_percent = int(finishphasetime) / int(total_time) * 100
                 self.fazhanshichang.setText(
                     QApplication.translate("RoastHead", "发展时长: {} / {:.2f}%").format(dev_time_str, dev_percent)
@@ -16936,7 +16937,7 @@ class ApplicationWindow(
             # 动态设置任务时间
             task_time_minutes = int(order.get('taskTime', 0)) // 60
             task_time_seconds = int(order.get('taskTime', 0)) % 60
-            getattr(self, f'historyOrder{i + 1}_Time').setText(f"{task_time_minutes}:{task_time_seconds}")
+            getattr(self, f'historyOrder{i + 1}_Time').setText(f"{task_time_minutes:02d}:{task_time_seconds:02d}")
 
             # 动态设置创建时间、脱水率、烘焙评分、Agtron historyOrder_hbrq1_Data
             getattr(self, f'historyOrder_hbrq{i + 1}_Data').setText(str(order.get('bakingFinishTime', '-')))
