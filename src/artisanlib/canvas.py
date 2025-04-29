@@ -29,6 +29,7 @@ import sys  # @UnusedImport
 import ast
 import platform
 import math
+import json
 import warnings
 import numpy
 import logging
@@ -4430,19 +4431,18 @@ class tgraphcanvas(FigureCanvas):
                 _log.exception(e)
             self.aw.lcd4.display(deltaetstr)
             self.aw.lcd5.display(deltabtstr)
-
+            if len(beantimex) < 50:
+                _log.info("4433:%s",beantimex)
+            if len(beantimex) < 3:
+                i = 0
+                while i < len(beantimex) - 1:
+                    if beantimex[i] > beantimex[i + 1]:
+                        beantimex[i] = 0.0
+                    else:
+                        i = i + 1
             if self.changeBool == True and self.aw.backformulation is not None:
-                if len(beantimex) <3:
-                    i = 0
-                    while i < len(beantimex) - 1:
-                        if beantimex[i] > beantimex[i + 1]:
-                            beantimex[i] = 0.0
-                        else:
-                            i = i + 1
                 self.aw.matplotlib_maininfo.update_chart_in_thread(time_data=self.aw.backformulation.get('alogJson').get('timex'),data1=self.aw.backformulation.get('alogJson').get('temp2'),data2=self.aw.backformulation.get('alogJson').get('temp1'),data3=self.aw.backformulation.get('alogJson').get('agtron'),data4=self.aw.backformulation.get('alogJson').get('delta2'),time_data2 = beantimex, data21 =beanDWtemp, data22 =beanFWtemp, data23 =self.agtron_values, data24 =self.delta2)
             else:
-                if len(beantimex) <3:
-                    self.changeBool
                 self.aw.matplotlib_maininfo.update_chart_in_thread(time_data2 = beantimex, data21 =beanDWtemp, data22 =beanFWtemp, data23 =self.agtron_values, data24 =self.delta2)
             try:
                 self.updateLargeDeltaLCDs(deltabt=deltabtstr,deltaet=deltaetstr)
@@ -6531,7 +6531,7 @@ class tgraphcanvas(FigureCanvas):
             self.aw.largePhasesLCDs_dialog.updateDecimals()
 
     def clearMeasurementLj(self) -> None:
-        self.profileDataSemaphore.acquire(1)
+        # self.profileDataSemaphore.acquire(1)
         self.fileCleanSignal.emit()
         self.rateofchange1 = 0.0
         self.rateofchange2 = 0.0
@@ -6559,6 +6559,8 @@ class tgraphcanvas(FigureCanvas):
         self.replayedBackgroundEvents = []
         self.beepedBackgroundEvents = []
         self.clearEvents()  # clear special events
+        self.timeclock.start()
+
     def clearMeasurements(self, andLCDs:bool=True) -> None:
         try:
             #### lock shared resources #####
@@ -12670,13 +12672,60 @@ class tgraphcanvas(FigureCanvas):
     # if noaction is True, the button event action is not triggered
     @pyqtSlot(bool)
     def markCharge(self, noaction:bool = False) -> None:
+        self.aw.hbList = []
+        try:
+            if self.aw.shebeiLabel.text() != "请点击选择设备" and self.aw.shebeiLabel.text() !="请前往设置添加设备":
+                with open(os.path.join(ytycwdpath, "localJson", "order.json"), "r", encoding="utf-8") as file:
+                    data = json.load(file)
+                    filtered_data = [order for order in data if order.get("bakingStatue") == 1]
+
+                    # 赋值给 self.orderList_data
+                    self.aw.orderList_data = filtered_data
+
+                    if not self.aw.orderList_data:  # 如果数据为空
+                        self.diologRect2Zhezhao.setVisible(True)
+                        self.jbCentent2.setText("请先添加订单！")
+                        return
+
+                    # 遍历订单数据并生成控件
+                    for order in self.aw.orderList_data:
+                        if order.get("bakingDeviceId") == 2 and order.get("bakingStatue") == 1:
+                            # 使用 .get() 取值，若不存在某字段则提供默认值 [0, 0, 0, 0]
+                            formulation = None
+                            if order.get('backformulationName') != "无配方":
+                                with open(os.path.join(ytycwdpath, "localJson", "pf.json"), "r",
+                                          encoding="utf-8") as pffile:
+                                    pfdata = json.load(pffile)
+                                    formulation = [item for item in pfdata if
+                                                   item.get('formulationName') == order.get('backformulationName')][0]
+                                    formulation = formulation.get('jsonMessage')
+
+                            # 将数据追加到 hbList
+                            self.hbList.append([
+                                order.get('id'),  # id
+                                order.get('taskName'),  # 任务名称
+                                order.get('bakingBatch'),  # 任务订单编号
+                                order.get('finishTime'),  # 结束时间
+                                order.get('taskId'),  # 任务编号
+                                order.get('stage'),  # 阶段
+                                order.get('beanTypes'),  # 生豆信息
+                                order.get('formulationName'),  # 配方名称
+                                order.get('targetAgtron'),  # 目标色值
+                                order.get('fakeValue'),  # 随机色值
+                                formulation  # 背景曲线
+                            ])
+            else:
+                return
+        except FileNotFoundError:
+            QMessageBox.warning(self, "警告", "JSON 文件不存在")
         removed = False
         self.changeBool = True
         self.aw.diologRect.setVisible(False)
         self.aw.stop_time()
         self.aw.gjxytimer.stop()  # 关闭锅间协议
-        self.aw.CHARGE_BT=self.temp1[-1]
-        self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 1)))
+        if len(self.qmc.temp1) > 0:
+            self.aw.CHARGE_BT=self.temp1[-1]
+            self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 1)))
         self.aw.ksyrtimer.stop()
         self.aw.fourTimer.start()
 
@@ -13474,7 +13523,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()
-
+        # self.markDropSignal.emit(False)
         if len(self.timex) > 1:
             removed = False
             try:
@@ -13657,8 +13706,7 @@ class tgraphcanvas(FigureCanvas):
                 except Exception as e: # pylint: disable=broad-except
                     _log.exception(e)
             self.resetButtonAction()
-
-        # self.clearMeasurementLj()
+        self.clearMeasurementLj()
 
     # if noaction is True, the button event action is not triggered
     @pyqtSlot(bool)

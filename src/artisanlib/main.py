@@ -2302,6 +2302,15 @@ class ApplicationWindow(
         self.FCs_time: float = 0
         self.DROP_BT: float = 0
         self.totaltime: float = 0
+        self.CHARGE_BT: float = 0
+        self.TP_BT: float = 0
+        self.TP_time: float = 0
+        self.Maillard: float = 0
+        self.Maillard_tim: float = 0
+        self.FCs_BT: float = 0
+        self.FCs_time: float = 0
+        self.DROP_BT: float = 0
+        self.totaltime: float = 0
         # PLUS
         # 账户相关
         self.plus_account: Optional[str] = None  # if set to a login string, Artisan plus features are enabled
@@ -13651,12 +13660,12 @@ class ApplicationWindow(
         self.addMonitorWidget.setVisible(False)
     
     def markTpMarkClick(self):
-        self.tpMark.setStyleSheet(f"""
-                                            QPushButton {{
-                                                border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
-                                            }}
-                                        """)
-        if len(self.qmc.temp1)>0:
+        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+            self.tpMark.setStyleSheet(f"""
+                                                QPushButton {{
+                                                    border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
+                                                }}
+                                            """)
             self.TP_BT=self.qmc.temp1[-1]
             self.TP_time = self.qmc.timex[-1]
             self.qmc.tpChangeBool=True
@@ -13664,24 +13673,24 @@ class ApplicationWindow(
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
-        self.zhdImg.setStyleSheet(f"""
-                                    QPushButton {{
-                                        border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
-                                    }}
-                                """)
-        if len(self.qmc.temp1)>0:
+        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+            self.zhdImg.setStyleSheet(f"""
+                                        QPushButton {{
+                                            border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
+                                        }}
+                                    """)
             self.Maillard = self.qmc.temp1[-1]
             self.Maillard_time = self.qmc.timex[-1]
             self.zhd_down.setText(str(round(self.Maillard, 1)))
 
     def markyibaoClick(self):
         # self.qmc.mark1Cstart()
-        self.yibaoImg.setStyleSheet(f"""
-                                            QPushButton {{
-                                                border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
-                                            }}
-                                        """)
-        if len(self.qmc.temp1) > 0:
+        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+            self.yibaoImg.setStyleSheet(f"""
+                                                        QPushButton {{
+                                                            border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
+                                                        }}
+                                                    """)
             self.FCs_BT = self.qmc.temp1[-1]
             self.FCs_time = self.qmc.timex[-1]
             self.yb_down.setText(str(round(self.FCs_BT, 1)))
@@ -14221,9 +14230,6 @@ class ApplicationWindow(
             self.shebeiLabel.setText(QApplication.translate("RoastHead", "请前往设置添加设备"))
         else:
             self.shebeiLabel.setText(QApplication.translate("RoastHead", "请点击选择设备"))
-
-    
-
 
     def setRoundedPixmap(self, pixmap: QPixmap, radius: int) -> QPixmap:
         """为 QPixmap 添加圆角效果"""
@@ -15789,48 +15795,7 @@ class ApplicationWindow(
                                             }}
                                         """)
         # self.resetPhase()
-        self.hbList = []
-        try:
-            with open(os.path.join(ytycwdpath,"localJson","order.json"), "r", encoding="utf-8") as file:
-                data = json.load(file)
-                filtered_data = [order for order in data if order.get("bakingStatue") == 1]
 
-                # 赋值给 self.orderList_data
-                self.orderList_data = filtered_data
-
-                if not self.orderList_data:  # 如果数据为空
-                    self.diologRect2Zhezhao.setVisible(True)
-                    self.jbCentent2.setText("请先添加订单！")
-                    return
-
-                # 遍历订单数据并生成控件
-                for order in self.orderList_data:
-                    if order.get("bakingDeviceId") == 2 and order.get("bakingStatue") == 1:
-                        # 使用 .get() 取值，若不存在某字段则提供默认值 [0, 0, 0, 0]
-                        formulation=None
-                        if order.get('backformulationName') != "无配方":
-                            with open(os.path.join(ytycwdpath, "localJson", "pf.json"), "r", encoding="utf-8") as pffile:
-                                pfdata = json.load(pffile)
-                                formulation = [item for item in pfdata if item.get('formulationName') == order.get('backformulationName')][0]
-                                formulation = formulation.get('jsonMessage')
-
-                        # 将数据追加到 hbList
-                        self.hbList.append([
-                            order.get('id'),  # id
-                            order.get('taskName'), # 任务名称
-                            order.get('bakingBatch'),  # 任务订单编号
-                            order.get('finishTime'),  # 结束时间
-                            order.get('taskId'),  # 任务编号
-                            order.get('stage'), #阶段
-                            order.get('beanTypes'),  # 生豆信息
-                            order.get('formulationName'),  # 配方名称
-                            order.get('targetAgtron'),  # 目标色值
-                            order.get('fakeValue'),  # 随机色值
-                            formulation# 背景曲线
-                        ])
-
-        except FileNotFoundError:
-            QMessageBox.warning(self, "警告", "JSON 文件不存在")
 
         first_Value = self.hbList[0]
         self.backformulation=first_Value[10]
