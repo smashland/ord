@@ -1438,10 +1438,19 @@ class EventActionThread(
         self.command: str = command
         self.eventtype: Optional[int] = eventtype
 
+    def __del__(self):
+        self.requestInterruption()
+        self.quit()
+        # 3. 等待线程结束
+        self.wait()
+
     def run(self) -> None:
         # as eventaction_internal is not running in the GUI thread we avoid doing graphic updates and run them instead after thread termination within
         # the GUI thread
+        curtm = QDateTime.currentMSecsSinceEpoch()
         self.aw.eventaction_internal(self.action, self.command, self.eventtype)
+        curtm = QDateTime.currentMSecsSinceEpoch()-curtm
+        _log.info("EventActionThread work over %s", str(curtm))
 
 
 #########################################################################################################
@@ -1676,14 +1685,37 @@ class ChartUpdateThread(QThread):
         self.data22 = data22
         self.data23 = data23
         self.data24 = data24
+        self._paused = False
+        self._running = True
+    def __del__(self):
+        # 2. 请求退出
+        self._running = False
+        self.requestInterruption()
+        self.quit()
+
+        # 3. 等待线程结束
+        self.wait()
 
     def run(self):
         try:
-            logging.info("ChartUpdateThread started")
-            # 在线程中触发信号，传递数据
-            self.update_signal.emit(self.time_data, self.data1, self.data2, self.data3, self.data4, self.obj2,
-                                    self.time_data2, self.data21, self.data22, self.data23, self.data24)
-            logging.info("ChartUpdateThread finished emitting signal")
+            # logging.info("ChartUpdateThread started")
+            # # 在线程中触发信号，传递数据
+            # self.update_signal.emit(self.time_data, self.data1, self.data2, self.data3, self.data4, self.obj2,
+            #                         self.time_data2, self.data21, self.data22, self.data23, self.data24)
+            # logging.info("ChartUpdateThread finished emitting signal")
+            while self._running:
+                # 检查是否暂停
+                if self._paused:
+                    # 如果暂停，就休眠等待
+                    self.msleep(100)  # 休眠100毫秒
+                    continue
+
+                # 这里是你的工作代码
+                self.update_signal.emit(self.time_data, self.data1, self.data2, self.data3, self.data4, self.obj2,
+                                        self.time_data2, self.data21, self.data22, self.data23, self.data24)
+
+                # 模拟工作完成后暂停
+                self._paused = True
         except Exception as e:
             logging.error(f"Error in ChartUpdateThread: {e}")
 
@@ -1701,7 +1733,7 @@ class CustomMainPlotWidget(QWidget):
 
         font_path = "src/includes/Fonts/OPPOSANS-M.TTF"  # 替换为你的中文字体文件路径
         self.font_prop = font_manager.FontProperties(fname=font_path)
-        self.threads = []
+        self.workthread = None
     def find_max(self,arr):
         if not arr:
             return None
@@ -1819,22 +1851,38 @@ class CustomMainPlotWidget(QWidget):
     def update_chart_in_thread(self, time_data=None,  data1=None,  data2=None,  data3=None, data4=None,  obj2=None, time_data2=None,  data21=None,  data22=None,  data23=None,
                                data24=None):
         try:
-            # 创建线程实例并连接信号
-            thread = ChartUpdateThread(time_data, data1, data2, data3, data4, obj2, time_data2, data21, data22,
-                                       data23,
-                                       data24)
-            thread.update_signal.connect(self.refresh_chart)
-            # 启动线程
-            thread.start()
-            self.threads.append(thread)
-            logging.info("ChartUpdateThread started from update_chart_in_thread")
+            if self.workthread is None:
+                # 创建线程实例并连接信号
+                self.workthread = ChartUpdateThread(time_data, data1, data2, data3, data4, obj2, time_data2, data21, data22,
+                                           data23,
+                                           data24)
+                self.workthread.update_signal.connect(self.refresh_chart)
+                # 启动线程
+                self.workthread.start()
+                # self.threads.append(thread)
+                logging.info("ChartUpdateThread started from update_chart_in_thread")
+            self.workthread.time_data = time_data
+            self.workthread.data1 = data1
+            self.workthread.data2 = data2
+            self.workthread.data3 = data3
+            self.workthread.data4 = data4
+            self.workthread.obj2 = obj2
+            self.workthread.time_data2 = time_data2
+            self.workthread.data21 = data21
+            self.workthread.data22 = data22
+            self.workthread.data23 = data23
+            self.workthread.data24 = data24
+            self.workthread._paused = False
         except Exception as e:
             logging.error(f"Error in update_chart_in_thread: {e}")
 
     def closeEvent(self, event):
         # 在窗口关闭时等待所有线程结束
-        for thread in self.threads:
-            thread.wait()
+        if self.workthread is not None:
+            self.workthread._running = False
+            self.workthread.requestInterruption()
+            self.workthread.quit()
+            self.workthread.wait()
         event.accept()
 
 
@@ -21561,6 +21609,8 @@ class ApplicationWindow(
             else:
                 eventActionThread = EventActionThread(self, action, cmd, eventtype)
                 eventActionThread.finished.connect(self.eventactionThreadDone_slot)
+                _log.info("+++++++++++++++++++++++eventactionThreadDone_slot action %d, command %s ", action,
+                          cmd)
                 try:
                     self.qmc.eventactionsemaphore.acquire(1)
                     self.eventaction_running_threads.append(eventActionThread)
@@ -21574,10 +21624,17 @@ class ApplicationWindow(
         try:
             self.qmc.eventactionsemaphore.acquire(1)
             actionthread = self.sender()
+            # self.action: int = action
+            # self.command: str = command
+            # self.eventtype: Optional[int] = eventtype
+
+            _log.info("----------eventactionThreadDone_slot action %s, command %s ", str(actionthread.action), actionthread.command)
             assert isinstance(actionthread, EventActionThread)
             if actionthread in self.eventaction_running_threads:
                 self.eventaction_running_threads.remove(actionthread)
             actionthread.disconnect()
+            del actionthread
+            _log.info("----------eventactionThreadDone_slot list size  %s", str(len(self.eventaction_running_threads)))
         finally:
             if self.qmc.eventactionsemaphore.available() < 1:
                 self.qmc.eventactionsemaphore.release(1)
