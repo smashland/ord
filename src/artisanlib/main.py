@@ -2302,6 +2302,15 @@ class ApplicationWindow(
         self.FCs_time: float = 0
         self.DROP_BT: float = 0
         self.totaltime: float = 0
+        self.CHARGE_BT: float = 0
+        self.TP_BT: float = 0
+        self.TP_time: float = 0
+        self.Maillard: float = 0
+        self.Maillard_tim: float = 0
+        self.FCs_BT: float = 0
+        self.FCs_time: float = 0
+        self.DROP_BT: float = 0
+        self.totaltime: float = 0
         # PLUS
         # 账户相关
         self.plus_account: Optional[str] = None  # if set to a login string, Artisan plus features are enabled
@@ -2547,19 +2556,19 @@ class ApplicationWindow(
         #
         # self.current_language = "zh_CN"  # 默认语言是中文
         # self.translator = QTranslator()
-        self.switchEngLabel = QPushButton(self)
-        self.switchEngLabel.setGeometry(1770 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
-                                        58 * self.height_scale)
-        self.switchEngLabel.setStyleSheet(f"""
-                                                                                                 QPushButton {{
-                                                                                                     background-color: #F8F2ED;
-                                                                                                     border-image: url('{self.normalized_path}/includes/Icons/general/English.png');
-                                                                                                     border: none;
-                                                                                                     border-radius:{28 * self.width_scale}px
-                                                                                                 }}
-                                                                                             """)
-        # self.switchEngLabel.setText("英")
-        self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
+        # self.switchEngLabel = QPushButton(self)
+        # self.switchEngLabel.setGeometry(1770 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
+        #                                 58 * self.height_scale)
+        # self.switchEngLabel.setStyleSheet(f"""
+        #                                                                                          QPushButton {{
+        #                                                                                              background-color: #F8F2ED;
+        #                                                                                              border-image: url('{self.normalized_path}/includes/Icons/general/English.png');
+        #                                                                                              border: none;
+        #                                                                                              border-radius:{28 * self.width_scale}px
+        #                                                                                          }}
+        #                                                                                      """)
+        # # self.switchEngLabel.setText("英")
+        # self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
 
         self.sfxxLabel = QLabel(self)
         self.sfxxLabel.setGeometry(1690 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
@@ -2568,7 +2577,7 @@ class ApplicationWindow(
         self.sfxxLabel.setPixmap(sfxxPixmap)
         self.sfxxLabel.setScaledContents(True)  # Scale pixmap to fit QLabel
 
-        self.getLanguage()
+        # self.getLanguage()
 
 
         logoIcon = QFont(self.font_family_icon)
@@ -13452,14 +13461,14 @@ class ApplicationWindow(
             translation_file = "translations/roasthead_en.qm"
             icon_path = f"{self.normalized_path}/includes/Icons/general/Chinese.png"
 
-        self.switchEngLabel.setStyleSheet(f"""
-                QPushButton {{
-                    background-color: #F8F2ED;
-                    border-image: url('{icon_path}');
-                    border: none;
-                    border-radius: {28 * self.width_scale}px;
-                }}
-            """)
+        # self.switchEngLabel.setStyleSheet(f"""
+        #         QPushButton {{
+        #             background-color: #F8F2ED;
+        #             border-image: url('{icon_path}');
+        #             border: none;
+        #             border-radius: {28 * self.width_scale}px;
+        #         }}
+        #     """)
 
         # 卸载旧的翻译
         app.removeTranslator(self.translator)
@@ -13671,12 +13680,12 @@ class ApplicationWindow(
         self.addMonitorWidget.setVisible(False)
     
     def markTpMarkClick(self):
-        self.tpMark.setStyleSheet(f"""
-                                            QPushButton {{
-                                                border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
-                                            }}
-                                        """)
-        if len(self.qmc.temp1)>0:
+        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+            self.tpMark.setStyleSheet(f"""
+                                                QPushButton {{
+                                                    border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
+                                                }}
+                                            """)
             self.TP_BT=self.qmc.temp1[-1]
             self.TP_time = self.qmc.timex[-1]
             self.qmc.tpChangeBool=True
@@ -13684,24 +13693,24 @@ class ApplicationWindow(
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
-        self.zhdImg.setStyleSheet(f"""
-                                    QPushButton {{
-                                        border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
-                                    }}
-                                """)
-        if len(self.qmc.temp1)>0:
+        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+            self.zhdImg.setStyleSheet(f"""
+                                        QPushButton {{
+                                            border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
+                                        }}
+                                    """)
             self.Maillard = self.qmc.temp1[-1]
             self.Maillard_time = self.qmc.timex[-1]
             self.zhd_down.setText(str(round(self.Maillard, 1)))
 
     def markyibaoClick(self):
         # self.qmc.mark1Cstart()
-        self.yibaoImg.setStyleSheet(f"""
-                                            QPushButton {{
-                                                border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
-                                            }}
-                                        """)
-        if len(self.qmc.temp1) > 0:
+        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+            self.yibaoImg.setStyleSheet(f"""
+                                                        QPushButton {{
+                                                            border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
+                                                        }}
+                                                    """)
             self.FCs_BT = self.qmc.temp1[-1]
             self.FCs_time = self.qmc.timex[-1]
             self.yb_down.setText(str(round(self.FCs_BT, 1)))
@@ -14241,9 +14250,6 @@ class ApplicationWindow(
             self.shebeiLabel.setText(QApplication.translate("RoastHead", "请前往设置添加设备"))
         else:
             self.shebeiLabel.setText(QApplication.translate("RoastHead", "请点击选择设备"))
-
-    
-
 
     def setRoundedPixmap(self, pixmap: QPixmap, radius: int) -> QPixmap:
         """为 QPixmap 添加圆角效果"""
@@ -15809,48 +15815,7 @@ class ApplicationWindow(
                                             }}
                                         """)
         # self.resetPhase()
-        self.hbList = []
-        try:
-            with open(os.path.join(ytycwdpath,"localJson","order.json"), "r", encoding="utf-8") as file:
-                data = json.load(file)
-                filtered_data = [order for order in data if order.get("bakingStatue") == 1]
 
-                # 赋值给 self.orderList_data
-                self.orderList_data = filtered_data
-
-                if not self.orderList_data:  # 如果数据为空
-                    self.diologRect2Zhezhao.setVisible(True)
-                    self.jbCentent2.setText("请先添加订单！")
-                    return
-
-                # 遍历订单数据并生成控件
-                for order in self.orderList_data:
-                    if order.get("bakingDeviceId") == 2 and order.get("bakingStatue") == 1:
-                        # 使用 .get() 取值，若不存在某字段则提供默认值 [0, 0, 0, 0]
-                        formulation=None
-                        if order.get('backformulationName') != "无配方":
-                            with open(os.path.join(ytycwdpath, "localJson", "pf.json"), "r", encoding="utf-8") as pffile:
-                                pfdata = json.load(pffile)
-                                formulation = [item for item in pfdata if item.get('formulationName') == order.get('backformulationName')][0]
-                                formulation = formulation.get('jsonMessage')
-
-                        # 将数据追加到 hbList
-                        self.hbList.append([
-                            order.get('id'),  # id
-                            order.get('taskName'), # 任务名称
-                            order.get('bakingBatch'),  # 任务订单编号
-                            order.get('finishTime'),  # 结束时间
-                            order.get('taskId'),  # 任务编号
-                            order.get('stage'), #阶段
-                            order.get('beanTypes'),  # 生豆信息
-                            order.get('formulationName'),  # 配方名称
-                            order.get('targetAgtron'),  # 目标色值
-                            order.get('fakeValue'),  # 随机色值
-                            formulation# 背景曲线
-                        ])
-
-        except FileNotFoundError:
-            QMessageBox.warning(self, "警告", "JSON 文件不存在")
 
         first_Value = self.hbList[0]
         self.backformulation=first_Value[10]
@@ -16373,7 +16338,9 @@ class ApplicationWindow(
             taskTime_label = QLabel(historyListBack)
             taskTime_label.setStyleSheet(
                 "color: #222222; border:none; padding: 2px;background-color: transparent")
-            taskTime_label.setText(str(data.get('taskTime', 0) / 60))  # 将秒转换为分钟
+            taskTimestr=data.get('taskTime', 0)
+            
+            taskTime_label.setText(f"{(int(taskTimestr) // 60):02d}:{(int(taskTimestr) % 60):02d}")  # 将秒转换为分钟
             taskTime_label.setGeometry(787 * self.width_scale, 0, 120 * self.width_scale,
                                        56 * self.height_scale)
             taskTime_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -16859,22 +16826,21 @@ class ApplicationWindow(
             )
 
             # 回温点
-            tp_time_str = "{}:{}".format(int(tp_time) // 60, int(tp_time) % 60)
+            tp_time_str = f"{(int(tp_time) // 60):02d}:{(int(tp_time) % 60):02d}"
             self.huiwendian.setText(
                 QApplication.translate("RoastHead", "回温点: {}℃ / {}").format(tp_bt, tp_time_str)
             )
 
             # 转黄点
-            maillard_time_str = "{}:{}".format(int(maillard_time) // 60, int(maillard_time) % 60)
+            maillard_time_str = f"{(int(maillard_time) // 60):02d}:{(int(maillard_time) % 60):02d}"
             self.zhuanhuangdian.setText(
                 QApplication.translate("RoastHead", "转黄点: {}℃ / {}").format(maillard, maillard_time_str)
             )
 
             # 一爆
-            minutes = int(fCs_time) // 60
-            seconds = int(fCs_time) % 60
+
             self.yibao.setText(
-                QApplication.translate("RoastHead", "一爆: {}℃ / {}:{}").format(fCs_BT, minutes, seconds)
+                QApplication.translate("RoastHead", "一爆: {}℃ / {}").format(fCs_BT,f"{(int(fCs_time) // 60):02d}:{(int(fCs_time) % 60):02d}")
             )
 
             # DTR
@@ -16884,7 +16850,7 @@ class ApplicationWindow(
 
             # 发展时长
             if int(finishphasetime) != 0:
-                dev_time_str = "{}:{}".format(int(finishphasetime) // 60, int(finishphasetime) % 60)
+                dev_time_str =  f"{(int(finishphasetime) // 60):02d}:{(int(finishphasetime) % 60):02d}"
                 dev_percent = int(finishphasetime) / int(total_time) * 100
                 self.fazhanshichang.setText(
                     QApplication.translate("RoastHead", "发展时长: {} / {:.2f}%").format(dev_time_str, dev_percent)
@@ -16991,7 +16957,7 @@ class ApplicationWindow(
             # 动态设置任务时间
             task_time_minutes = int(order.get('taskTime', 0)) // 60
             task_time_seconds = int(order.get('taskTime', 0)) % 60
-            getattr(self, f'historyOrder{i + 1}_Time').setText(f"{task_time_minutes}:{task_time_seconds}")
+            getattr(self, f'historyOrder{i + 1}_Time').setText(f"{task_time_minutes:02d}:{task_time_seconds:02d}")
 
             # 动态设置创建时间、脱水率、烘焙评分、Agtron historyOrder_hbrq1_Data
             getattr(self, f'historyOrder_hbrq{i + 1}_Data').setText(str(order.get('bakingFinishTime', '-')))
@@ -21627,17 +21593,18 @@ class ApplicationWindow(
             if not parallel:  # or action==3: # subactions of multiple event actions, may crash if run in parallel, especially if they update the UI like button shape!
                 self.eventaction_internal(action, cmd, eventtype)
             else:
-                eventActionThread = EventActionThread(self, action, cmd, eventtype)
-                eventActionThread.finished.connect(self.eventactionThreadDone_slot)
-                _log.info("+++++++++++++++++++++++eventactionThreadDone_slot action %d, command %s ", action,
-                          cmd)
-                try:
-                    self.qmc.eventactionsemaphore.acquire(1)
-                    self.eventaction_running_threads.append(eventActionThread)
-                finally:
-                    if self.qmc.eventactionsemaphore.available() < 1:
-                        self.qmc.eventactionsemaphore.release(1)
-                eventActionThread.start()
+                if len(self.qmc.temp1)>0 and self.qmc.temp1[0] > 0:
+                    eventActionThread = EventActionThread(self, action, cmd, eventtype)
+                    eventActionThread.finished.connect(self.eventactionThreadDone_slot)
+                    _log.info("+++++++++++++++++++++++eventactionThreadDone_slot action %d, command %s ", action,
+                              cmd)
+                    try:
+                        self.qmc.eventactionsemaphore.acquire(1)
+                        self.eventaction_running_threads.append(eventActionThread)
+                    finally:
+                        if self.qmc.eventactionsemaphore.available() < 1:
+                            self.qmc.eventactionsemaphore.release(1)
+                    eventActionThread.start()
 
     @pyqtSlot()
     def eventactionThreadDone_slot(self) -> None:
