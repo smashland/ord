@@ -3007,7 +3007,7 @@ class ApplicationWindow(
         # self.formulatioNameContent.setText()
         self.mbwdContent.setGeometry(113 * self.width_scale, 59 * self.height_scale, 153 * self.width_scale,
                                                28 * self.height_scale)
-        self.mbwdContent.editingFinished.connect(self.savembwdContent)
+        # self.mbwdContent.editingFinished.connect(self.savembwdContent)
 
         self.hlTxt = QLabel(self.statusCardEdit)
         self.hlTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
@@ -3032,7 +3032,7 @@ class ApplicationWindow(
         self.hlContent.setFont(mbwdTxtfont)
         self.hlContent.setGeometry(113 * self.width_scale, 91 * self.height_scale, 153 * self.width_scale,
                                      28 * self.height_scale)
-        self.hlContent.editingFinished.connect(self.savehlContent)
+        # self.hlContent.editingFinished.connect(self.savehlContent)
 
         self.fmTxt = QLabel(self.statusCardEdit)
         self.fmTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
@@ -3058,7 +3058,7 @@ class ApplicationWindow(
         # self.formulatioNameContent.setText()
         self.fmContent.setGeometry(113 * self.width_scale, 123 * self.height_scale, 153 * self.width_scale,
                                    28 * self.height_scale)
-        self.fmContent.editingFinished.connect(self.savefmContent)
+        # self.fmContent.editingFinished.connect(self.savefmContent)
 
         self.zsTxt = QLabel(self.statusCardEdit)
         self.zsTxt.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
@@ -3084,7 +3084,7 @@ class ApplicationWindow(
         # self.formulatioNameContent.setText()
         self.zsContent.setGeometry(113 * self.width_scale, 155 * self.height_scale, 153 * self.width_scale,
                                    28 * self.height_scale)
-        self.zsContent.editingFinished.connect(self.savezsContent)
+        # self.zsContent.editingFinished.connect(self.savezsContent)
 
         self.getInitEditVal()
 
@@ -12815,10 +12815,30 @@ class ApplicationWindow(
         self.ordersRect_More.setVisible(False)
 
     def initEditValue(self):
+        self.lineEditValLst = [self.mbwdContent.text(), self.hlContent.text(), self.fmContent.text(), self.zsContent.text()]
         self.statusCardEdit.setVisible(True)
 
 
     def closeCardEdit(self):
+        msg_box1 = QMessageBox()
+        msg_box1.setWindowTitle("保存")
+        msg_box1.setText("是否保存？")
+        # 设置图标为无图标
+        msg_box1.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+        msg_box1.button(QMessageBox.StandardButton.Ok).setText("确定")
+        msg_box1.button(QMessageBox.StandardButton.Cancel).setText("取消")
+
+        result = msg_box1.exec()
+        if result == QMessageBox.StandardButton.Ok:
+            self.savembwdContent()
+            self.savehlContent()
+            self.savefmContent()
+            self.savezsContent()
+        else:
+            self.mbwdContent.setText(self.lineEditValLst[0])
+            self.hlContent.setText(self.lineEditValLst[1])
+            self.fmContent.setText(self.lineEditValLst[2])
+            self.zsContent.setText(self.lineEditValLst[3])
         self.statusCardEdit.setVisible(False)
 
     def showInitEditVal(self):
