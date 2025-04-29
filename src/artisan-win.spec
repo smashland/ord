@@ -286,7 +286,7 @@ xcopy_files(r'includes\Fonts', TARGET + 'Fonts')
 make_dir(TARGETINTER + 'Fonts')
 xcopy_files(r'includes\Fonts', TARGETINTER + 'Fonts')
 make_dir(TARGET + 'localJson')
-xcopy_files(r'localJson', TARGET + 'localJson')
+copy_file(r'localJson', TARGET + 'localJson')
 
 
 make_dir(TARGET + 'localJson\\History')
