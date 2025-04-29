@@ -2556,19 +2556,19 @@ class ApplicationWindow(
         #
         # self.current_language = "zh_CN"  # 默认语言是中文
         # self.translator = QTranslator()
-        self.switchEngLabel = QPushButton(self)
-        self.switchEngLabel.setGeometry(1770 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
-                                        58 * self.height_scale)
-        self.switchEngLabel.setStyleSheet(f"""
-                                                                                                 QPushButton {{
-                                                                                                     background-color: #F8F2ED;
-                                                                                                     border-image: url('{self.normalized_path}/includes/Icons/general/English.png');
-                                                                                                     border: none;
-                                                                                                     border-radius:{28 * self.width_scale}px
-                                                                                                 }}
-                                                                                             """)
-        # self.switchEngLabel.setText("英")
-        self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
+        # self.switchEngLabel = QPushButton(self)
+        # self.switchEngLabel.setGeometry(1770 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
+        #                                 58 * self.height_scale)
+        # self.switchEngLabel.setStyleSheet(f"""
+        #                                                                                          QPushButton {{
+        #                                                                                              background-color: #F8F2ED;
+        #                                                                                              border-image: url('{self.normalized_path}/includes/Icons/general/English.png');
+        #                                                                                              border: none;
+        #                                                                                              border-radius:{28 * self.width_scale}px
+        #                                                                                          }}
+        #                                                                                      """)
+        # # self.switchEngLabel.setText("英")
+        # self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
 
         self.sfxxLabel = QLabel(self)
         self.sfxxLabel.setGeometry(1690 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
@@ -2577,7 +2577,7 @@ class ApplicationWindow(
         self.sfxxLabel.setPixmap(sfxxPixmap)
         self.sfxxLabel.setScaledContents(True)  # Scale pixmap to fit QLabel
 
-        self.getLanguage()
+        # self.getLanguage()
 
 
         logoIcon = QFont(self.font_family_icon)
@@ -13441,14 +13441,14 @@ class ApplicationWindow(
             translation_file = "translations/roasthead_en.qm"
             icon_path = f"{self.normalized_path}/includes/Icons/general/Chinese.png"
 
-        self.switchEngLabel.setStyleSheet(f"""
-                QPushButton {{
-                    background-color: #F8F2ED;
-                    border-image: url('{icon_path}');
-                    border: none;
-                    border-radius: {28 * self.width_scale}px;
-                }}
-            """)
+        # self.switchEngLabel.setStyleSheet(f"""
+        #         QPushButton {{
+        #             background-color: #F8F2ED;
+        #             border-image: url('{icon_path}');
+        #             border: none;
+        #             border-radius: {28 * self.width_scale}px;
+        #         }}
+        #     """)
 
         # 卸载旧的翻译
         app.removeTranslator(self.translator)
