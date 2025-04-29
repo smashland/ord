@@ -4431,8 +4431,6 @@ class tgraphcanvas(FigureCanvas):
                 _log.exception(e)
             self.aw.lcd4.display(deltaetstr)
             self.aw.lcd5.display(deltabtstr)
-            if len(beantimex) < 50:
-                _log.info("4433:%s",beantimex)
             if len(beantimex) < 3:
                 i = 0
                 while i < len(beantimex) - 1:
@@ -12701,7 +12699,7 @@ class tgraphcanvas(FigureCanvas):
                                     formulation = formulation.get('jsonMessage')
 
                             # 将数据追加到 hbList
-                            self.hbList.append([
+                            self.aw.hbList.append([
                                 order.get('id'),  # id
                                 order.get('taskName'),  # 任务名称
                                 order.get('bakingBatch'),  # 任务订单编号
@@ -12723,7 +12721,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.diologRect.setVisible(False)
         self.aw.stop_time()
         self.aw.gjxytimer.stop()  # 关闭锅间协议
-        if len(self.qmc.temp1) > 0:
+        if len(self.temp1) > 0:
             self.aw.CHARGE_BT=self.temp1[-1]
             self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 1)))
         self.aw.ksyrtimer.stop()

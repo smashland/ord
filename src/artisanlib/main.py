@@ -21572,17 +21572,18 @@ class ApplicationWindow(
             if not parallel:  # or action==3: # subactions of multiple event actions, may crash if run in parallel, especially if they update the UI like button shape!
                 self.eventaction_internal(action, cmd, eventtype)
             else:
-                eventActionThread = EventActionThread(self, action, cmd, eventtype)
-                eventActionThread.finished.connect(self.eventactionThreadDone_slot)
-                _log.info("+++++++++++++++++++++++eventactionThreadDone_slot action %d, command %s ", action,
-                          cmd)
-                try:
-                    self.qmc.eventactionsemaphore.acquire(1)
-                    self.eventaction_running_threads.append(eventActionThread)
-                finally:
-                    if self.qmc.eventactionsemaphore.available() < 1:
-                        self.qmc.eventactionsemaphore.release(1)
-                eventActionThread.start()
+                if len(self.qmc.temp1)>0 and self.qmc.temp1[0] > 0:
+                    eventActionThread = EventActionThread(self, action, cmd, eventtype)
+                    eventActionThread.finished.connect(self.eventactionThreadDone_slot)
+                    _log.info("+++++++++++++++++++++++eventactionThreadDone_slot action %d, command %s ", action,
+                              cmd)
+                    try:
+                        self.qmc.eventactionsemaphore.acquire(1)
+                        self.eventaction_running_threads.append(eventActionThread)
+                    finally:
+                        if self.qmc.eventactionsemaphore.available() < 1:
+                            self.qmc.eventactionsemaphore.release(1)
+                    eventActionThread.start()
 
     @pyqtSlot()
     def eventactionThreadDone_slot(self) -> None:
