@@ -237,7 +237,6 @@ copy_file(YOCTO_BIN + r'\yapi64.dll', TARGET + r'_internal\yoctopuce\cdll')
 copy_file(SNAP7_BIN + r'\snap7.dll', TARGET)
 
 for fn in [
-    'artisan.png',
     'artisanAlarms.ico',
     'artisanProfile.ico',
     'artisanPalettes.ico',
@@ -255,10 +254,6 @@ for fn in [
     r'includes\SourceHanSansJP-Regular.otf',
     r'includes\SourceHanSansKR-Regular.otf',
     r'includes\SourceHanSansTW-Regular.otf',
-    r'includes\alarmclock.eot',
-    r'includes\alarmclock.svg',
-    r'includes\alarmclock.ttf',
-    r'includes\alarmclock.woff',
     r'includes\artisan.tpl',
     r'includes\bigtext.js',
     r'includes\sorttable.js',
@@ -266,12 +261,8 @@ for fn in [
     r'includes\roast-template.htm',
     r'includes\ranking-template.htm',
     r'includes\jquery-1.11.1.min.js',
-    r'includes\android-chrome-192x192.png',
-    r'includes\android-chrome-512x512.png',
     r'includes\apple-touch-icon.png',
     r'includes\browserconfig.xml',
-    r'includes\favicon-16x16.png',
-    r'includes\favicon-32x32.png',
     r'includes\favicon.ico',
     r'includes\mstile-150x150.png',
     r'includes\safari-pinned-tab.svg',
@@ -295,7 +286,7 @@ xcopy_files(r'includes\Fonts', TARGET + 'Fonts')
 make_dir(TARGETINTER + 'Fonts')
 xcopy_files(r'includes\Fonts', TARGETINTER + 'Fonts')
 make_dir(TARGET + 'localJson')
-copy_file(r'localJson', TARGET + 'localJson')
+xcopy_files(r'localJson', TARGET + 'localJson')
 
 
 make_dir(TARGET + 'localJson\\History')
