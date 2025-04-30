@@ -119,6 +119,6 @@ slideroffsets=0, 0, 0, 0
 slidervisibilities=1, 1, 0, 1
 
 [Button]
-buttonactions= 2, 2, 2, 2
-buttoncommands="wcoil(1,601,{})", "wcoil(1,596,{})", "wcoil(1,594,{})", "wcoil(1,595,{})"
+buttonactions= 2, 2, 2, 2,2
+buttoncommands="wcoil(1,601,{})", "wcoil(1,596,{})", "wcoil(1,594,{})", "wcoil(1,595,{})", "wcoil(1,590,{})"
 

@@ -315,7 +315,7 @@ class tgraphcanvas(FigureCanvas):
         'segmentpickflag', 'segmentdeltathreshold', 'segmentsamplesthreshold', 'stats_summary_rect', 'title_text', 'title_artist', 'title_width',
         'background_title_width', 'xlabel_text', 'xlabel_artist', 'xlabel_width', 'lazyredraw_on_resize_timer', 'mathdictionary_base',
         'ambient_pressure_sampled', 'ambient_humidity_sampled', 'ambientTemp_sampled', 'backgroundmovespeed', 'chargeTimerPeriod', 'flavors_default_value',
-        'fmt_data_ON', 'l_subtitle', 'projectDeltaFlag', 'weight_units', 'btbreak_params', 'changeBool', 'tpChangeBool']
+        'fmt_data_ON', 'l_subtitle', 'projectDeltaFlag', 'weight_units', 'btbreak_params', 'changeBool', 'tpChangeBool', 'ccChangeBool']
 
 
     def __init__(self, parent:QWidget, dpi:int, locale:str, aw:'ApplicationWindow') -> None:
@@ -471,7 +471,6 @@ class tgraphcanvas(FigureCanvas):
         self.afterTP:bool = False
         self.decay_weights:Optional[List[int]] = None
         self.temp_decay_weights:Optional[List[int]] = None
-
         # used by BTbreak
         self.btbreak_params:BTBreakParams = {
             'delay': [[40000,1000,500],               #autoChargeMode="Standard"
@@ -1295,6 +1294,7 @@ class tgraphcanvas(FigureCanvas):
         self.backgroundUUID:Optional[str] = None
         self.backgroundmovespeed = 30
         self.changeBool = False
+        self.ccChangeBool=False
         self.tpChangeBool = False
         self.backgroundShowFullflag:bool = False
         self.backgroundKeyboardControlFlag:bool = True
@@ -4348,6 +4348,10 @@ class tgraphcanvas(FigureCanvas):
             # self.aw.ssdLabel1.setGeometry((26 + self.aw.calculate_text_width(
             #     self.aw.processInfoLabel) + self.aw.calculate_text_width(self.aw.processInfoLabel_point)) * self.aw.width_scale,
             #                           26 * self.aw.height_scale, 16 * self.aw.width_scale, 18 * self.aw.height_scale)
+            #是否自动化
+            if self.aw.setControlBool == False:
+                self.aw.timerTimeoutSlt()
+
 
            # Agtron色值计算和显示
             try:
@@ -12683,6 +12687,17 @@ class tgraphcanvas(FigureCanvas):
                     if not self.aw.orderList_data:  # 如果数据为空
                         self.diologRect2Zhezhao.setVisible(True)
                         self.jbCentent2.setText("请先添加订单！")
+                        self.aw.setControlBool = True
+                        control_False_path = f"{self.aw.normalized_path}/includes/Icons/general/controlO.png"
+                        self.aw.control_False.setIcon(QIcon(control_False_path))
+                        self.aw.jiaImg1.setEnabled(True)
+                        self.aw.jianImg1.setEnabled(True)
+                        self.aw.jiaImg2.setEnabled(True)
+                        self.aw.jianImg2.setEnabled(True)
+                        self.aw.jiaImg3.setEnabled(True)
+                        self.aw.jianImg3.setEnabled(True)
+                        self.aw.rdBtn.setEnabled(True)
+                        self.aw.ccBtn.setEnabled(True)
                         return
 
                     # 遍历订单数据并生成控件
@@ -13518,6 +13533,7 @@ class tgraphcanvas(FigureCanvas):
 
         self.tpChangeBool = False
         self.changeBool = False
+        self.ccChangeBool = False
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()

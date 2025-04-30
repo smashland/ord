@@ -1772,9 +1772,9 @@ class CustomMainPlotWidget(QWidget):
             ax.plot(time_data, data1, label="Data1", color="#F0E2D7")  # 豆温
             ax.plot(time_data, data2, label="Data2", color="#E7CBC8")  # 风温
 
-            if data3 != "未知任务":
+            if data3 is not None and data3 != "未知任务" and len(data3) > 0:
                 ax.plot(time_data, data3, label="Data3", color="#DDD6E3")  # 色值
-            if data4 != "未知任务" and len(data4) > 0:
+            if data4 is not None and  data4 != "未知任务" and len(data4) > 0:
                 ax.plot(time_data, data4, label="Data4", color="#DCE7DA")  # ROR
 
         if time_data2 is not None:
@@ -3798,7 +3798,7 @@ class ApplicationWindow(
         self.processInfoLabel.setFont(processInfofont)
         self.processInfotimer = QTimer()
         # self.processInfotimer.timeout.connect(self.checkTextChanged)
-        self.processInfotimer.start(100)
+        self.processInfotimer.start(1000)
         layout1.addWidget(self.processInfoLabel)
 
         self.processInfoLabel_point = QLabel()
@@ -4010,6 +4010,7 @@ class ApplicationWindow(
         self.processInfoLabel2.setFont(processInfofont2)
 
         self.setControlBool = True
+        self.ControlBool = 0
         self.control_False = QPushButton(self)
         self.control_False.setGeometry(1757 * self.width_scale, 145 * self.height_scale, 62 * self.width_scale,
                                        32 * self.height_scale)
@@ -13108,6 +13109,9 @@ class ApplicationWindow(
         # self.qmc.ToggleRecorder()
         self.ksyrBtn.setEnabled(False)
         self.rightTopLabel1_suo.setText('预热')
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(4, True)
         self.oneStage = []
         try:
             with open(ytycwdpath + "/localJson/order.json", "r", encoding="utf-8") as file:
@@ -13204,8 +13208,7 @@ class ApplicationWindow(
         #         return
 
         # 获取当前的温度值
-        # temp_text = self.processInfoLabel.text()
-        temp_text = 140
+        temp_text = self.processInfoLabel.text()
         if temp_text is None:
             _log.exception("Error: processInfoLabel.text() 返回 None")
             return
@@ -13217,30 +13220,21 @@ class ApplicationWindow(
             return
         stage_data = first_Value[5]
         if self.qmc.tpChangeBool:
-            for i in range(int(len(stage_data)/4)):  # 阶段数据索引范围
-                stage_temp = int(stage_data[i*4])
-                if stage_temp <= 0:
-                    continue
-                
-                # 最后一阶段特殊处理
-                if i == (int(len(stage_data)/4)-1):
-                    if current_temp > int(stage_data[i*4]):
-                        new_phase = i+1
-                        if new_phase > self.current_phase:
-                            self.current_phase = new_phase
-                            self._updateUIWithStageData(self.current_phase, stage_data)
-                            break
-                # 中间阶段判断
-                elif current_temp < stage_temp:
-                    new_phase = i + 1
-                    if new_phase > self.current_phase:
-                        self.current_phase = new_phase
-                        self._updateUIWithStageData(self.current_phase, stage_data)
-                        break
-        else:
-            self.current_phase = 0
-            self._updateUIWithStageData(1, first_Value[5])
+            new_phase = self.find_index(current_temp,stage_data)
+            lenjd = int(len(stage_data)/4)
+            if new_phase == lenjd:
+                self.qmc.ccChangeBool = True
+            else:
+                self.current_phase = new_phase  + 1
+                self._updateUIWithStageData(self.current_phase, stage_data)
 
+    def find_index(self,tm, arr):
+        for i, num in enumerate(arr):
+            if i % 4 == 0 and tm < int(num):
+                return int(i / 4)
+        return int(len(arr)/4)
+    
+    
     def _updateUIWithStageData(self, display_phase: int, stage_data: list):
         """更新 UI 元素和滑动条"""
         self.jieduanNum.setText(str(display_phase))
@@ -15720,6 +15714,40 @@ class ApplicationWindow(
         self.updateOrderJsonFile(order_id_to_remove)
         self.load_order_json()
         self.orderWidget.update()
+
+
+    def timerTimeoutSlt(self):
+        if self.ksyrBtn.text() != "开始预热" and self.ControlBool >1:
+            if self.qmc.changeBool:
+                # 已入豆
+                #出仓
+                if self.qmc.ccChangeBool: #温度达到阶段最后温度  自动出仓
+                    self.qmc.tempText=40
+                    self.qmc.markDrop()
+                    self.ControlBool = 5
+            else:
+                #锅间协议  预热阶段
+                if self.ControlBool ==5:
+                    self.setControlBool = True
+                    control_False_path = f"{self.normalized_path}/includes/Icons/general/controlO.png"
+                    self.control_False.setIcon(QIcon(control_False_path))
+                    self.jiaImg1.setEnabled(True)
+                    self.jianImg1.setEnabled(True)
+                    self.jiaImg2.setEnabled(True)
+                    self.jianImg2.setEnabled(True)
+                    self.jiaImg3.setEnabled(True)
+                    self.jianImg3.setEnabled(True)
+                    self.rdBtn.setEnabled(True)
+                    self.ccBtn.setEnabled(True)
+                elif int(self.processInfoLabel.text()) >= int(self.mbwdContent.text()): #温度达到预热温度  自动入豆
+                    self.qmc.markCharge()
+        elif self.ksyrBtn.text() == "开始预热" and self.ControlBool == 0:
+            self.ControlBool = 1
+            self.ksyrBtnState()
+            self.ControlBool = 2
+        elif self.ksyrBtn.text() != "开始预热":
+            self.ControlBool = 2
+
 
     def clickControl(self):
         aaa = self.setControlBool
@@ -21187,71 +21215,6 @@ class ApplicationWindow(
             # we set a fake-release-event for keyboard triggered slider moves
             self.eventslidermoved[m] = 1
 
-    # if updateLCD=True, call moveslider() which in turn updates the LCD
-    # def sliderReleased(self, n: int, force: bool = False, updateLCD: bool = False) -> bool:
-    #     """
-    #     处理滑块释放事件，根据传入的滑块编号 (`n`)，进行相应的更新操作。
-    #     该方法会启动一个 `SliderWorker`，用线程池异步执行任务，避免阻塞主线程。
-    #     """
-    #     # 处理 slider1
-    #     if n == 0:
-    #         sv1 = self.slider1.value()  # 获取 slider1 的当前值
-    #         # 如果滑块值没有变化（小于一定阈值），跳过
-    #         if abs(sv1 - self.eventslidervalues[0]) < 1e-3:
-    #             return False
-    # 
-    #         # 创建 SliderWorker，执行后台任务
-    #         worker = SliderWorker(n, sv1, self.eventslidervalues, self.eventslidermoved, self.eventslidercoarse,
-    #                               self.moveslider, self.recordsliderevent)
-    #         worker.update_slider_signal.connect(self.update_slider_lcd)  # 连接信号
-    #         self.worker_pool.setMaxThreadCount(10)
-    #         self.worker_pool.start(worker)  # 启动工作线程
-    # 
-    #     # 处理 slider2
-    #     elif n == 1:
-    #         sv2 = self.slider2.value()  # 获取 slider2 的当前值
-    #         if abs(sv2 - self.eventslidervalues[1]) < 1e-3:
-    #             return False
-    #         worker = SliderWorker(n, sv2, self.eventslidervalues, self.eventslidermoved, self.eventslidercoarse,
-    #                               self.moveslider, self.recordsliderevent)
-    #         worker.update_slider_signal.connect(self.update_slider_lcd)  # 连接信号
-    #         self.worker_pool.setMaxThreadCount(10)
-    #         self.worker_pool.start(worker)  # 启动工作线程
-    # 
-    #     # 处理 slider3
-    #     elif n == 2:
-    #         sv3 = self.slider3.value()  # 获取 slider3 的当前值
-    #         if abs(sv3 - self.eventslidervalues[2]) < 1e-3:
-    #             return False
-    #         worker = SliderWorker(n, sv3, self.eventslidervalues, self.eventslidermoved, self.eventslidercoarse,
-    #                               self.moveslider, self.recordsliderevent)
-    #         worker.update_slider_signal.connect(self.update_slider_lcd)  # 连接信号
-    #         self.worker_pool.setMaxThreadCount(10)
-    #         self.worker_pool.start(worker)  # 启动工作线程
-    # 
-    #     # 处理 slider4
-    #     elif n == 3:
-    #         sv4 = self.slider4.value()  # 获取 slider4 的当前值
-    #         if abs(sv4 - self.eventslidervalues[3]) < 1e-3:
-    #             return False
-    #         worker = SliderWorker(n, sv4, self.eventslidervalues, self.eventslidermoved, self.eventslidercoarse,
-    #                               self.moveslider, self.recordsliderevent)
-    #         worker.update_slider_signal.connect(self.update_slider_lcd)  # 连接信号
-    #         self.worker_pool.setMaxThreadCount(10)
-    #         self.worker_pool.start(worker)  # 启动工作线程
-    # 
-    #     return False
-    # 
-    # def update_slider_lcd(self, n, v):
-    #     # 在主线程中更新LCD
-    #     if n == 0:
-    #         self.slider1.setValue(v)
-    #     elif n == 1:
-    #         self.slider2.setValue(v)
-    #     elif n == 2:
-    #         self.slider3.setValue(v)
-    #     elif n == 3:
-    #         self.slider4.setValue(v)
 
     def sliderReleased(self, n: int, force: bool = False, updateLCD: bool = False) -> bool:
         if n == 0:
