@@ -4671,7 +4671,6 @@ class ApplicationWindow(
         )
         jbfont = QFont(self.font_family2, 12*self.width_scale)
         self.jbBtn.setFont(jbfont)
-        self.jbBtn.setEnabled(False)
         self.jbBtn.clicked.connect(self.markJB)
 
         self.rightTop_suo = QWidget(self)  # 右上
@@ -15901,13 +15900,13 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(2, True)
-            QTimer.singleShot(5000, lambda: self.fireslideraction2(2, False))
+            QTimer.singleShot(5000, lambda: self.fireslideraction2(3, False))
         
     def markJB(self):
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(3, True)
-            QTimer.singleShot(5000, lambda: self.fireslideraction2(3, False))
+            QTimer.singleShot(5000, lambda: self.fireslideraction2(2, False))
 
 
         
