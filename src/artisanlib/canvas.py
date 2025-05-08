@@ -79,7 +79,7 @@ try:
                              QGraphicsEffect, # @Reimport @UnresolvedImport @UnusedImport
                              QSizePolicy, # @Reimport @UnresolvedImport @UnusedImport
                              QMenu) # @Reimport @UnresolvedImport @UnusedImport
-    from PyQt6.QtGui import (QAction, QImage, # @Reimport @UnresolvedImport @UnusedImport
+    from PyQt6.QtGui import (QAction, QImage, QIcon,# @Reimport @UnresolvedImport @UnusedImport
                                 QColor, QDesktopServices, # @Reimport @UnresolvedImport @UnusedImport
                                 QCursor) # @Reimport @UnresolvedImport @UnusedImport
     from PyQt6.QtCore import (QLocale, pyqtSignal, pyqtSlot, # @Reimport @UnresolvedImport @UnusedImport
@@ -92,7 +92,7 @@ except Exception: # pylint: disable=broad-except
                              QGraphicsEffect, # @Reimport @UnresolvedImport @UnusedImport
                              QSizePolicy, # @Reimport @UnresolvedImport @UnusedImport
                              QMenu) # @Reimport @UnresolvedImport @UnusedImport
-    from PyQt5.QtGui import (QImage,  # type: ignore # @Reimport @UnresolvedImport @UnusedImport
+    from PyQt5.QtGui import (QImage,QIcon,  # type: ignore # @Reimport @UnresolvedImport @UnusedImport
                                 QColor, QDesktopServices, # @Reimport @UnresolvedImport @UnusedImport
                                 QCursor) # @Reimport @UnresolvedImport @UnusedImport
     from PyQt5.QtCore import (QLocale, pyqtSignal, pyqtSlot, # type: ignore # @Reimport @UnresolvedImport @UnusedImport
@@ -12674,6 +12674,8 @@ class tgraphcanvas(FigureCanvas):
     # if noaction is True, the button event action is not triggered
     @pyqtSlot(bool)
     def markCharge(self, noaction:bool = False) -> None:
+        if self.changeBool:
+            return
         self.aw.hbList = []
         try:
             if self.aw.shebeiLabel.text() != "请点击选择设备" and self.aw.shebeiLabel.text() !="请前往设置添加设备":
@@ -12685,8 +12687,8 @@ class tgraphcanvas(FigureCanvas):
                     self.aw.orderList_data = filtered_data
 
                     if not self.aw.orderList_data:  # 如果数据为空
-                        self.diologRect2Zhezhao.setVisible(True)
-                        self.jbCentent2.setText("请先添加订单！")
+                        self.aw.diologRect2Zhezhao.setVisible(True)
+                        self.aw.jbCentent2.setText("请先添加订单！")
                         self.aw.setControlBool = True
                         control_False_path = f"{self.aw.normalized_path}/includes/Icons/general/controlO.png"
                         self.aw.control_False.setIcon(QIcon(control_False_path))

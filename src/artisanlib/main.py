@@ -1736,7 +1736,7 @@ class CustomMainPlotWidget(QWidget):
         self.workthread = None
     def find_max(self,arr):
         if not arr:
-            return None
+            return 300
         max_num = int(arr[0])
         for num in arr:
             if num is not None and int(num) > max_num:
@@ -2553,6 +2553,7 @@ class ApplicationWindow(
         self.central_widget.setPixmap(self.pixmap)
         self.central_widget.setScaledContents(True)
 
+
         #
         # self.current_language = "zh_CN"  # 默认语言是中文
         # self.translator = QTranslator()
@@ -2569,13 +2570,28 @@ class ApplicationWindow(
         #                                                                                      """)
         # # self.switchEngLabel.setText("英")
         # self.switchEngLabel.clicked.connect(self.clickSwitchLanguages)
-
+        self.exeMinLabel = QPushButton(self)
+        self.exeMinLabel.setGeometry(1600 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
+                                   58 * self.width_scale)  # Position and size of the label
+        exeMinPixmap = QPixmap(self.normalized_path + '/includes/Icons/general/exemin.png')  # Path to your icon image
+        icon = QIcon(exeMinPixmap)
+        self.exeMinLabel.setIcon(icon)
+        self.exeMinLabel.setIconSize(exeMinPixmap.size())
+        self.exeMinLabel.setStyleSheet("""
+                    QPushButton {
+                        border: none; /* 去掉边框 */
+                        color: white; /* 设置文字颜色 */
+                    }
+                """)
+        self.exeMinLabel.clicked.connect(self.showMinimized)
+        
         self.sfxxLabel = QLabel(self)
         self.sfxxLabel.setGeometry(1690 * self.width_scale, 60 * self.height_scale, 58 * self.width_scale,
                                    58 * self.width_scale)  # Position and size of the label
         sfxxPixmap = QPixmap(self.normalized_path + '/includes/Icons/general/info.png')  # Path to your icon image
         self.sfxxLabel.setPixmap(sfxxPixmap)
         self.sfxxLabel.setScaledContents(True)  # Scale pixmap to fit QLabel
+        
 
         # self.getLanguage()
 
@@ -3701,77 +3717,6 @@ class ApplicationWindow(
         more_jdfont = QFont(self.font_family3, 12*self.width_scale)
         self.more_ddxq.setFont(more_jdfont)
 
-
-
-        # self.ordersRect_typeList = QLabel(self.ordersRect_More)
-        # self.ordersRect_typeList.setStyleSheet(
-        #     f'border-radius:2px;background-color: #cccccc; border: none; ')
-        # self.ordersRect_typeList.setGeometry(20 * self.width_scale, 490 * self.height_scale,
-        #                                      250 * self.width_scale, 70 * self.height_scale)
-        # # self.historyInfo.setVisible(False)
-        # self.list_widget_typeList = QListWidget(self.ordersRect_typeList)
-        # self.list_widget_typeList.setGeometry(self.ordersRect_typeList.geometry())  # 让列表填充 QLabel 区域
-
-        # self.scroll_area3 = QScrollArea(self.ordersRect_More)
-        # # 设置 QScrollArea 的属性
-        # self.scroll_area3.setWidgetResizable(True)  # 自动调整内容大小
-        # self.scroll_area3.setWidget(self.ordersRect_typeList)
-        # self.scroll_area3.setFrameStyle(QFrame.Shape.NoFrame)
-        # self.scroll_area3.setGeometry(25 * self.width_scale, 490 * self.height_scale,
-        #                               240 * self.width_scale, 70 * self.height_scale)  # 调整高度以适应内容
-        # self.scroll_area3.setStyleSheet(f"""
-        #                                     QScrollArea {{
-        #                                         background-color: rgba(255, 255, 255, 0);  /* 完全透明的背景 */
-        #                                         border: none;  /* 移除边框 */
-        #                                         border-radius: {25 * self.height_scale}px;  /* 圆角设置 */
-        #                                     }}
-        #                                     QWidget {{
-        #                                         border: none;  # 去掉内部 QWidget 的边框
-        #                                         background-color: transparent;  # 可选，确保背景透明
-        #                                         border-radius: {25 * self.height_scale}px;
-        #                                     }}
-        #                                     QScrollBar:vertical, QScrollBar:horizontal {{
-        #                                         background: transparent;  /* 隐藏滚动条背景 */
-        #                                     }}
-        #                                 """)
-        # self.scroll_area3.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # 隐藏横向滚动条
-        # self.scroll_area3.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # 隐藏纵向滚动条
-        # self.scroll_area3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        # # self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        # self.scroll_area3.setWidgetResizable(True)
-        # # self.scroll_area3.setVisible(False)
-
-        # self.ddxq_pz1 = QLabel(self.ordersRect_typeList)
-        # self.ddxq_pz1.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        # self.ddxq_pz1.setGeometry(0*self.width_scale, 0*self.height_scale, 100*self.width_scale, 20*self.height_scale)
-        # self.ddxq_pz1.setText('品种：埃塞G')
-        # self.ddxq_pz1.setStyleSheet("background-color: transparent; border:none;color: #222222")
-        # ddxq_pz1font = QFont(self.font_family3, 10*self.width_scale)
-        # self.ddxq_pz1.setFont(ddxq_pz1font)
-        #
-        # self.ddxq_zl1 = QLabel(self.ordersRect_typeList)
-        # self.ddxq_zl1.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        # self.ddxq_zl1.setGeometry(100*self.width_scale, 0*self.height_scale, 100*self.width_scale, 20*self.height_scale)
-        # self.ddxq_zl1.setText('重量：10kg')
-        # self.ddxq_zl1.setStyleSheet("background-color: transparent; border:none;color: #222222")
-        # ddxq_zl1font = QFont(self.font_family3, 10*self.width_scale)
-        # self.ddxq_zl1.setFont(ddxq_zl1font)
-        # 
-        # self.ddxq_pz1 = QLabel(self.ordersRect_More)
-        # self.ddxq_pz1.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        # self.ddxq_pz1.setGeometry(18*self.width_scale, 540*self.height_scale, 100*self.width_scale, 20*self.height_scale)
-        # self.ddxq_pz1.setText('品种：埃塞G')
-        # self.ddxq_pz1.setStyleSheet("background-color: transparent; border:none;color: #222222")
-        # ddxq_pz1font = QFont(self.font_family3, 10*self.width_scale)
-        # self.ddxq_pz1.setFont(ddxq_pz1font)
-        # 
-        # self.ddxq_zl1 = QLabel(self.ordersRect_More)
-        # self.ddxq_zl1.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        # self.ddxq_zl1.setGeometry(180*self.width_scale, 540*self.height_scale, 100*self.width_scale, 20*self.height_scale)
-        # self.ddxq_zl1.setText('重量：10kg')
-        # self.ddxq_zl1.setStyleSheet("background-color: transparent; border:none;color: #222222")
-        # ddxq_zl1font = QFont(self.font_family3, 10*self.width_scale)
-        # self.ddxq_zl1.setFont(ddxq_zl1font)
 
         self.lookBtstr = 0
         self.lookEtstr = 0
@@ -5862,7 +5807,7 @@ class ApplicationWindow(
 
         self.stageTitle_wd = QLabel(self.stageBack)
         self.stageTitle_wd.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        self.stageTitle_wd.setGeometry(61 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        self.stageTitle_wd.setGeometry(61 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
         self.stageTitle_wd.setText(QApplication.translate("RoastHead", '温度'))
         self.stageTitle_wd.setStyleSheet(
@@ -5872,7 +5817,7 @@ class ApplicationWindow(
 
         self.stageTitle_hl = QLabel(self.stageBack)
         self.stageTitle_hl.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        self.stageTitle_hl.setGeometry(150 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        self.stageTitle_hl.setGeometry(149 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
         self.stageTitle_hl.setText(QApplication.translate("RoastHead", '火力'))
         self.stageTitle_hl.setStyleSheet(
@@ -5882,7 +5827,7 @@ class ApplicationWindow(
 
         self.stageTitle_fm = QLabel(self.stageBack)
         self.stageTitle_fm.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        self.stageTitle_fm.setGeometry(239 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        self.stageTitle_fm.setGeometry(217 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
         self.stageTitle_fm.setText(QApplication.translate("RoastHead", '风门'))
         self.stageTitle_fm.setStyleSheet(
@@ -5892,13 +5837,24 @@ class ApplicationWindow(
 
         self.stageTitle_zs = QLabel(self.stageBack)
         self.stageTitle_zs.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        self.stageTitle_zs.setGeometry(328 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        self.stageTitle_zs.setGeometry(295 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
         self.stageTitle_zs.setText(QApplication.translate("RoastHead", '转速'))
         self.stageTitle_zs.setStyleSheet(
             f"color: #252525;background-color:#D9E4F4; border: none;border-radius: 10px;"
         )
         self.stageTitle_zs.setFont(stageTatle_Font)
+
+        self.stageTitle_cz = QLabel(self.stageBack)
+        self.stageTitle_cz.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
+        self.stageTitle_cz.setGeometry(375 * self.width_scale * self.scale_factor2, 0 * self.height_scale,
+                                       44 * self.width_scale * self.scale_factor2,
+                                       30 * self.height_scale)
+        self.stageTitle_cz.setText(QApplication.translate("RoastHead", '操作'))
+        self.stageTitle_cz.setStyleSheet(
+            f"color: #252525;background-color:#D9E4F4; border: none;border-radius: 10px;"
+        )
+        self.stageTitle_cz.setFont(stageTatle_Font)
 
         self.addstageBtn = QPushButton(self.addOrderWidget)
         self.addstageBtn.setText(QApplication.translate("RoastHead", '+新增阶段'))
@@ -15024,6 +14980,7 @@ class ApplicationWindow(
         self.scrollLayout2 = QVBoxLayout(self.scrollWidget2)  # 垂直布局管理输入行
         # self.scrollLayout.setSpacing(10)  # 设置间距
         self.scrollLayout2.setContentsMargins(0, 0, 0, 0)
+        self.row_edits2 = []
 
         self.scrollWidget2.setLayout(self.scrollLayout2)
 
@@ -15128,7 +15085,7 @@ class ApplicationWindow(
 
         line_edit = QLineEdit(shuruBack2)
         line_edit.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        line_edit.setGeometry(61 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        line_edit.setGeometry(61 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
 
         line_edit.setStyleSheet(f"""
@@ -15146,7 +15103,7 @@ class ApplicationWindow(
         
         line_edit2 = QLineEdit(shuruBack2)
         line_edit2.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        line_edit2.setGeometry(150 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        line_edit2.setGeometry(139 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
 
         line_edit2.setStyleSheet(f"""
@@ -15162,7 +15119,7 @@ class ApplicationWindow(
         self.line_edits.append(line_edit2)
         line_edit3 = QLineEdit(shuruBack2)
         line_edit3.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        line_edit3.setGeometry(239 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        line_edit3.setGeometry(217 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
 
         line_edit3.setStyleSheet(f"""
@@ -15178,7 +15135,7 @@ class ApplicationWindow(
         self.line_edits.append(line_edit3)
         line_edit4 = QLineEdit(shuruBack2)
         line_edit4.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
-        line_edit4.setGeometry(328 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 88 * self.width_scale*self.scale_factor2,
+        line_edit4.setGeometry(295 * self.width_scale*self.scale_factor2, 0 * self.height_scale, 77 * self.width_scale*self.scale_factor2,
                                     30 * self.height_scale)
 
         line_edit4.setStyleSheet(f"""
@@ -15193,8 +15150,30 @@ class ApplicationWindow(
         line_edit4.setFont(shengdouTitlefont)
         self.line_edits.append(line_edit4)
         # 将新创建的输入行加入到 `QVBoxLayout` , line_edit
-        self.scrollLayout2.addWidget(shuruBack2)
 
+        self.row_edits2.append(stageTitle)
+
+        line_edit5 = QPushButton(shuruBack2)
+        # line_edit5.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter)
+        line_edit5.setGeometry(375 * self.width_scale * self.scale_factor2, 0 * self.height_scale,
+                               44 * self.width_scale * self.scale_factor2,
+                               30 * self.height_scale)
+
+        line_edit5.setStyleSheet(f"""
+                                                   QLineEdit {{
+                                                       background-color: #FFFFFF;
+                                                       color: #333333;
+                                                       border: 1px solid #DCECFD;
+                                                       border-radius: {4 * self.height_scale}px;
+                                                   }}
+                                               """)
+        line_edit5.setText("-")
+        line_edit5.setFont(shengdouTitlefont)
+        line_edit5.clicked.connect(lambda _, r=shuruBack2, e=self.row_edits2,index=stageTitle: self.delete_row(r, e,stageTitle))
+
+
+
+        self.scrollLayout2.addWidget(shuruBack2)
         # 将新创建的输入行存入列表
        
 
@@ -15207,6 +15186,32 @@ class ApplicationWindow(
             self.scrollArea_ADD2.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # 隐藏横向滚动条
             self.scrollArea_ADD2.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # 隐藏纵向滚动条
 
+    def delete_row(self, row_widget, row_edits,stageTitle):
+        # 从布局中移除行
+        self.scrollLayout2.removeWidget(row_widget)
+        row_widget.deleteLater()
+
+        # 从 line_edits 列表中移除对应的输入框
+        # for edit in self.line_edits:
+        #     self.line_edits.remove(edit)
+        #     edit.deleteLater()
+        index = int(stageTitle.text())
+        self.line_edits.pop((index-1)*4)
+        self.line_edits.pop((index-1)*4)
+        self.line_edits.pop((index-1)*4)
+        self.line_edits.pop((index-1)*4)
+        row_edits.pop((index-1))
+
+        row_index = int(len(self.line_edits)/4)
+        # 调整 scrollWidget 高度
+        new_height = row_index * (30 * self.height_scale)
+        self.scrollWidget2.setFixedHeight(new_height)
+
+        # 更新行号
+        for i in range(row_index):
+            stage_title = row_edits[i]
+            stage_title.setText(str(i+1))
+            
     def setupScrollArea3(self):
         """ 初始化滚动区域，只调用一次 """
         self.scrollWidget3 = QWidget(self.ordersRect_More)  # 用于存放输入行的容器
@@ -15855,7 +15860,7 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(0,True)
-            QTimer.singleShot(5,lambda:self.fireslideraction2(0,False))
+            QTimer.singleShot(5000,lambda:self.fireslideraction2(0,False))
 
     def markDropClick(self):      
         try:
@@ -15890,19 +15895,19 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(1, True)
-            QTimer.singleShot(5, lambda: self.fireslideraction2(1, False))
+            QTimer.singleShot(5000, lambda: self.fireslideraction2(1, False))
 
     def markDTP(self):
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(2, True)
-            QTimer.singleShot(5, lambda: self.fireslideraction2(2, False))
+            QTimer.singleShot(5000, lambda: self.fireslideraction2(2, False))
         
     def markJB(self):
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(3, True)
-            QTimer.singleShot(5, lambda: self.fireslideraction2(3, False))
+            QTimer.singleShot(5000, lambda: self.fireslideraction2(3, False))
 
 
         
