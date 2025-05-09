@@ -9829,11 +9829,12 @@ class ApplicationWindow(
 
         # 事件滑块
         self.eventsliders: Final[int] = 4
+        self.eventbuttons: Final[int] = 5
         self.eventslidervalues: List[int] = [0] * self.eventsliders
         self.eventslidervisibilities: List[int] = [0] * self.eventsliders
         self.eventsliderKeyboardControl: bool = True  # 如果使用向上/向下键无法移动错误滑块
         self.eventsliderAlternativeLayout: bool = False  # 如果为True，则组合滑块1+4和2+3，而不是滑块1+2和3+4
-        self.eventbuttonactions: List[int] = [0] * self.eventsliders
+        self.eventbuttonactions: List[int] = [0] * self.eventbuttons
         self.eventslideractions: List[int] = [0] * self.eventsliders  # 0:无，1:串行命令，2: Modbus命令，3: DTA命令，4:调用程序，5:热顶加热器，6:热顶风扇
         self.eventslidercommands: List[str] = [''] * self.eventsliders
         self.eventsbuttoncommands: List[str] = [''] * self.eventsliders
