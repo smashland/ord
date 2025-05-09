@@ -1736,7 +1736,7 @@ class CustomMainPlotWidget(QWidget):
         self.workthread = None
     def find_max(self,arr):
         if not arr:
-            return 300
+            return 600
         max_num = int(arr[0])
         for num in arr:
             if num is not None and int(num) > max_num:
@@ -4623,7 +4623,7 @@ class ApplicationWindow(
 
         self.rdBtn = QPushButton(self.rightBottom)
         # self.rdBtn.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        self.rdBtn.setText(QApplication.translate("RoastHead", '入 豆'))
+        self.rdBtn.setText(QApplication.translate("RoastHead", '点 火'))
         self.rdBtn.setGeometry(30*self.width_scale, 40*self.height_scale, 76*self.width_scale, 40*self.height_scale)
         self.rdBtn.setStyleSheet(
             f"QPushButton{{color: #222222;background-color: #F0F3F7;border-radius: {19*self.height_scale}px;border: 1px solid #222222}}"
@@ -4632,11 +4632,11 @@ class ApplicationWindow(
         rdfont = QFont(self.font_family2, 12*self.width_scale)
         self.rdBtn.setFont(rdfont)
         # self.rdBtn.clicked.connect(self.fileLoad)
-        self.rdBtn.clicked.connect(self.qmc.markCharge)
+        self.rdBtn.clicked.connect(self.NoMach)
 
         self.ccBtn = QPushButton(self.rightBottom)
         # self.ccBtn.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        self.ccBtn.setText(QApplication.translate("RoastHead", '出 仓'))
+        self.ccBtn.setText(QApplication.translate("RoastHead", '关 火'))
         self.ccBtn.setGeometry(124*self.width_scale, 40*self.height_scale, 76*self.width_scale, 40*self.height_scale)
         self.ccBtn.setStyleSheet(
             f"QPushButton{{color: #222222;background-color: #F0F3F7;border-radius: {19*self.height_scale}px;border: 1px solid #222222}}"
@@ -4644,7 +4644,7 @@ class ApplicationWindow(
         )
         ccfont = QFont(self.font_family2, 12*self.width_scale)
         self.ccBtn.setFont(ccfont)
-        self.ccBtn.clicked.connect(self.qmc.markDrop)
+        self.ccBtn.clicked.connect(self.oFFMach)
         # self.ccBtn.clicked.connect(self.markDropClick)
 
         self.lqBtn = QPushButton(self.rightBottom)
@@ -13179,6 +13179,8 @@ class ApplicationWindow(
         stage_data = first_Value[5]
         if self.qmc.tpChangeBool:
             new_phase = self.find_index(current_temp,stage_data)
+            if self.current_phase == new_phase  + 1:
+                return
             lenjd = int(len(stage_data)/4)
             if new_phase == lenjd:
                 self.qmc.ccChangeBool = True
@@ -13633,38 +13635,38 @@ class ApplicationWindow(
         self.addMonitorWidget.setVisible(False)
     
     def markTpMarkClick(self):
-        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+        if self.qmc.changeBool and len(self.qmc.temp2) > 0:
             self.tpMark.setStyleSheet(f"""
                                                 QPushButton {{
                                                     border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
                                                 }}
                                             """)
-            self.TP_BT=self.qmc.temp1[-1]
+            self.TP_BT=self.qmc.temp2[-1]
             self.TP_time = self.qmc.timex[-1]
             self.qmc.tpChangeBool=True
             self.tpMark_down.setText(str(round(self.TP_BT, 1)))
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()
-        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+        if self.qmc.changeBool and len(self.qmc.temp2) > 0:
             self.zhdImg.setStyleSheet(f"""
                                         QPushButton {{
                                             border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
                                         }}
                                     """)
-            self.Maillard = self.qmc.temp1[-1]
+            self.Maillard = self.qmc.temp2[-1]
             self.Maillard_time = self.qmc.timex[-1]
             self.zhd_down.setText(str(round(self.Maillard, 1)))
 
     def markyibaoClick(self):
         # self.qmc.mark1Cstart()
-        if self.qmc.changeBool and len(self.qmc.temp1) > 0:
+        if self.qmc.changeBool and len(self.qmc.temp2) > 0:
             self.yibaoImg.setStyleSheet(f"""
                                                         QPushButton {{
                                                             border-image: url('{self.normalized_path}/includes/Icons/yrzb/rd-hover.png');
                                                         }}
                                                     """)
-            self.FCs_BT = self.qmc.temp1[-1]
+            self.FCs_BT = self.qmc.temp2[-1]
             self.FCs_time = self.qmc.timex[-1]
             self.yb_down.setText(str(round(self.FCs_BT, 1)))
 
@@ -15916,8 +15918,16 @@ class ApplicationWindow(
             self.fireslideraction2(2, True)
             QTimer.singleShot(360000, lambda: self.fireslideraction2(2, False))
 
+    def NoMach(self):
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(4, True)
 
-        
+    def oFFMach(self):
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(4, False)
+
     def create_toplevel(self, title="新窗口", width=300, height=200):
         window = QMainWindow(self)
         window.setWindowTitle(title)
@@ -16055,6 +16065,10 @@ class ApplicationWindow(
                                                 border-image: url('{self.normalized_path}/includes/Icons/yrzb/yb.png');
                                             }}
                                         """)
+        self.yb_down.setText("")
+        self.zhd_down.setText("")
+        self.tpMark_down.setText("")
+        self.rudouImg_down.setText("")
         self.user_interacted = True  # 用户进行了交互
 
         self.resetProgressBar()

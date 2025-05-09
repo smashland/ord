@@ -1,16 +1,16 @@
 [
     {
-        "id": 1,
+        "id": 3,
         "taskName": "1",
-        "bakingBatch": "20250508143216",
-        "createTime": "2025-05-08 14:32:16",
+        "bakingBatch": "20250509154430",
+        "createTime": "2025-05-09 15:44:30",
         "finishTime": "选择日期",
         "bakingStatue": 2,
         "bakingDeviceId": 2,
-        "taskId": "218038458218632965",
-        "formulationName": "1",
+        "taskId": "194493018982295962",
+        "formulationName": "",
         "backformulationName": "配方1",
-        "fakeValue": "79.2",
+        "fakeValue": "82.3",
         "beanTypes": {
             "type1": {
                 "name": "1",
@@ -22,30 +22,30 @@
         "remark": "",
         "stage": [
             "130",
-            "200",
+            "20",
             "30",
             "30",
             "150",
-            "200",
+            "20",
             "30",
             "30",
             "170",
-            "200",
+            "20",
             "30",
             "30",
             "180",
-            "200",
+            "20",
             "30",
             "30",
             "190",
-            "200",
+            "20",
             "30",
             "30",
             "210",
-            "200",
+            "20",
             "30",
             "30"
         ],
-        "bakingCreateTime": "2025-05-08 14:32:22"
+        "bakingCreateTime": "2025-05-09 15:44:37"
     }
 ]

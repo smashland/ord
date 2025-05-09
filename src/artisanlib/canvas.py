@@ -1204,7 +1204,7 @@ class tgraphcanvas(FigureCanvas):
 
         #list to store the time in seconds of each reading. Most IMPORTANT variable.
         self.timex:List[float] = []
-
+        # self.ljtemp=70
         #lists to store temps and rates of change. Second most IMPORTANT variables. All need same dimension.
         #self.temp1 = ET ; self.temp2 = BT; self.delta1 = deltaMET; self.delta2 = deltaBT
         self.temp1:List[float] = []
@@ -4318,13 +4318,6 @@ class tgraphcanvas(FigureCanvas):
             except Exception as e: # pylint: disable=broad-except
                 _log.exception(e)
             self.aw.lcd3.display(btstr)
-            # random_number = random.uniform(1, 300)
-            # random_number_str = f"{random_number:.2f}"
-            # int_part, decimal_part = btstr.split('.')
-            # self.aw.processInfoLabel.setText(int_part)
-            # self.aw.processInfoLabel_point.setText('.' + decimal_part)
-            # if self.changeBool and len(self.timex)>2 and self.timex[0] > 2 and self.timex[1] < 2:
-            #     self.clearMeasurementLj()
             if self.changeBool == True:
                 self.aw.sswd.setText(btstr)
                 int_part, decimal_part = btstr.split('.')
@@ -4339,15 +4332,8 @@ class tgraphcanvas(FigureCanvas):
                 self.aw.processInfoLabel_point.setText('.' + decimal_part2)
                 self.aw.processInfo1WD.setText(btstr)
                 self.aw.processInfoLabel_wd.setText(QApplication.translate("RoastHead", '风温|豆温'))
-
-            # self.aw.processInfoLabel_point.setGeometry(
-            #     (26 + self.aw.calculate_text_width(self.aw.processInfoLabel)) * self.aw.width_scale, 37 * self.aw.height_scale,
-            #     50 * self.aw.width_scale,
-            #     58 * self.aw.height_scale)
-
-            # self.aw.ssdLabel1.setGeometry((26 + self.aw.calculate_text_width(
-            #     self.aw.processInfoLabel) + self.aw.calculate_text_width(self.aw.processInfoLabel_point)) * self.aw.width_scale,
-            #                           26 * self.aw.height_scale, 16 * self.aw.width_scale, 18 * self.aw.height_scale)
+            # self.ljtemp=self.ljtemp+1
+            # self.aw.processInfoLabel.setText(str(self.ljtemp));
             #是否自动化
             if self.aw.setControlBool == False:
                 self.aw.timerTimeoutSlt()
@@ -12738,8 +12724,8 @@ class tgraphcanvas(FigureCanvas):
         self.aw.diologRect.setVisible(False)
         self.aw.stop_time()
         self.aw.gjxytimer.stop()  # 关闭锅间协议
-        if len(self.temp1) > 0:
-            self.aw.CHARGE_BT=self.temp1[-1]
+        if len(self.temp2) > 0:
+            self.aw.CHARGE_BT=self.temp2[-1]
             self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 1)))
         self.aw.ksyrtimer.stop()
         self.aw.fourTimer.start()
@@ -13531,6 +13517,7 @@ class tgraphcanvas(FigureCanvas):
             return
         # self.markDropTimeIndex = len(self.timex)
         # _log.info('profile saved 13383: %s', self.timex)
+        # self.ljtemp=70
         self.aw.markDropClick()
 
         self.tpChangeBool = False
