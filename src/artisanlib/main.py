@@ -14888,6 +14888,11 @@ class ApplicationWindow(
 
     def closeEXE(self):
         # self.cap.release()
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(4, False)
+            self.fireslideraction2(5, False)
+            self.fireslideraction2(6, False)
         self.destroy()  # 窗口关闭销毁
         sys.exit(0)  # 系统结束推出
 
@@ -18552,6 +18557,11 @@ class ApplicationWindow(
                         sbxl = config['OtherSettings'].get('setsbxl', ' ')
                         self.xinghaoLabel.setText(str(sbxl))
                         shebeiType_setup = config['General'].get('roastertype_setup', ' ')
+                        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+                        if is_mb01:
+                            self.fireslideraction2(4, False)
+                            self.fireslideraction2(5, False)
+                            self.fireslideraction2(6, False)
                         self.shebeiLabel.setText(shebeiType_setup)
                         self.modbus.host = config['OtherSettings'].get('sethost', self.modbus.host)
                         self.qmc.device = toInt(config['Device'].get('id', self.qmc.device))
