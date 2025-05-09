@@ -21347,11 +21347,10 @@ class ApplicationWindow(
                     if action > 18:
                         action = action + 1  # skip the 19: Aillio PRS
                 # after adaption: (see eventaction)
-                value = self.calcSliderSendValue(n)
-                if action not in [6, 14, 15, 21]:  # only for IO, VOUT, S7 and RC Commands we keep the floats
-                    value = int(round(value))
-                if action in {8, 9, 16, 17, 18}:  # for Hottop/R1 Heater or Fan, we just forward the value
-                    cmd = str(int(round(value)))
+                # if action not in [6, 14, 15, 21]:  # only for IO, VOUT, S7 and RC Commands we keep the floats
+                #     value = int(round(value))
+                # if action in {8, 9, 16, 17, 18}:  # for Hottop/R1 Heater or Fan, we just forward the value
+                #     cmd = str(int(round(value)))
                 else:
                     cmd = self.eventsbuttoncommands[n]
                     cmd = cmd.format(v * cmd.count('{}'))
