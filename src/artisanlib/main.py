@@ -21329,7 +21329,7 @@ class ApplicationWindow(
 
 
     def fireslideraction2(self, n: int,v: bool) -> None:
-        action = self.eventbuttonactions[n]
+        action = int(self.eventbuttonactions[n])
         if action:
             try:
                 # before adaption:
