@@ -9829,7 +9829,7 @@ class ApplicationWindow(
 
         # 事件滑块
         self.eventsliders: Final[int] = 4
-        self.eventbuttons: Final[int] = 5
+        self.eventbuttons: Final[int] = 7
         self.eventslidervalues: List[int] = [0] * self.eventsliders
         self.eventslidervisibilities: List[int] = [0] * self.eventsliders
         self.eventsliderKeyboardControl: bool = True  # 如果使用向上/向下键无法移动错误滑块
@@ -13068,6 +13068,8 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(4, True)
+            self.fireslideraction2(5, True)
+            self.fireslideraction2(6, True)
         self.oneStage = []
         try:
             with open(ytycwdpath + "/localJson/order.json", "r", encoding="utf-8") as file:
