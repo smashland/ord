@@ -14895,9 +14895,16 @@ class ApplicationWindow(
             self.fireslideraction2(4, False)
             self.fireslideraction2(5, False)
             self.fireslideraction2(6, False)
+            self.long_press_timer = QTimer()
+            self.long_press_timer.setSingleShot(True)
+            self.long_press_timer.timeout.connect(lambda: self.desExit())
+            self.long_press_timer.start(3000)  # 3秒后触发
+        else:
+            self.desExit()
+
+    def desExit(self):
         self.destroy()  # 窗口关闭销毁
         sys.exit(0)  # 系统结束推出
-
     def controlClose(self):
         self.closeBack.setVisible(False)
 
@@ -21294,6 +21301,7 @@ class ApplicationWindow(
     @pyqtSlot(int)
     def fireslideraction(self, n: int) -> None:
         action = self.eventslideractions[n]
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if action:
             try:
                 # before adaption:
@@ -21312,6 +21320,13 @@ class ApplicationWindow(
                         action = action + 1  # skip the 19: Aillio PRS
                 # after adaption: (see eventaction)
                 value = self.calcSliderSendValue(n)
+                if is_mb01:
+                    if n == 3:
+                        value=int(self.setHl.text())
+                    if n == 0:
+                        value =int(self.setFm.text())
+                    if n == 1:
+                        value =int(self.setZs.text())
                 if action not in [6, 14, 15, 21]:  # only for IO, VOUT, S7 and RC Commands we keep the floats
                     value = int(round(value))
                 if action in {8, 9, 16, 17, 18}:  # for Hottop/R1 Heater or Fan, we just forward the value
@@ -21320,7 +21335,7 @@ class ApplicationWindow(
                     cmd = self.eventslidercommands[n]
                     cmd = cmd.format(*(tuple([value] * cmd.count('{}'))))  # cmd needs to be a string!
             # 检查设备标签是否为MB-01，如果是则处理最后一位数值为浮点数
-                is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+
                 if is_mb01:
                     try:
                         # 提取命令中的参数部分
