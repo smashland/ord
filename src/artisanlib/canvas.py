@@ -4310,11 +4310,10 @@ class tgraphcanvas(FigureCanvas):
                         btstr = lcdformat%temp2[idx]            # BT
                     elif self.LCDdecimalplaces and -10000 < temp2[idx] < 100000:
                         btstr = f'{temp2[idx]:.0f}'
-                    if len(temp2)>10 and self.changeBool and self.tpChangeBool == False  and temp2[idx]>=temp2[idx-1] and temp2[idx-1]>=temp2[idx-2] and temp2[idx-2]>=temp2[idx-3] and temp2[idx-3]>=temp2[idx-4]:
-                        self.aw.TP_BT = self.temp1[-1]
-                        self.aw.TP_time = self.timex[-1]
-                        self.tpChangeBool = True
-                        self.aw.tpMark_down.setText(str(self.aw.TP_BT))
+                if len(temp2)>10 and self.changeBool and self.tpChangeBool == False  and temp2[-1]>temp2[-2]:
+                    self.aw.TP_BT = self.temp2[-1]
+                    self.aw.TP_time = self.timex[-1]
+                    self.aw.markTpMarkClick()
             except Exception as e: # pylint: disable=broad-except
                 _log.exception(e)
             self.aw.lcd3.display(btstr)
@@ -12726,7 +12725,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.gjxytimer.stop()  # 关闭锅间协议
         if len(self.temp2) > 0:
             self.aw.CHARGE_BT=self.temp2[-1]
-            self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 1)))
+            self.aw.rudouImg_down.setText(str(round(self.aw.CHARGE_BT, 2)))
         self.aw.ksyrtimer.stop()
         self.aw.fourTimer.start()
 
