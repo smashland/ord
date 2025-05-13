@@ -12828,14 +12828,20 @@ class ApplicationWindow(
 
         self.setHl.setText(str(burner))
         self.slider4.setValue(burner)
-        self.slider4released()
         self.setFm.setText(str(damper))
         self.slider1.setValue(damper)
-        self.slider1released()
         self.setZs.setText(str(drum))
         self.slider2.setValue(drum)
-        self.slider2released()
 
+        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
+        if is_mb01:
+            self.fireslideraction2(4, True)
+            self.fireslideraction2(5, True)
+            self.fireslideraction2(6, True)
+        else:
+            self.slider4released()
+            self.slider1released()
+            self.slider2released()
 
     def getInitEditVal(self):
         config_path = os.path.join(ytycwdpath, 'localJson', 'initConfig.ini')
@@ -13065,11 +13071,6 @@ class ApplicationWindow(
         # self.qmc.ToggleRecorder()
         self.ksyrBtn.setEnabled(False)
         self.rightTopLabel1_suo.setText('预热')
-        is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
-        if is_mb01:
-            self.fireslideraction2(4, True)
-            self.fireslideraction2(5, True)
-            self.fireslideraction2(6, True)
         self.oneStage = []
         try:
             with open(ytycwdpath + "/localJson/order.json", "r", encoding="utf-8") as file:
@@ -13645,6 +13646,7 @@ class ApplicationWindow(
             self.TP_time = self.qmc.timex[-1]
             self.qmc.tpChangeBool=True
             self.tpMark_down.setText(str(round(self.TP_BT, 1)))
+
 
     def markDryEndClick(self):
         # self.qmc.markDryEnd()

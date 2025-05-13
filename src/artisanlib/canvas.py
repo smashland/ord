@@ -4334,8 +4334,6 @@ class tgraphcanvas(FigureCanvas):
             # self.ljtemp=self.ljtemp+1
             # self.aw.processInfoLabel.setText(str(self.ljtemp));
             #是否自动化
-            if self.aw.setControlBool == False:
-                self.aw.timerTimeoutSlt()
 
 
            # Agtron色值计算和显示
@@ -4575,6 +4573,8 @@ class tgraphcanvas(FigureCanvas):
                     finally:
                         if self.profileDataSemaphore.available() < 1:
                             self.profileDataSemaphore.release(1)
+                    if self.aw.setControlBool == False:
+                        self.aw.timerTimeoutSlt()
 
                     if self.flagstart:
                         if  self.zoom_follow: # self.aw.ntb._active == 'ZOOM'
