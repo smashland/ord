@@ -13525,6 +13525,7 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()
+        self.agtron_values=[]
         # self.markDropSignal.emit(False)
         if len(self.timex) > 1:
             removed = False
