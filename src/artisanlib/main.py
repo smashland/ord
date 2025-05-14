@@ -1787,17 +1787,17 @@ class CustomMainPlotWidget(QWidget):
         ax.spines['bottom'].set_color('#7D7A79')
         ax.spines['bottom'].set_linewidth(0.5)
         ax.spines['bottom'].set_alpha(0.7)
-        # 设置防抖阈值
+        # 设置防抖阈值  ax.plot(time_data2, self.smooth_data(data21, threshold), label="Data21", color="#D18F65")  # 豆温
         threshold = 0.5
         if time_data is not None:
             # 画线 配方曲线
-            ax.plot(time_data, self.smooth_data(data1, threshold), label="Data1", color="#F0E2D7")  # 豆温
-            ax.plot(time_data, self.smooth_data(data2, threshold), label="Data2", color="#E7CBC8")  # 风温
+            ax.plot(time_data, data1, label="Data1", color="#F0E2D7")  # 豆温
+            ax.plot(time_data, data2, label="Data2", color="#E7CBC8")  # 风温
 
-            if data3 is not None and data3 != "未知任务" and len(data3) > 0:
-                ax.plot(time_data, self.smooth_data(data3, threshold), label="Data3", color="#DDD6E3")  # 色值
-            if data4 is not None and  data4 != "未知任务" and len(data4) > 0:
-                ax.plot(time_data, self.smooth_data(data4, threshold), label="Data4", color="#DCE7DA")  # ROR
+            if data3 is not None and data3 != "未知任务" and len(data3) > 0 and len(data3) == len(time_data):
+                ax.plot(time_data, data3, label="Data3", color="#DDD6E3")  # 色值
+            if data4 is not None and  data4 != "未知任务" and len(data4) > 0 and len(data4) == len(time_data):
+                ax.plot(time_data, data4, label="Data4", color="#DCE7DA")  # ROR
 
         if time_data2 is not None:
             # indeces = [i for i,x in enumerate(time_data2) if 0 < x < 1]
@@ -1811,13 +1811,13 @@ class CustomMainPlotWidget(QWidget):
             #     if data24 is not None and  data24 != "未知任务" and len(data24) > 0:
             #         ax.plot(time_data2[indeces[0]:], data24[indeces[0]:], label="Data24", color="#6BAE76")  # ROR
             # else:
-            ax.plot(time_data2, self.smooth_data(data21, threshold), label="Data21", color="#D18F65")  # 豆温
-            ax.plot(time_data2, self.smooth_data(data22, threshold), label="Data22", color="#AC3230")  # 风温
+            ax.plot(time_data2, data21, label="Data21", color="#D18F65")  # 豆温
+            ax.plot(time_data2, data22, label="Data22", color="#AC3230")  # 风温
 
-            if data23 is not None and data23 != "未知任务" and len(data23) > 0:
-                ax.plot(time_data2, self.smooth_data(data23, threshold), label="Data23", color="#7864AA")  # 色值
-            if data24 is not None and data24 != "未知任务" and len(data24) > 0:
-                ax.plot(time_data2, self.smooth_data(data24, threshold), label="Data24", color="#6BAE76")  # ROR
+            if data23 is not None and data23 != "未知任务" and len(data23) > 0 and len(data23) == len(time_data2):
+                ax.plot(time_data2, data23, label="Data23", color="#7864AA")  # 色值
+            if data24 is not None and data24 != "未知任务" and len(data24) > 0 and len(data24) == len(time_data2):
+                ax.plot(time_data2, data24, label="Data24", color="#6BAE76")  # ROR
 
         # 使用 `ax.axvspan` 绘制矩形，填充颜色，透明度为 0.5
         # ax.axvspan(fc_time, drop_time, color=cmap(0.5), alpha=0.5, zorder=2)
