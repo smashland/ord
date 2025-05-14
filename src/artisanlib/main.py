@@ -1845,6 +1845,7 @@ class CustomMainPlotWidget(QWidget):
         # ax.legend().remove()
         #
         # # 确保 Matplotlib 画布刷新
+        self.figure.tight_layout()
         self.canvas.draw()
         # self.canvas.flush_events()
 
