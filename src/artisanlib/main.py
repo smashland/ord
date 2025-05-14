@@ -1751,12 +1751,14 @@ class CustomMainPlotWidget(QWidget):
         """
         if not data:
             return []
-
         smoothed = [data[0]]  # 新数组，保留第一个点
+        if smoothed[0] is None:
+            smoothed[0] = 0.0
         for i in range(1, len(data)):
             prev = smoothed[-1]
             curr = data[i]
-            if abs(curr - prev) < threshold:
+
+            if curr is None or abs(curr - prev) < threshold:
                 smoothed.append(prev)  # 替换为前一个（抹平小跳变）
             else:
                 smoothed.append(curr)
