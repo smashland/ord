@@ -1785,7 +1785,7 @@ class CustomMainPlotWidget(QWidget):
         ax.spines['bottom'].set_color('#7D7A79')
         ax.spines['bottom'].set_linewidth(0.5)
         ax.spines['bottom'].set_alpha(0.7)
-        //
+        # 设置防抖阈值
         threshold = 0.5
         if time_data is not None:
             # 画线 配方曲线
