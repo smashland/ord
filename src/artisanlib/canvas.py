@@ -6527,6 +6527,7 @@ class tgraphcanvas(FigureCanvas):
             charge = self.timex[self.timeindex[0]]
         # initialize temperature and delta data
         self.temp1, self.temp2, self.delta1, self.delta2, self.timex, self.stemp1, self.stemp2, self.ctimex1, self.ctimex2, self.ctemp1, self.ctemp2 = [], [], [], [], [], [], [], [], [], [], []
+        self.agtron_values=[]
         self.tstemp1, self.tstemp2 = [], []
         self.unfiltereddelta1, self.unfiltereddelta2 = [], []
         self.unfiltereddelta1_pure, self.unfiltereddelta2_pure = [], []
@@ -13525,7 +13526,6 @@ class tgraphcanvas(FigureCanvas):
         self.aw.fourTimer.stop()
         self.aw.diologRect.setVisible(False)
         self.aw.pf = self.aw.getProfile()
-        self.agtron_values=[]
         # self.markDropSignal.emit(False)
         if len(self.timex) > 1:
             removed = False
