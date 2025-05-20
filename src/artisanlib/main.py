@@ -14919,8 +14919,8 @@ class ApplicationWindow(
         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
         if is_mb01:
             self.fireslideraction2(4, False)
-            self.fireslideraction2(5, False)
-            self.fireslideraction2(6, False)
+            self.fireslideraction2(0, False)
+            self.fireslideraction2(1, False)
             self.long_press_timer = QTimer()
             self.long_press_timer.setSingleShot(True)
             self.long_press_timer.timeout.connect(lambda: self.desExit())
@@ -18607,8 +18607,8 @@ class ApplicationWindow(
                         is_mb01 = hasattr(self, 'shebeiLabel') and self.shebeiLabel.text() == 'H5U Touch'
                         if is_mb01:
                             self.fireslideraction2(4, False)
-                            self.fireslideraction2(5, False)
-                            self.fireslideraction2(6, False)
+                            self.fireslideraction2(0, False)
+                            self.fireslideraction2(1, False)
                         self.shebeiLabel.setText(shebeiType_setup)
                         self.modbus.host = config['OtherSettings'].get('sethost', self.modbus.host)
                         self.qmc.device = toInt(config['Device'].get('id', self.qmc.device))
