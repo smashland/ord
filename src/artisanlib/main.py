@@ -13668,8 +13668,9 @@ class ApplicationWindow(
                                             """)
             self.TP_BT=self.qmc.temp2[-1]
             self.TP_time = self.qmc.timex[-1]
+            timestr= f"{(int(self.TP_time) // 60):02d}:{(int(self.TP_time) % 60):02d}"
             self.qmc.tpChangeBool=True
-            self.tpMark_down.setText(str(round(self.TP_BT, 1)))
+            self.tpMark_down.setText(timestr+"/"+str(round(self.TP_BT, 1)))
 
 
     def markDryEndClick(self):
@@ -13682,7 +13683,8 @@ class ApplicationWindow(
                                     """)
             self.Maillard = self.qmc.temp2[-1]
             self.Maillard_time = self.qmc.timex[-1]
-            self.zhd_down.setText(str(round(self.Maillard, 1)))
+            timestr = f"{(int(self.Maillard_time) // 60):02d}:{(int(self.Maillard_time) % 60):02d}"
+            self.zhd_down.setText(timestr+"/"+str(round(self.Maillard, 1)))
 
     def markyibaoClick(self):
         # self.qmc.mark1Cstart()
@@ -13694,7 +13696,8 @@ class ApplicationWindow(
                                                     """)
             self.FCs_BT = self.qmc.temp2[-1]
             self.FCs_time = self.qmc.timex[-1]
-            self.yb_down.setText(str(round(self.FCs_BT, 1)))
+            timestr = f"{(int(self.FCs_time) // 60):02d}:{(int(self.FCs_time) % 60):02d}"
+            self.yb_down.setText(timestr+"/"+str(round(self.FCs_BT, 1)))
 
     def start_countdown(self):
         # 设置定时器间隔为1000毫秒（1秒）
